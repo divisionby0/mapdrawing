@@ -1,0 +1,87 @@
+body {
+    padding-bottom: 10px;
+}
+
+#error-message {
+    display: none;
+}
+
+.map-container {
+    overflow-x: auto;
+    position: relative;
+    transform: scale(0.7);
+    -ms-transform: scale(0.7);
+}
+
+#map {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+ * Hide high-res map rendering
+ */
+.hidden-map {
+    overflow: hidden;
+    position: fixed;
+}
+
+.hidden-map-container {
+    height: 210mm;
+    width: 297mm;
+}
+
+/*
+ * Loading spinner
+ * Based on http://codepen.io/lixquid/pen/ybjmr
+ */
+#spinner {
+    width: 24px;
+    height: 24px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    border-right: 2px solid #333;
+    border-left: 2px solid #333;
+    -webkit-animation: spinner 0.75s ease infinite;
+    animation: spinner 0.75s ease infinite;
+    border-radius: 100%;
+    position: relative;
+    top: 8px;
+    margin-left: 10px;
+    display: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
+
+.dropdown-menu{
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    margin-top: 3px;
+    overflow: hidden;
+}
+
+@-webkit-keyframes spinner {
+    to {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}
+@keyframes spinner {
+    to {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}

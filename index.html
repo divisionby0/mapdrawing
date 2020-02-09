@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapbox</title>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        .mapboxgl-ctrl{
+            display: none !important;
+        }
+        .hidden-map {
+            overflow: hidden;
+            height: 0;
+            width: 0;
+            position: fixed;
+        }
+
+        .mapContainer{
+            width: 100%;
+        }
+        .a4{
+            width: 100%;
+            height: 141vw;
+        }
+    </style>
+
+    <script>
+        // TODO рендер в большую картинку
+        var lng = 37.620551183254975;
+        var lat = 55.65910568824154;
+        var zoom = 11.933242053191053;
+        var map;
+
+        var a4Width = 210;
+        var a4Height = 297;
+        var dpi = 300;
+
+        var a4Coeff = a4Height/a4Width;
+
+        var format = "png";
+        var unit = "mm";
+
+        var style = 'mapbox://styles/divby0/ck66s9jnz3sip1is40kna2d1t';
+
+        $(document).ready(function () {
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZGl2YnkwIiwiYSI6ImNrNjZuNjU3eDFpNzAzbXF3cm91dmJ6bjQifQ.v2YMxI4B1W4iMrevGH95Uw';
+
+            map = new mapboxgl.Map({
+                container: 'map',
+                center: [lng, lat],
+                zoom: zoom,
+                style: style
+            });
+
+            map.on("zoom", function(event){
+                zoom = map.getZoom();
+                $("#zoomInput").val(zoom);
+
+                updateValues();
+            });
+
+            map.on("move", function(event){
+                console.log("move event = ",event);
+                console.log("center=",map.getCenter());
+
+                updateValues();
+            });
+
+
+            map.on("load", function(event){
+                console.log("on map loaded");
+                onResize();
+            });
+
+            updateValues();
+
+            $("#lngInput").change(function(event){
+                lng = $("#lngInput").val();
+                map.flyTo({ center: [lng, lat] });
+            });
+
+            $("#latInput").change(function(event){
+                lat = $("#latInput").val();
+                map.flyTo({ center: [lng, lat] });
+            });
+
+            $("#zoomInput").change(function(event){
+                zoom = $("#zoomInput").val();
+                map.setZoom(zoom);
+            });
+
+            $("#generateMapButton").click(function(){
+                generateMap();
+            });
+
+            window.addEventListener("resize", function(e) {
+                console.log("resized");
+                onResize();
+            });
+        });
+
+        function onResize(){
+            console.log("width=",$("#map").width());
+
+            $("#map").height($("#map").width() * a4Coeff);
+            $("#mapPrint").height($("#map").width() * a4Coeff);
+        }
+
+        function generateMap() {
+            'use strict';
+            console.log("generating map ... ");
+            var bearing = map.getBearing();
+            var pitch = map.getPitch();
+
+            createPrintMap(a4Width, a4Height, dpi, format, bearing, pitch);
+        }
+
+        function createPrintMap(width, height, dpi, format, bearing, pitch) {
+            'use strict';
+
+            // Calculate pixel ratio
+            var actualPixelRatio = window.devicePixelRatio;
+            Object.defineProperty(window, 'devicePixelRatio', {
+                get: function() {return dpi / 96}
+            });
+
+            // Create map container
+            var hidden = document.createElement('div');
+            hidden.className = 'hidden-map';
+            document.body.appendChild(hidden);
+
+            var container = document.createElement('div');
+
+            //var containerWidthPixels = a4Width + "mm";
+            //var containerHeightPixels = a4Height + "mm";
+
+            container.style.width = a4Width + "mm";
+            container.style.height = a4Height + "mm";
+
+            //var mapWidth = $("#map").width();
+            //console.log("mapWidth=",mapWidth);
+            //console.log("containerWidthPixels=",containerWidthPixels);
+            //console.log("containerHeightPixels=",containerHeightPixels);
+
+            var containerWidthPixels = parseFloat(toPixels(a4Width));
+            var mapWidth = $("#map").width();
+
+            console.log("containerWidthPixels="+containerWidthPixels);
+            console.log("mapWidth="+mapWidth);
+
+            var coeff =  parseFloat(containerWidthPixels)/mapWidth;
+            console.log("coeff=", coeff);
+
+            //console.log("new width ",$("#map").width());
+            //console.log("new height ",$("#map").height());
+
+            hidden.appendChild(container);
+
+            console.log("pos",lng, lat);
+            console.log("map center = ",map.getCenter());
+
+            // Render map
+            var renderMap = new mapboxgl.Map({
+                container: container,
+                center: [map.getCenter().lng, map.getCenter().lat],
+                zoom: map.getZoom(),
+                style: style,
+                bearing: bearing,
+                pitch: pitch,
+                interactive: false,
+                preserveDrawingBuffer: true,
+                fadeDuration: 0,
+                attributionControl: false
+            });
+
+            renderMap.once('idle', function() {
+                if (format == 'png') {
+                    renderMap.getCanvas().toBlob(function(blob) {
+                        console.log("BLOB ready");
+                        saveImage(blob);
+                    });
+                } else {
+                    console.log("Only to png render available yet");
+                }
+
+                //renderMap.remove();
+                //hidden.parentNode.removeChild(hidden);
+
+                Object.defineProperty(window, 'devicePixelRatio', {
+                    get: function() {return actualPixelRatio}
+                });
+            });
+        }
+
+        function updateValues(){
+            var center = map.getCenter();
+            lng = center.lng;
+            lat = center.lat;
+
+            $("#lngInput").val(lng);
+            $("#latInput").val(lat);
+        }
+
+        function toPixels(length) {
+            'use strict';
+            var unit = 'mm';
+            var conversionFactor = 96;
+            if (unit == 'mm') {
+                conversionFactor /= 25.4;
+            }
+            return conversionFactor * length + 'px';
+        }
+
+        function saveImage(blob){
+            saveAs(blob, 'map.png');
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="mapContainer">
+                <div id="map" class="a4"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <input type="number" id="lngInput" value="20">
+            </div>
+            <div class="col-4">
+                <input type="number" id="latInput" value="36">
+            </div>
+            <div class="col-4">
+                <input type="number" id="zoomInput" value="6">
+            </div>
+        </div>
+        <div class="row">
+            <button id="generateMapButton">Generate PNG</button>
+        </div>
+    </div>
+    <div class="row" style="height: 60px;"></div>
+
+    <!--
+    <div class="row">
+        <div class="col-12">
+            <div id="mapPrintContainer" class="mapContainer">
+                <div id="mapPrint" class="a4"></div>
+            </div>
+        </div>
+    </div>
+    -->
+</div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/canvas-toblob/0.1/canvas-toBlob.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/filesaver.js@1.3.4/FileSaver.min.js"></script>
+</body>
+</html>
