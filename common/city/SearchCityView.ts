@@ -53,7 +53,6 @@ class SearchCityView{
     }
 
     private onInputChanged():void {
-        console.log("changed");
         var value:string = this.input.val();
         if(value.length > 0){
             this.show();

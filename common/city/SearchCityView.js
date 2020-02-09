@@ -41,7 +41,6 @@ var SearchCityView = (function () {
         this.j$("#placesListbox").show();
     };
     SearchCityView.prototype.onInputChanged = function () {
-        console.log("changed");
         var value = this.input.val();
         if (value.length > 0) {
             this.show();
