@@ -12,7 +12,7 @@ var printHeight = 3509;
 var sourceMapZoomWidthOffset = printWidth - mapContainerZoomCoeff * printWidth;
 var sourceMapZoomHeightOffset = printHeight - mapContainerZoomCoeff * printHeight;
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZGl2YnkwIiwiYSI6ImNrNjZuNjU3eDFpNzAzbXF3cm91dmJ6bjQifQ.v2YMxI4B1W4iMrevGH95Uw';
+mapboxgl.accessToken = '';
 
 var mapTilerAccessToken = '';
 

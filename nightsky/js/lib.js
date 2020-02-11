@@ -3826,7 +3826,8 @@ function draw_moon( context )
 {
     context.globalCompositeOperation = "source-over";
     var i = Math.floor(( Astro.raddeg( moon.phase ) + 180 ) / 12 );
-    context.drawImage( immoons, i * 16, 0, 16, 16, moon.pos.x - 8, moon.pos.y - 8, 16, 16 );
+    var imageElement = document.getElementById("starImage");
+    context.drawImage( imageElement, i * 16, 0, 16, 16, moon.pos.x - 8, moon.pos.y - 8, 16, 16 );
     context.globalCompositeOperation = "lighter";
     context.fillStyle = "#FFF0E0";
     context.font = "12px Sans-Serif";
@@ -4073,6 +4074,7 @@ function canvasApp()
     
     setDateNow();
     createSearchCity();
+    createDatepicker();
 }
 
 
@@ -4109,16 +4111,32 @@ function createSearchCity(){
         get_user_obs();
     });
 }
+
 function setDateNow(){
     var d = Date(Date.now());
     // Converting the number of millisecond in date string 
     a = d.toString();
-
-    console.log("a=",a);
     $("#user_date").val(a);
 }
 
-//createSearchCity();
-//get_user_obs();
-//set_user_obs();
-//setDateNow();
+function createDatepicker(){
+    var dateSelectView = new DateSelectView($);
+    var dateSelectModel = new DateSelectModel(dateSelectView);
+    new DateSelectController(dateSelectModel);
+    
+    EventBus.addEventListener("ON_USER_DATE_CHANGED", function(newDate){
+        console.log("ON_USER_DATE_CHANGED ",newDate);
+        
+        var userDate = new Date();
+        userDate.setFullYear(newDate.year);
+        userDate.setMonth(newDate.month);
+        userDate.setDate(newDate.day);
+        userDate.setHours(newDate.hours);
+        userDate.setMinutes(newDate.minutes);
+        
+        console.log("userDate=", userDate);
+        $("#user_date").val(userDate.toString());
+        
+        get_user_obs();
+    })
+}
