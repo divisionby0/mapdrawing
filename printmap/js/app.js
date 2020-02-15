@@ -23,8 +23,6 @@ $(document).ready(function () {
         var style = form.styleSelect.value;
         if (style.indexOf('tilehosting') >= 0)
             style += '?key=' + mapTilerAccessToken;
-        console.log("zoom = ",zoom);
-        console.log("[lng, lat] = ",[lng, lat]);
 
         map = new mapboxgl.Map({
             container: 'map',
@@ -241,6 +239,7 @@ function createPrintMap(width, height, dpi, format, unit, zoom, center,
     var hidden = document.createElement('div');
     hidden.className = 'hidden-map';
     document.body.appendChild(hidden);
+    
     var container = document.createElement('div');
     container.style.width = toPixels(width);
     container.style.height = toPixels(height);

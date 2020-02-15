@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template load testing</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="common/lib/jquery.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="common/lib/bootstrap.min.css"/>
+    <link rel="stylesheet" href="common/lib/jquery-ui.min.css">
+    <link type="text/css" rel="stylesheet" href="nightsky/css/astro.css">
+    <link type="text/css" rel="stylesheet" href="nightsky/css/plani.css">
+</head>
+<body>
+<div style="display: none;"><img src="nightsky/css/star.png" id="starImage" ></div>
+<div class="container">
+    <div class="row">
+        <div id="templateElement" class="col-md-6">
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="container" style="width: 100%!important;">
+                <div class="row">
+
+                    <div class="col-md-4" style="position: relative!important;">
+                        <input type="text" id="cityInput" class="form-control" placeholder="Введите имя города" style="position: relative!important;">
+                                 <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
+                                     <div id="places"></div>
+                                 </span>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="col-md-4">
+                            <span>Дата:<p><input type="text" id="datepicker" class="form-control" style="text-align: center;"></p></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span>Час:<p><input type="number" min="0" max="23" id="hourInput" class="form-control" style="text-align: center;"></p></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span>Мин:<p><input type="number" min="0" max="59" id="minuteInput" class="form-control" style="text-align: center;"></p></span>
+                        </div>
+                        <!--
+                        <div class="col-md-2">
+                           <span>--<p><input id="user_now" value="Сейчас" onclick="now_button()" type="button"></p></span>
+                        </div>
+                        -->
+                    </div>
+
+                    <div class="col-md-4">
+                        <input id="user_date" size="36" onchange="get_user_obs()" value="" type="text" style="display: none;">
+
+                        <input id="user_dec" value="&lt;" onclick="dec_button()" type="button" style="display: none;">
+                        <input id="user_inc" value="&gt;" onclick="inc_button()" type="button" style="display: none;">
+                        <input id="geoloc" value="Use My Location" onclick="getGeoPos()" type="button" style="display: none;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3" style="display: none!important;">
+                        <input id="user_dsos"  onchange="get_user_obs()" type="checkbox"> DSOs &nbsp; &nbsp;
+                    </div>
+
+                    <div class="col-md-4" style="display: none!important;">
+                        <input id="user_starlab" onchange="get_user_obs()" type="checkbox"> Имена звезд
+                    </div>
+
+                    <div class="col-md-4">
+                        <input id="user_conline" value="1" onchange="get_user_obs()" checked="checked" type="checkbox"> Линии созвездий
+                    </div>
+                    <div class="col-md-4" style="display: none!important;">
+                        <input id="user_conlab" onchange="get_user_obs()" type="checkbox"> Имена созвездий
+                    </div>
+                </div>
+                <div class="row" style="display: none;">
+                    <div class="col-md-4">
+                        <input id="user_lat" size="6" onchange="get_user_obs()" value="40" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <input id="user_lon" size="6" onchange="get_user_obs()" value="-75" type="text">
+                    </div>
+                    <div class="col-md-4">
+                        <select name="increment" id="increment" style="display: none;">
+                            <option value="1" selected="selected">hour</option>
+                            <option value="24">day</option>
+                            <option value="168">week</option>
+                            <option value="720">month</option>
+                            <option value="8760">year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="templateSettingsContainer">
+
+                </div>
+                <div class="row">
+                    <button style="font-size: 15px" class="btn btn-primary btn-lg" type="button" onclick="exportImage()">Создать картинку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="common/lib/jquery-ui.min.js"></script>
+<script src="common/lib/html2canvas.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/canvas-toblob/0.1/canvas-toBlob.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/filesaver.js@1.3.4/FileSaver.min.js"></script>
+
+<script type="text/javascript" src="common/lib/collections.min.js"></script>
+<script type="text/javascript" src="common/lib/events/EventBus.js"></script>
+<script type="text/javascript" src="common/GeocodingService.js"></script>
+
+<script type="text/javascript" src="common/city/SearchCityResultParses.js"></script>
+<script type="text/javascript" src="common/city/SearchCityEvent.js"></script>
+<script type="text/javascript" src="common/city/CityListRenderer.js"></script>
+<script type="text/javascript" src="common/city/SearchCityView.js"></script>
+<script type="text/javascript" src="common/city/SearchCityModel.js"></script>
+<script type="text/javascript" src="common/city/SearchCityController.js"></script>
+
+<script type="text/javascript" src="nightsky/js/dateSelect/DateSelectView.js"></script>
+<script type="text/javascript" src="nightsky/js/dateSelect/DateSelectModel.js"></script>
+<script type="text/javascript" src="nightsky/js/dateSelect/DateSelectController.js"></script>
+
+<script src="common/template/layer/TemplateLayer.js"></script>
+<script src="common/template/layer/DivTemplateLayer.js"></script>
+<script src="common/template/layer/BorderCircleTemplateLayer.js"></script>
+<script src="common/template/layer/TextTemplateLayer.js"></script>
+<script src="common/template/layer/ImageTemplateLayer.js"></script>
+<script src="common/template/layer/BorderCircleTemplateLayer.js"></script>
+<script src="common/template/layer/StarmapTemplateLayer.js"></script>
+
+<script src="common/template/element/TemplateElementView.js"></script>
+<script src="common/template/element/TemplateElementModel.js"></script>
+<script src="common/template/element/TemplateElementController.js"></script>
+
+<script src="common/template/element/LayerView.js"></script>
+<script src="common/template/element/TextLayerView.js"></script>
+<script src="common/template/element/DivLayerView.js"></script>
+<script src="common/template/element/BorderCircleLayerView.js"></script>
+<script src="common/template/element/StarmapLayerView.js"></script>
+<script src="common/template/element/ImageLayerView.js"></script>
+
+<script src="common/template/Template.js"></script>
+<script src="common/template/TemplatesParser.js"></script>
+<script src="common/template/layer/LayerType.js"></script>
+<script src="common/template/TemplateBuilder.js"></script>
+
+<script src="common/template/TemplateLoader.js"></script>
+<script src="common/lib/collections.min.js"></script>
+<script src="common/lib/events/EventBus.js"></script>
+
+<script type="text/javascript" src="nightsky/js/lib.js"></script>
+
+<script>
+
+    var templates;
+    var templateBuilder;
+
+    $(document).ready(function () {
+        EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
+            var parser = new TemplatesParser($);
+            templates = parser.parse(data);
+
+            console.log("templates:",templates);
+
+            var firstTemplate = templates.get(0);
+            createTemplateElement(firstTemplate, "templateElement", "planicanvaZZ");
+
+            createSearchCity();
+            createDatepicker();
+        });
+
+        EventBus.addEventListener(TemplateLoader.ON_DATA_LOAD_ERROR, function(error){
+            console.error("ERROR: ",error);
+        });
+
+        var templateLoader = new TemplateLoader($);
+        templateLoader.load("common/templates/templates.xml");
+    });
+
+    function createTemplateElement(template, parentContainerId, selfContainerId){
+        templateBuilder = new TemplateBuilder($, template, parentContainerId, selfContainerId);
+    }
+
+    function createSearchCity(){
+        var geocodingService = new GeocodingService($);
+        var view = new SearchCityView($);
+        var model = new SearchCityModel(view, geocodingService);
+        new SearchCityController(model);
+
+        EventBus.addEventListener("LOCATION_SELECTED", function(coord){
+            console.log("LOCATION_SELECTED coord=",coord);
+            $("#user_lat").val(coord[0]);
+            $("#user_lon").val(coord[1]);
+
+            get_user_obs();
+        });
+    }
+
+    function createDatepicker(){
+        var dateSelectView = new DateSelectView($);
+        var dateSelectModel = new DateSelectModel(dateSelectView);
+        new DateSelectController(dateSelectModel);
+
+        EventBus.addEventListener("ON_USER_DATE_CHANGED", function(newDate){
+            console.log("ON_USER_DATE_CHANGED ",newDate);
+
+            var userDate = new Date();
+            userDate.setFullYear(newDate.year);
+            userDate.setMonth(newDate.month);
+            userDate.setDate(newDate.day);
+            userDate.setHours(newDate.hours);
+            userDate.setMinutes(newDate.minutes);
+
+            console.log("userDate=", userDate);
+            $("#user_date").val(userDate.toString());
+
+            get_user_obs();
+        })
+    }
+
+    function exportImage(){
+
+        var currentTemplate = templates.get(0);
+
+        var printWidth = currentTemplate.getPrintWidth();
+        var printHeight = currentTemplate.getPrintHeight();
+
+        console.log("printWidth="+printWidth);
+        console.log("printHeight="+printHeight);
+
+        var style = "position:relative; display:block; float:left; width:"+printWidth+"px; height:"+printHeight+"px;";
+
+        var tempContainer = $("<div id='printImageContainer' style='"+style+"'></div>");
+        tempContainer.appendTo(document.body);
+
+        createTemplateElement(currentTemplate, "printImageContainer", "printCanvas");
+
+        html2canvas(document.querySelector("#printImageContainer")).then(function(canvas){
+            //link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            //link.download = 'image.png';
+            //link.click();
+
+            canvas.toBlob(function(blob) {
+                saveAs(blob, 'nightsky.png');
+            });
+
+            tempContainer.empty();
+            tempContainer.remove();
+            tempContainer = null;
+
+            /*
+            tempContainer = $("<div></div>");
+            tempContainer.appendTo(document.body);
+
+            $(canvas).appendTo(tempContainer);
+
+            var link = document.createElement('a');
+
+            link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            link.download = 'image.png';
+            link.click();
+            */
+        });
+    }
+
+</script>
+</body>
+</html>
