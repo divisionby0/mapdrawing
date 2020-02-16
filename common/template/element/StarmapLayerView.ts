@@ -1,6 +1,7 @@
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
 ///<reference path="../layer/StarmapTemplateLayer.ts"/>
+///<reference path="../../../nightsky/js/starmap/Starmap.ts"/>
 declare var canvasApp:Function;
 declare var get_user_obs:Function;
 declare var setConstellationColor:Function;
@@ -29,9 +30,11 @@ class StarmapLayerView extends LayerView{
 
         this.canvas.appendTo(this.layerContainer);
 
-        setContainer(this.selfId);        
+        var starmap:Starmap = new Starmap(this.j$, this.selfId);
+        starmap.create();
         
-        canvasApp();
+        //setContainer(this.selfId);
+        //canvasApp();
 
         this.onResize();
         //this.j$('input[id="user_dsos"]').prop("checked", true).trigger("change");

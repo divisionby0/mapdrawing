@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
 ///<reference path="../layer/StarmapTemplateLayer.ts"/>
+///<reference path="../../../nightsky/js/starmap/Starmap.ts"/>
 var StarmapLayerView = (function (_super) {
     __extends(StarmapLayerView, _super);
     function StarmapLayerView(j$, layer, parentId, selfId, templateSizeProvider) {
@@ -22,8 +23,10 @@ var StarmapLayerView = (function (_super) {
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
         //this.canvas = this.j$("<canvas id='planicanvas' style='width:700px; height: 700px;' width='700' height='700'></canvas>");
         this.canvas.appendTo(this.layerContainer);
-        setContainer(this.selfId);
-        canvasApp();
+        var starmap = new Starmap(this.j$, this.selfId);
+        starmap.create();
+        //setContainer(this.selfId);
+        //canvasApp();
         this.onResize();
         //this.j$('input[id="user_dsos"]').prop("checked", true).trigger("change");
         //get_user_obs();
