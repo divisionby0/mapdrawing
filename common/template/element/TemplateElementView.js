@@ -8,18 +8,18 @@
 ///<reference path="ImageLayerView.ts"/>
 ///<reference path="ITemplateSizeProvider.ts"/>
 var TemplateElementView = (function () {
-    function TemplateElementView(j$, parentContainerId, selfContainerId) {
+    function TemplateElementView(j$, parentContainerId, selfContainerId, coeff) {
         this.j$ = j$;
         this.parentContainerId = parentContainerId;
         this.selfContainerId = selfContainerId;
-        console.log("this.parentContainerId=" + this.parentContainerId);
+        this.coeff = coeff;
+        console.log("TemplateElementView coeff=" + this.coeff);
     }
     TemplateElementView.prototype.getTemplateWidth = function () {
         return this.j$("#" + this.parentContainerId).outerWidth();
     };
     TemplateElementView.prototype.getTemplateHeight = function () {
         var aspectRatio = parseFloat(this.data.getAspectRatio());
-        console.log("aspectRatio=" + aspectRatio);
         return this.getTemplateWidth() * aspectRatio;
     };
     TemplateElementView.prototype.setData = function (data) {
@@ -30,19 +30,19 @@ var TemplateElementView = (function () {
             var layerType = layer.getType();
             switch (layerType) {
                 case LayerType.DIV_LAYER_TYPE:
-                    new DivLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this);
+                    new DivLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.TEXT_LAYER_TYPE:
-                    new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this);
+                    new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.IMAGE_LAYER_TYPE:
-                    new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this);
+                    new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.BORDER_CIRCLE_LAYER_TYPE:
-                    new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this);
+                    new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.STARMAP_LAYER_TYPE:
-                    new StarmapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this);
+                    new StarmapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
             }
         }

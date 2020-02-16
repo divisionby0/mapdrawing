@@ -13,8 +13,6 @@ class SearchCityView{
         this.input.on("input",()=>this.onInputChanged());
 
         this.input.focusin((event)=>this.onInputFocusIn(event));
-
-        console.log("SearchCityView input=",this.input);
         this.hide();
 
 
@@ -41,7 +39,6 @@ class SearchCityView{
     }
     
     public clear():void{
-        console.log("clear");
         this.j$("#places").empty();
         this.input.val("");
     }

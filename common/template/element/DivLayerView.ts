@@ -1,9 +1,10 @@
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
+///<reference path="../../lib/Utils.ts"/>
 class DivLayerView extends LayerView{
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider){
-        super(j$, layer, parentId,selfId,  templateSizeProvider);
+    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
+        super(j$, layer, parentId,selfId,  templateSizeProvider, coeff);
     }
     
     protected create():void{
@@ -13,18 +14,13 @@ class DivLayerView extends LayerView{
             this.style+="background-color:"+(this.layer as DivTemplateLayer).getBackgroundColor()+";";
         }
         if((this.layer as DivTemplateLayer).hasBorder()){
-            this.style+="border:"+(this.layer as DivTemplateLayer).getBorder()+";";
+            var border:string = (this.layer as DivTemplateLayer).getBorder();
+
+            border = Utils.updateBorderString(border, this.coeff);
+            this.style+="border:"+border+";";
         }
 
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
-    }
-
-    protected onResize():void{
-        super.onResize();
-        console.log("width = "+this.currentWidth);
-        console.log("height = "+this.currentHeight);
-        
-        //this.layerContainer.height(this.currentHeight);
     }
 }

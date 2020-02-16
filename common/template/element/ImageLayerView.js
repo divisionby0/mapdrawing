@@ -7,23 +7,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../layer/ImageTemplateLayer.ts"/>
 var ImageLayerView = (function (_super) {
     __extends(ImageLayerView, _super);
-    function ImageLayerView(j$, layer, parentId, selfId, templateSizeProvider) {
-        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider);
+    function ImageLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
+        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
     ImageLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
         var url = this.layer.getUrl();
         this.style += 'background-image:url("' + url + '"); background-size:cover;';
-        console.log("style=" + this.style);
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
-    };
-    ImageLayerView.prototype.onResize = function () {
-        _super.prototype.onResize.call(this);
-        console.log("width = " + this.currentWidth);
-        console.log("height = " + this.currentHeight);
-        //this.layerContainer.height(this.currentHeight);
-        //this.image.height(this.currentHeight);
     };
     return ImageLayerView;
 }(LayerView));

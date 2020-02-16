@@ -11,14 +11,15 @@ class LayerView{
     
     protected currentHeight:number;
     protected templateWidthProvider:ITemplateSizeProvider;
+    protected coeff:number;
     
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider){
+    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         this.j$ = j$;
         this.layer = layer;
         this.parentId = parentId;
         this.selfId = selfId;
         this.templateWidthProvider = templateSizeProvider;
-        
+        this.coeff = coeff;
         this.create();
         this.j$( window ).resize(()=>this.onResize());
 

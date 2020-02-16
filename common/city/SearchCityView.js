@@ -9,7 +9,6 @@ var SearchCityView = (function () {
         this.placesContainer = this.j$("#places");
         this.input.on("input", function () { return _this.onInputChanged(); });
         this.input.focusin(function (event) { return _this.onInputFocusIn(event); });
-        console.log("SearchCityView input=", this.input);
         this.hide();
         EventBus.addEventListener("LOCATION_SELECTED", function (coord) { return _this.onCitySelected(coord); });
     }
@@ -30,7 +29,6 @@ var SearchCityView = (function () {
         //this.input.focus();
     };
     SearchCityView.prototype.clear = function () {
-        console.log("clear");
         this.j$("#places").empty();
         this.input.val("");
     };

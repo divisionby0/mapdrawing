@@ -1,3 +1,4 @@
+///<reference path="../../../common/lib/events/EventBus.ts"/>
 var DateSelectView = (function () {
     function DateSelectView(j$) {
         this.j$ = j$;
@@ -17,7 +18,6 @@ var DateSelectView = (function () {
         if (month.length < 2) {
             month = "0" + month;
         }
-        console.log("hour:minute=" + hour + ":" + minute);
         if (hour.length < 2) {
             hour = "0" + hour;
         }

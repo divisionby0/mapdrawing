@@ -7,14 +7,17 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="../layer/BorderCircleTemplateLayer.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
+///<reference path="../../lib/Utils.ts"/>
 var BorderCircleLayerView = (function (_super) {
     __extends(BorderCircleLayerView, _super);
-    function BorderCircleLayerView(j$, layer, parentId, selfId, templateSizeProvider) {
-        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider);
+    function BorderCircleLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
+        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
     BorderCircleLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
-        this.style += "border-radius:" + this.layer.getRadius() + "; width:" + this.layer.getWidth() + "; border:" + this.layer.getBorder() + ";";
+        var border = this.layer.getBorder();
+        border = Utils.updateBorderString(border, this.coeff);
+        this.style += "border-radius:" + this.layer.getRadius() + "; width:" + this.layer.getWidth() + "; border:" + border + ";";
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.onResize();

@@ -21,7 +21,6 @@ function ellipse( context, cx, cy, rx, ry, filled )
 
 function get_user_obs()
 {
-    /*
     var dt = document.getElementById( "user_date" );
     var lon = document.getElementById( "user_lon" );
     var lat = document.getElementById( "user_lat" );
@@ -52,7 +51,6 @@ function get_user_obs()
     console.log( "slab " + ck_starlabels + " dsos " + ck_dsos );
     set_user_obs();
     refresh();
-    */
 }
 
 function inc_button()
@@ -84,8 +82,9 @@ function errGeoPos( error ) {
 
 function getGeoPos()
 {
-    if ( navigator.geolocation )
+    if ( navigator.geolocation ){
         navigator.geolocation.getCurrentPosition( setGeoPos, errGeoPos );
+    }
 }
 
 var Astro =

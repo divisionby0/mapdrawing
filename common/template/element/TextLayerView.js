@@ -5,24 +5,28 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/TextTemplateLayer.ts"/>
+///<reference path="../../lib/Utils.ts"/>
 var TextLayerView = (function (_super) {
     __extends(TextLayerView, _super);
-    function TextLayerView(j$, layer, parentId, selfId, templateSizeProvider) {
-        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider);
+    function TextLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
+        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
     TextLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
         var text = this.layer.getText();
         var color = this.layer.getColor();
         var fontSize = this.layer.getFontSize();
+        var fontSizeIntVal = parseFloat(fontSize);
+        var pointsIndex = fontSize.indexOf(fontSizeIntVal.toString()) + fontSizeIntVal.toString().length;
+        var points = fontSize.substring(pointsIndex, fontSize.length);
+        fontSize = Utils.updateFontSizeString(fontSize, this.coeff);
+        /*(fontSizeIntVal*this.coeff).toFixed(2)).toString()+""+points;*/
         this.style += "color:" + color + "; font-size:" + fontSize + "; text-align:" + this.layer.getTextAlign() + ";";
-        console.log("style=" + this.style);
         this.layerContainer = this.j$("<div style='" + this.style + "'>" + text + "</div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
     };
     TextLayerView.prototype.onResize = function () {
         _super.prototype.onResize.call(this);
-        //console.log("TextLayer on resize borders left="+this.layer.getLeft()+" right="+this.layer.getRight()+" top="+this.layer.getTop()+" bottom="+this.layer.getBottom());
         var topIsProcents = this.hasProcents(this.layer.getTop());
         if (topIsProcents) {
             var topProcentsValue = parseInt(this.layer.getTop().split("%")[0]);

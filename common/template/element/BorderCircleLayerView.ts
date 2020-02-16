@@ -2,15 +2,19 @@
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="../layer/BorderCircleTemplateLayer.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
+///<reference path="../../lib/Utils.ts"/>
 class BorderCircleLayerView extends LayerView{
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider){
-        super(j$, layer, parentId,selfId,  templateSizeProvider);
+    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
+        super(j$, layer, parentId,selfId,  templateSizeProvider, coeff);
     }
 
     protected create():void{
         super.create();
 
-        this.style+="border-radius:"+(this.layer as BorderCircleTemplateLayer).getRadius()+"; width:"+(this.layer as BorderCircleTemplateLayer).getWidth()+"; border:"+(this.layer as DivTemplateLayer).getBorder()+";";
+        var border:string = (this.layer as DivTemplateLayer).getBorder();
+        border = Utils.updateBorderString(border, this.coeff);
+        
+        this.style+="border-radius:"+(this.layer as BorderCircleTemplateLayer).getRadius()+"; width:"+(this.layer as BorderCircleTemplateLayer).getWidth()+"; border:"+border+";";
         
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));

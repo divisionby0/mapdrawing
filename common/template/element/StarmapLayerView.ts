@@ -2,6 +2,7 @@
 ///<reference path="../layer/DivTemplateLayer.ts"/>
 ///<reference path="../layer/StarmapTemplateLayer.ts"/>
 ///<reference path="../../../nightsky/js/starmap/Starmap.ts"/>
+///<reference path="../../lib/events/EventBus.ts"/>
 declare var canvasApp:Function;
 declare var get_user_obs:Function;
 declare var setConstellationColor:Function;
@@ -10,13 +11,12 @@ declare var setBackgroundColor:Function;
 declare var setContainer:Function;
 class StarmapLayerView extends LayerView{
     private canvas:any;
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider){
-        super(j$, layer, parentId, selfId,  templateSizeProvider);
+    private starmap:Starmap;
+    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
+        super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
     protected create():void{
-        super.create();
-        
         if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
             var backgroundColor:string = (this.layer as StarmapTemplateLayer).getBackgroundColor();
             this.style+="background-color:"+backgroundColor+";";
@@ -26,12 +26,11 @@ class StarmapLayerView extends LayerView{
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
         
         this.canvas = this.j$("<canvas id='"+this.selfId+"' style='width: 100%; height: 100%;'></canvas>");
-        //this.canvas = this.j$("<canvas id='planicanvas' style='width:700px; height: 700px;' width='700' height='700'></canvas>");
-
         this.canvas.appendTo(this.layerContainer);
-
-        var starmap:Starmap = new Starmap(this.j$, this.selfId);
-        starmap.create();
+        
+        
+        this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
+        this.starmap.create();
         
         //setContainer(this.selfId);
         //canvasApp();
@@ -39,6 +38,18 @@ class StarmapLayerView extends LayerView{
         this.onResize();
         //this.j$('input[id="user_dsos"]').prop("checked", true).trigger("change");
         //get_user_obs();
+
+        EventBus.addEventListener("UPDATE_STARMAP", ()=>this.onUpdateStarmapRequest());
+        
+        this.j$("#user_conline").change((event)=>this.onConstLinesCheckboxChanged(event));
+
+        super.create();
+    }
+
+    private onUpdateStarmapRequest():void{
+        if(this.starmap){
+            this.starmap.update();
+        }
     }
 
     protected onResize():void{
@@ -57,14 +68,14 @@ class StarmapLayerView extends LayerView{
         this.layerContainer.css({"left":left});
         this.layerContainer.css({"right":right});
 
-
         this.canvas.attr("width", this.layerContainer.width());
         this.canvas.attr("height", this.layerContainer.width());
 
         this.canvas.width(this.layerContainer.width()+"px");
         this.canvas.height(this.layerContainer.width()+"px");
 
-        get_user_obs();
+        this.starmap.update();
+        //get_user_obs();
 
         /*
         this.canvas.attr("width", this.layerContainer.width());
@@ -73,5 +84,11 @@ class StarmapLayerView extends LayerView{
         this.canvas.width(this.layerContainer.width()+"px");
         this.canvas.height(this.layerContainer.width()+"px");
         */
+    }
+
+    private onConstLinesCheckboxChanged(event:any):void {
+        if(this.starmap){
+            this.starmap.update();
+        }
     }
 }

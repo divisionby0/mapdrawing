@@ -108,6 +108,7 @@
 
 <script type="text/javascript" src="common/lib/collections.min.js"></script>
 <script type="text/javascript" src="common/lib/events/EventBus.js"></script>
+<script type="text/javascript" src="common/lib/Utils.js"></script>
 <script type="text/javascript" src="common/GeocodingService.js"></script>
 
 <script type="text/javascript" src="common/city/SearchCityResultParses.js"></script>
@@ -149,6 +150,11 @@
 <script src="common/lib/collections.min.js"></script>
 <script src="common/lib/events/EventBus.js"></script>
 
+<script type="text/javascript" src="nightsky/js/starmap/MoonFinder.js"></script>
+<script type="text/javascript" src="nightsky/js/starmap/PlanetFinder.js"></script>
+<script type="text/javascript" src="nightsky/js/starmap/SkyTransform.js"></script>
+<script type="text/javascript" src="nightsky/js/starmap/Starmap.js"></script>
+
 <script type="text/javascript" src="nightsky/js/lib.js"></script>
 
 <script>
@@ -161,10 +167,8 @@
             var parser = new TemplatesParser($);
             templates = parser.parse(data);
 
-            console.log("templates:",templates);
-
             var firstTemplate = templates.get(0);
-            createTemplateElement(firstTemplate, "templateElement", "planicanvaZZ");
+            createTemplateElement(firstTemplate, "templateElement", "planicanvaZZ", 1);
 
             createSearchCity();
             createDatepicker();
@@ -178,8 +182,8 @@
         templateLoader.load("common/templates/templates.xml");
     });
 
-    function createTemplateElement(template, parentContainerId, selfContainerId){
-        templateBuilder = new TemplateBuilder($, template, parentContainerId, selfContainerId);
+    function createTemplateElement(template, parentContainerId, selfContainerId, coeff){
+        templateBuilder = new TemplateBuilder($, template, parentContainerId, selfContainerId, coeff);
     }
 
     function createSearchCity(){
@@ -192,8 +196,7 @@
             console.log("LOCATION_SELECTED coord=",coord);
             $("#user_lat").val(coord[0]);
             $("#user_lon").val(coord[1]);
-
-            get_user_obs();
+            EventBus.dispatchEvent("UPDATE_STARMAP", null);
         });
     }
 
@@ -212,10 +215,9 @@
             userDate.setHours(newDate.hours);
             userDate.setMinutes(newDate.minutes);
 
-            console.log("userDate=", userDate);
             $("#user_date").val(userDate.toString());
 
-            get_user_obs();
+            EventBus.dispatchEvent("UPDATE_STARMAP", null);
         })
     }
 
@@ -226,15 +228,16 @@
         var printWidth = currentTemplate.getPrintWidth();
         var printHeight = currentTemplate.getPrintHeight();
 
-        console.log("printWidth="+printWidth);
-        console.log("printHeight="+printHeight);
+        var templateWidth = $("#templateElement").outerWidth();
+
+        var coeff = printWidth/templateWidth;
 
         var style = "position:relative; display:block; float:left; width:"+printWidth+"px; height:"+printHeight+"px;";
 
         var tempContainer = $("<div id='printImageContainer' style='"+style+"'></div>");
         tempContainer.appendTo(document.body);
 
-        createTemplateElement(currentTemplate, "printImageContainer", "printCanvas");
+        createTemplateElement(currentTemplate, "printImageContainer", "printCanvas", coeff);
 
         html2canvas(document.querySelector("#printImageContainer")).then(function(canvas){
             //link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -248,19 +251,6 @@
             tempContainer.empty();
             tempContainer.remove();
             tempContainer = null;
-
-            /*
-            tempContainer = $("<div></div>");
-            tempContainer.appendTo(document.body);
-
-            $(canvas).appendTo(tempContainer);
-
-            var link = document.createElement('a');
-
-            link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-            link.download = 'image.png';
-            link.click();
-            */
         });
     }
 

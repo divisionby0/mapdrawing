@@ -74,7 +74,6 @@ class TemplatesParser{
                         var backgroundColor:string = layerData.getAttribute("backgroundColor");
                         var backgroundAlpha:string = layerData.getAttribute("backgroundAlpha");
                         var border:string = layerData.getAttribute("border");
-                        console.log("div layer borders:",left, top, right, bottom);
                         
                         if(left == null && right == null && top == null && bottom == null){
                             left = "0";

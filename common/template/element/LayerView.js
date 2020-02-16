@@ -1,7 +1,7 @@
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="ITemplateSizeProvider.ts"/>
 var LayerView = (function () {
-    function LayerView(j$, layer, parentId, selfId, templateSizeProvider) {
+    function LayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         var _this = this;
         this.style = "position:absolute;";
         this.j$ = j$;
@@ -9,6 +9,7 @@ var LayerView = (function () {
         this.parentId = parentId;
         this.selfId = selfId;
         this.templateWidthProvider = templateSizeProvider;
+        this.coeff = coeff;
         this.create();
         this.j$(window).resize(function () { return _this.onResize(); });
         this.onResize();

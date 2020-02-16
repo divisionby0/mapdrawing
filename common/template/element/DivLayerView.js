@@ -6,10 +6,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
+///<reference path="../../lib/Utils.ts"/>
 var DivLayerView = (function (_super) {
     __extends(DivLayerView, _super);
-    function DivLayerView(j$, layer, parentId, selfId, templateSizeProvider) {
-        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider);
+    function DivLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
+        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
     DivLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
@@ -17,16 +18,12 @@ var DivLayerView = (function (_super) {
             this.style += "background-color:" + this.layer.getBackgroundColor() + ";";
         }
         if (this.layer.hasBorder()) {
-            this.style += "border:" + this.layer.getBorder() + ";";
+            var border = this.layer.getBorder();
+            border = Utils.updateBorderString(border, this.coeff);
+            this.style += "border:" + border + ";";
         }
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
-    };
-    DivLayerView.prototype.onResize = function () {
-        _super.prototype.onResize.call(this);
-        console.log("width = " + this.currentWidth);
-        console.log("height = " + this.currentHeight);
-        //this.layerContainer.height(this.currentHeight);
     };
     return DivLayerView;
 }(LayerView));
