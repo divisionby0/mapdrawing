@@ -90,7 +90,8 @@ var TemplatesParser = (function () {
                     case LayerType.STARMAP_LAYER_TYPE:
                         var starsColor = layerData.getAttribute("starsColor");
                         var backgroundColor = layerData.getAttribute("backgroundColor");
-                        templateLayer = new StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor);
+                        var constellationColor = layerData.getAttribute("constellationColor");
+                        templateLayer = new StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor);
                         layers.add(templateLayer);
                         break;
                 }
@@ -99,8 +100,6 @@ var TemplatesParser = (function () {
             collection.add(template);
         }
         return collection;
-    };
-    TemplatesParser.prototype.onXmlElement = function () {
     };
     return TemplatesParser;
 }());

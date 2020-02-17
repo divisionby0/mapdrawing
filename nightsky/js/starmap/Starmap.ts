@@ -19,11 +19,11 @@ class Starmap{
     
     private constellationColor:string = "#d8d8d8";
     //private starColor:string = "#d8d8d8";
-    private starColor:string = "#d8d8d8";
+    private starColor:string;
     private bgcolor:string;
     private containerId:string = "";
 
-    private ver:string = "0.0.1";
+    private ver:string = "0.0.3";
 
     private coeff:number = 1;
     
@@ -98,7 +98,6 @@ class Starmap{
     
     private draw_sky( context, w, h )
     {
-        console.log("draw_sky");
         var totalStars:number = star.length;
         var totalLines:number;
         var totalPlanets:number = 0;
@@ -108,13 +107,11 @@ class Starmap{
 
         context.clearRect( 0, 0, w, h );
 
+        if(this.bgcolor == null || this.bgcolor == undefined || this.bgcolor == ""){
+            this.bgcolor = "rgba(0,0,0,0)";
+        }
 
-        if(this.bgcolor){
-            context.fillStyle = this.bgcolor;
-        }
-        else{
-            context.fillStyle = "rgba(0,0,0,0)";
-        }
+        context.fillStyle = this.bgcolor;
 
         context.beginPath();
         context.arc( w / 2, h / 2, w / 2, 0, 2 * Math.PI );
@@ -127,7 +124,7 @@ class Starmap{
         }
         context.lineWidth = 1;
         
-        context.fillStyle = this.starColor;
+        //context.fillStyle = this.bgcolor;
 
         for ( var i = 0; i < totalStars; i++ ) {
             var currentStar:any = star[ i ];
@@ -184,16 +181,32 @@ class Starmap{
             var currentStar:any = collection[ i ];
             
             if ( currentStar.mag < 3.5 ) {
+                // near focused stars
                 var cindex = Math.round( 8 * ( currentStar.bv + 0.4 ) / 2.4 );
                 cindex = Math.max( 0, Math.min( 8, cindex ));
-                currentStar.color = clut[ cindex ];
+                
+                if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
+                    currentStar.color = this.starColor;
+                }
+                else{
+                    currentStar.color = clut[ cindex ];
+                }
+
                 currentStar.radius = 3.1 - 0.6 * currentStar.mag;   // 1.0 to 4.0
                 currentStar.bright = true;
             }
             else {
+                // far unfocused stars
                 var gray = 160 - Math.round(( currentStar.mag - 3.5 ) * 80.0 );
-                currentStar.color = "#" + ( 1 << 24 | gray << 16 | gray << 8 | gray ).toString( 16 ).slice( 1 );
-                currentStar.radius = 1;
+
+                if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
+                    currentStar.color = this.starColor;
+                }
+                else{
+                    currentStar.color = "#" + ( 1 << 24 | gray << 16 | gray << 8 | gray ).toString( 16 ).slice( 1 );
+                }
+                
+                currentStar.radius = 0.7;
                 currentStar.bright = false;
             }
         }

@@ -8,6 +8,9 @@ var Template = (function () {
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
+    Template.prototype.getPreview = function () {
+        return this.preview;
+    };
     Template.prototype.getLayersIterator = function () {
         return this.layers.getIterator();
     };

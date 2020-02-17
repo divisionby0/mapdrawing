@@ -17,6 +17,10 @@ class Template{
         this.aspectRatio = aspectRatio;
     }
     
+    public getPreview():string{
+        return this.preview;
+    }
+    
     public getLayersIterator():ListIterator{
         return this.layers.getIterator();
     }

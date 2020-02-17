@@ -16,21 +16,28 @@ var StarmapLayerView = (function (_super) {
     StarmapLayerView.prototype.create = function () {
         var _this = this;
         var backgroundColor = "";
+        var starsColor = "";
+        var constellationColor = "";
         if (this.layer.hasBackgroundColor()) {
             backgroundColor = this.layer.getBackgroundColor();
+        }
+        if (this.layer.hasStarsColor()) {
+            starsColor = this.layer.getStarsColor();
+        }
+        if (this.layer.hasConstellationColor()) {
+            constellationColor = this.layer.getConstellationColor();
         }
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
+        console.log("backgroundColor=" + backgroundColor);
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
         this.starmap.setBackgroundColor(backgroundColor);
+        this.starmap.setStarColor(starsColor);
+        this.starmap.setConstellationColor(constellationColor);
         this.starmap.create();
-        //setContainer(this.selfId);
-        //canvasApp();
         this.onResize();
-        //this.j$('input[id="user_dsos"]').prop("checked", true).trigger("change");
-        //get_user_obs();
         EventBus.addEventListener("UPDATE_STARMAP", function () { return _this.onUpdateStarmapRequest(); });
         this.j$("#user_conline").change(function (event) { return _this.onConstLinesCheckboxChanged(event); });
         _super.prototype.create.call(this);

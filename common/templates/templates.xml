@@ -9,19 +9,32 @@
         <layer type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center" changeable="true">
             Шаблон 1 текст
         </layer>
-        <layer type="starmap" left="3%" top="2%" right="3%" starsColor="#FFFFFF"  changeable="false"></layer>
+        <layer type="starmap" left="3%" top="2%" right="3%" starsColor="#d8d8d8" constellationColor="#d8d8d8" changeable="false"></layer>
         <layer type="borderCircle" left="3%" top="2%" right="3%" radius="50%" color="#d8d8d8" border="#d8d8d8 0.4em solid" changeable="false"></layer>
     </template>
 
     <template name="template 2" printSize="2481x3509" preview="common/templates/template2_preview.jpg" aspectRatio="1.414">
-
-        <layer type="text" size="2em" color="#ff0000" left="2%" top="75%" text-align="center" changeable="true">Шаблон 2 заголовок</layer>
-        <layer type="text" size="0.6em" color="#ffAC00" left="0" top="15%" text-align="center" changeable="true">Шаблон 2 текст</layer>
+        <layer type="div" border="#d8d8d8 0.86em solid" backgroundColor="#596c8f" changeable="true"></layer>
+        <layer type="text" size="4.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center" changeable="true">
+            Шаблон 2 заголовок
+        </layer>
+        <layer type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center" changeable="true">
+            Шаблон 2 текст
+        </layer>
+        <layer type="starmap" left="3%" top="2%" right="3%" starsColor="#d8d8d8" constellationColor="#d8d8d8" changeable="false"></layer>
+        <layer type="borderCircle" left="3%" top="2%" right="3%" radius="50%" color="#FFFFFF" border="#d8d8d8 0.4em solid" changeable="false"></layer>
     </template>
 
     <template name="template 3" printSize="2481x3509" preview="common/templates/template3_preview.jpg" aspectRatio="1.414">
-        <layer type="image" url="common/templates/space1.png"></layer>
-        <layer type="text" size="2em" color="#ff0000" left="2%" top="75%" text-align="center" changeable="true">Шаблон 3 заголовок</layer>
-        <layer type="text" size="0.6em" color="#ffAC00" left="0" top="15%" text-align="center" changeable="true">Шаблон 3 текст</layer>
+        <layer type="div" border="#d8d8d8 0.86em solid" backgroundColor="#000000" changeable="true"></layer>
+        <layer type="image" left="3%" top="2%" right="3%" bottom="43%" url="common/templates/space1.png"></layer>
+        <layer type="text" size="4.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center" changeable="true">
+            Шаблон 3 заголовок
+        </layer>
+        <layer type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center" changeable="true">
+            Шаблон 3 текст
+        </layer>
+        <layer type="starmap" left="3%" top="2%" right="3%" starsColor="#d8d8d8" constellationColor="#d8d8d8" changeable="false"></layer>
+        <layer type="borderCircle" left="3%" top="2%" right="3%" radius="50%" color="#FFFFFF" border="#d8d8d8 0.4em solid" changeable="false"></layer>
     </template>
 </templates>

@@ -111,8 +111,9 @@ class TemplatesParser{
                     case LayerType.STARMAP_LAYER_TYPE:
                         var starsColor:string = layerData.getAttribute("starsColor");
                         var backgroundColor:string = layerData.getAttribute("backgroundColor");
+                        var constellationColor:string = layerData.getAttribute("constellationColor");
                         
-                        templateLayer = new StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor);
+                        templateLayer = new StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor);
                         layers.add(templateLayer);
                         break;
                 }
@@ -123,9 +124,5 @@ class TemplatesParser{
         }
         
         return collection;
-    }
-    
-    private onXmlElement():void{
-
     }
 }
