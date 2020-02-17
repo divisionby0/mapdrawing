@@ -69,8 +69,9 @@ var TemplatesParser = (function () {
                         var text = layerData.childNodes[0].nodeValue;
                         var textColor = layerData.getAttribute("color");
                         var fontSize = layerData.getAttribute("size");
+                        var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
-                        templateLayer = new TextTemplateLayer(aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign);
+                        templateLayer = new TextTemplateLayer(aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.IMAGE_LAYER_TYPE:

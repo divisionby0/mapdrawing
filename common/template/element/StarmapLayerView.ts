@@ -17,9 +17,10 @@ class StarmapLayerView extends LayerView{
     }
 
     protected create():void{
+        var backgroundColor:string = "";
         if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
-            var backgroundColor:string = (this.layer as StarmapTemplateLayer).getBackgroundColor();
-            this.style+="background-color:"+backgroundColor+";";
+            backgroundColor = (this.layer as StarmapTemplateLayer).getBackgroundColor();
+            //this.style+="background-color:"+backgroundColor+";";
         }
         
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
@@ -30,6 +31,7 @@ class StarmapLayerView extends LayerView{
         
         
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
+        this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.create();
         
         //setContainer(this.selfId);

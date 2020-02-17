@@ -15,15 +15,16 @@ var StarmapLayerView = (function (_super) {
     }
     StarmapLayerView.prototype.create = function () {
         var _this = this;
+        var backgroundColor = "";
         if (this.layer.hasBackgroundColor()) {
-            var backgroundColor = this.layer.getBackgroundColor();
-            this.style += "background-color:" + backgroundColor + ";";
+            backgroundColor = this.layer.getBackgroundColor();
         }
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
+        this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.create();
         //setContainer(this.selfId);
         //canvasApp();

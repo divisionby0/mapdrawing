@@ -18,9 +18,12 @@ class Starmap{
     private ck_conlines:boolean = true;
     
     private constellationColor:string = "#d8d8d8";
-    private starNameColor:string = "#d8d8d8";
+    //private starColor:string = "#d8d8d8";
+    private starColor:string = "#d8d8d8";
     private bgcolor:string;
     private containerId:string = "";
+
+    private ver:string = "0.0.1";
 
     private coeff:number = 1;
     
@@ -28,6 +31,7 @@ class Starmap{
         this.j$ = j$;
         this.containerId = containerId;
         this.coeff = coeff;
+        console.log("Starmap ver="+this.ver);
     }
     
     public setBackgroundColor(value:string):void{
@@ -38,8 +42,8 @@ class Starmap{
         this.constellationColor = value;
     }
     
-    public setStarNameColor(value:string):void{
-        this.starNameColor = value;
+    public setStarColor(value:string):void{
+        this.starColor = value;
     }
     
     public setContainer(value:string):void{
@@ -92,9 +96,9 @@ class Starmap{
         this.refresh();
     }
     
-    
     private draw_sky( context, w, h )
     {
+        console.log("draw_sky");
         var totalStars:number = star.length;
         var totalLines:number;
         var totalPlanets:number = 0;
@@ -111,17 +115,19 @@ class Starmap{
         else{
             context.fillStyle = "rgba(0,0,0,0)";
         }
-        
-        context.fill();
 
+        context.beginPath();
+        context.arc( w / 2, h / 2, w / 2, 0, 2 * Math.PI );
+
+        context.closePath();
+        context.fill();
         if ( !this.clipped ) {
             context.clip();
             this.clipped = true;
         }
-
         context.lineWidth = 1;
-
-        context.fillStyle = this.starNameColor;
+        
+        context.fillStyle = this.starColor;
 
         for ( var i = 0; i < totalStars; i++ ) {
             var currentStar:any = star[ i ];

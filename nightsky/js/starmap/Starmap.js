@@ -11,12 +11,15 @@ var Starmap = (function () {
         this.ck_dsos = false;
         this.ck_conlines = true;
         this.constellationColor = "#d8d8d8";
-        this.starNameColor = "#d8d8d8";
+        //private starColor:string = "#d8d8d8";
+        this.starColor = "#d8d8d8";
         this.containerId = "";
+        this.ver = "0.0.1";
         this.coeff = 1;
         this.j$ = j$;
         this.containerId = containerId;
         this.coeff = coeff;
+        console.log("Starmap ver=" + this.ver);
     }
     Starmap.prototype.setBackgroundColor = function (value) {
         this.bgcolor = value;
@@ -24,8 +27,8 @@ var Starmap = (function () {
     Starmap.prototype.setConstellationColor = function (value) {
         this.constellationColor = value;
     };
-    Starmap.prototype.setStarNameColor = function (value) {
-        this.starNameColor = value;
+    Starmap.prototype.setStarColor = function (value) {
+        this.starColor = value;
     };
     Starmap.prototype.setContainer = function (value) {
         this.containerId = value;
@@ -68,6 +71,7 @@ var Starmap = (function () {
         this.refresh();
     };
     Starmap.prototype.draw_sky = function (context, w, h) {
+        console.log("draw_sky");
         var totalStars = star.length;
         var totalLines;
         var totalPlanets = 0;
@@ -80,13 +84,16 @@ var Starmap = (function () {
         else {
             context.fillStyle = "rgba(0,0,0,0)";
         }
+        context.beginPath();
+        context.arc(w / 2, h / 2, w / 2, 0, 2 * Math.PI);
+        context.closePath();
         context.fill();
         if (!this.clipped) {
             context.clip();
             this.clipped = true;
         }
         context.lineWidth = 1;
-        context.fillStyle = this.starNameColor;
+        context.fillStyle = this.starColor;
         for (var i = 0; i < totalStars; i++) {
             var currentStar = star[i];
             SkyTransform.execute(currentStar.pos, this.now, w, h);

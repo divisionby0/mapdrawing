@@ -3,10 +3,10 @@
     <template name="template 1" printSize="2481x3509" preview="common/templates/template1_preview.jpg" aspectRatio="1.414">
         <layer type="image" left="0" top="0" right="0" bottom="0" url="common/templates/night6.jpg"></layer>
         <layer type="div" border="#a1a0a0 0.86em solid" changeable="true"></layer>
-        <layer type="text" size="2.6em" color="#d8d8d8" left="0" right="0" top="80%" text-align="center" changeable="true">
+        <layer type="text" size="4.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center" changeable="true">
             Шаблон 1 заголовок
         </layer>
-        <layer type="text" size="1.8em" color="#d8d8d8" left="0" right="0" top="85%" text-align="center" changeable="true">
+        <layer type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center" changeable="true">
             Шаблон 1 текст
         </layer>
         <layer type="starmap" left="3%" top="2%" right="3%" starsColor="#FFFFFF"  changeable="false"></layer>

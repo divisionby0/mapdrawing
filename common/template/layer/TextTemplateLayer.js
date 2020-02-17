@@ -6,18 +6,18 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="TemplateLayer.ts"/>
 var TextTemplateLayer = (function (_super) {
     __extends(TextTemplateLayer, _super);
-    function TextTemplateLayer(aspectRatio, type, text, color, fontSize, left, top, right, bottom, changeable, textAlign) {
+    function TextTemplateLayer(aspectRatio, type, text, color, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight) {
         if (left === void 0) { left = null; }
         if (top === void 0) { top = null; }
         if (right === void 0) { right = null; }
         if (bottom === void 0) { bottom = null; }
         if (changeable === void 0) { changeable = true; }
-        if (textAlign === void 0) { textAlign = "center"; }
         _super.call(this, aspectRatio, type, left, top, right, bottom, changeable);
         this.text = text;
         this.color = color;
         this.fontSize = fontSize;
         this.textAlign = textAlign;
+        this.fontWeight = fontWeight;
     }
     TextTemplateLayer.prototype.getText = function () {
         return this.text;
@@ -30,6 +30,9 @@ var TextTemplateLayer = (function (_super) {
     };
     TextTemplateLayer.prototype.getTextAlign = function () {
         return this.textAlign;
+    };
+    TextTemplateLayer.prototype.getFontWeight = function () {
+        return this.fontWeight;
     };
     return TextTemplateLayer;
 }(TemplateLayer));

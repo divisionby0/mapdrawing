@@ -12,16 +12,21 @@ class TextLayerView extends LayerView{
         var text:string = (this.layer as TextTemplateLayer).getText();
         var color:string = (this.layer as TextTemplateLayer).getColor();
         var fontSize:string = (this.layer as TextTemplateLayer).getFontSize();
+        var fontWeight:string = (this.layer as TextTemplateLayer).getFontWeight();
+
+        var textAlign:string = (this.layer as TextTemplateLayer).getTextAlign();
         
-        var fontSizeIntVal:number = parseFloat(fontSize);
-        var pointsIndex:number = fontSize.indexOf(fontSizeIntVal.toString())+fontSizeIntVal.toString().length;
-        var points:string = fontSize.substring(pointsIndex, fontSize.length);
+        if(fontWeight==null || fontWeight==undefined || fontWeight==""){
+            fontWeight="normal";
+        }
+        if(textAlign==null || textAlign==undefined || textAlign==""){
+            textAlign="center";
+        }
 
         fontSize = Utils.updateFontSizeString(fontSize, this.coeff);
-        /*(fontSizeIntVal*this.coeff).toFixed(2)).toString()+""+points;*/
 
-        this.style+="color:"+color+"; font-size:"+fontSize+"; text-align:"+(this.layer as TextTemplateLayer).getTextAlign()+";";
-
+        this.style+="color:"+color+"; font-size:"+fontSize+"; text-align:"+textAlign+"; font-weight:"+fontWeight+";";
+        console.log("style="+this.style);
         this.layerContainer = this.j$("<div style='"+this.style+"'>"+text+"</div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
     }
