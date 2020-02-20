@@ -1,4 +1,3 @@
-
 #main {
    text-align: center;
 }
@@ -18,3 +17,11 @@ table {
 #planicanvas{ 
   width: 44%;
   height:44%;
+}
+
+.starmapEditorButton{
+    width: 100%!important;
+    height: 34px!important;
+    padding: 6px 12px!important;
+    margin: 0.2em!important;
+}

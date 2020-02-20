@@ -5,8 +5,8 @@ class BorderCircleTemplateLayer extends TemplateLayer{
     private color:string;
     private border:string;
 
-    constructor(aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = false, radius:string = "0", width:any = "0", color:string = "0", border:string = ""){
-        super(aspectRatio, type, left, top, right, bottom, changeable);
+    constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean, radius:string = "0", width:any = "0", color:string = "0", border:string = ""){
+        super(id, aspectRatio, type, left, top, right, bottom, changeable);
 
         this.radius = radius;
         this.width = width;

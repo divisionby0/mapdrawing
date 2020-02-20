@@ -19,7 +19,6 @@ class TemplateElementView implements ITemplateSizeProvider{
         this.parentContainerId = parentContainerId;
         this.selfContainerId = selfContainerId;
         this.coeff = coeff;
-        console.log("TemplateElementView coeff="+this.coeff);
     }
 
     public getTemplateWidth():number{

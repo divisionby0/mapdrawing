@@ -9,6 +9,7 @@
     <script src="common/lib/jquery.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="common/lib/bootstrap.min.css"/>
     <link rel="stylesheet" href="common/lib/jquery-ui.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="nightsky/css/astro.css">
     <link type="text/css" rel="stylesheet" href="nightsky/css/plani.css">
 </head>
@@ -65,9 +66,6 @@
                         <input id="user_starlab" onchange="get_user_obs()" type="checkbox"> Имена звезд
                     </div>
 
-                    <div class="col-md-4">
-                        <input id="user_conline" value="1" onchange="get_user_obs()" checked="checked" type="checkbox"> Линии созвездий
-                    </div>
                     <div class="col-md-4" style="display: none!important;">
                         <input id="user_conlab" onchange="get_user_obs()" type="checkbox"> Имена созвездий
                     </div>
@@ -89,10 +87,23 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" id="templateSettingsContainer">
 
+                <div class="row" id="templateSettingsContainer">
+                    <div class="col-md-12" style="margin-bottom: 2em!important; margin-top: 1em!important;">
+                        <input id="text_1_input" type="text" class="form-control" placeholder="Введите текст 1">
+                    </div>
+                    <div class="col-md-12" style="margin-bottom: 2em!important;">
+                        <input id="text_2_input" type="text" class="form-control" placeholder="Введите текст 2">
+                    </div>
+                    <div class="col-md-6"><input id="constellationLinesButton" checked type="checkbox"></div>
+                    <div class="col-md-6"><input id="dateButton" type="checkbox" data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="timeButton" type="checkbox" data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="placeButton" type="checkbox" data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="borderButton" type="checkbox" checked data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="circleBorderButton" type="checkbox" checked data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="coordinatesButton" type="checkbox" data-onstyle="default"></div>
                 </div>
-                <div class="row">
+                <div class="row" style="text-align: center!important; margin-top: 1em!important;">
                     <button style="font-size: 15px" class="btn btn-primary btn-lg" type="button" onclick="exportImage()">Создать картинку</button>
                 </div>
             </div>
@@ -106,6 +117,7 @@
 <script src="common/lib/jquery-ui.min.js"></script>
 <script src="common/lib/html2canvas.js"></script>
 
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap2-toggle.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/canvas-toblob/0.1/canvas-toBlob.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/filesaver.js@1.3.4/FileSaver.min.js"></script>
 
@@ -137,6 +149,10 @@
 <script type="text/javascript" src="common/template/layer/ImageTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/StarmapTemplateLayer.js"></script>
+<script type="text/javascript" src="common/template/layer/Parameter.js"></script>
+
+<script type="text/javascript" src="common/template/layer/border/Border.js"></script>
+<script type="text/javascript" src="common/template/layer/border/BorderSccBuilder.js"></script>
 
 <script type="text/javascript" src="common/template/element/TemplateElementView.js"></script>
 <script type="text/javascript" src="common/template/element/TemplateElementModel.js"></script>
@@ -148,6 +164,11 @@
 <script type="text/javascript" src="common/template/element/BorderCircleLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/StarmapLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/ImageLayerView.js"></script>
+
+<script type="text/javascript" src="common/template/editor/EditorEvent.js"></script>
+<script type="text/javascript" src="common/template/editor/TemplateEditorView.js"></script>
+<script type="text/javascript" src="common/template/editor/TemplateEditorModel.js"></script>
+<script type="text/javascript" src="common/template/editor/TemplateEditorController.js"></script>
 
 <script type="text/javascript" src="common/template/Template.js"></script>
 <script type="text/javascript" src="common/template/TemplatesParser.js"></script>
@@ -181,6 +202,9 @@
             EventBus.dispatchEvent("ON_TEMPLATES_LOADED", templates);
 
             currentTemplate = templates.get(currentTemplateIndex);
+            console.log("currentTemplate=",currentTemplate);
+            EventBus.dispatchEvent("TEMPLATE_CHANGED", currentTemplate);
+
             createTemplateElement(currentTemplate, "templateElement", "planicanvaZZ", 1);
 
             createSearchCity();
@@ -203,14 +227,23 @@
             currentTemplateIndex = index;
 
             currentTemplate = templates.get(currentTemplateIndex);
+            EventBus.dispatchEvent("TEMPLATE_CHANGED", currentTemplate);
             createTemplateElement(currentTemplate, "templateElement", "planicanvaZZ", 1);
         });
+
+        createTemplateEditor();
 
         createTemplatesList();
 
         var templateLoader = new TemplateLoader($);
         templateLoader.load("common/templates/templates.xml");
     });
+
+    function createTemplateEditor(){
+        var view = new TemplateEditorView($);
+        var model = new TemplateEditorModel(view);
+        new TemplateEditorController(model);
+    }
 
     function createTemplatesList(){
         var templatesListView = new TemplatesListView($);

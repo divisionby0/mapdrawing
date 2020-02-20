@@ -1,10 +1,10 @@
 var TemplateLayer = (function () {
-    function TemplateLayer(aspectRatio, type, left, top, right, bottom, changeable) {
+    function TemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable) {
         if (left === void 0) { left = null; }
         if (top === void 0) { top = null; }
         if (right === void 0) { right = null; }
         if (bottom === void 0) { bottom = null; }
-        if (changeable === void 0) { changeable = true; }
+        this.id = id;
         this.aspectRatio = aspectRatio;
         this.type = type;
         this.left = left;
@@ -13,6 +13,9 @@ var TemplateLayer = (function () {
         this.bottom = bottom;
         this.changeable = changeable;
     }
+    TemplateLayer.prototype.getId = function () {
+        return this.id;
+    };
     TemplateLayer.prototype.isChangeable = function () {
         return this.changeable;
     };

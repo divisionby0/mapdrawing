@@ -13,7 +13,6 @@ var TemplateElementView = (function () {
         this.parentContainerId = parentContainerId;
         this.selfContainerId = selfContainerId;
         this.coeff = coeff;
-        console.log("TemplateElementView coeff=" + this.coeff);
     }
     TemplateElementView.prototype.getTemplateWidth = function () {
         return this.j$("#" + this.parentContainerId).outerWidth();

@@ -10,6 +10,7 @@ var LayerView = (function () {
         this.selfId = selfId;
         this.templateWidthProvider = templateSizeProvider;
         this.coeff = coeff;
+        this.createListeners();
         this.create();
         this.j$(window).resize(function () { return _this.onResize(); });
         this.onResize();
@@ -38,6 +39,10 @@ var LayerView = (function () {
     LayerView.prototype.onResize = function () {
         this.calculateHeight();
     };
+    LayerView.prototype.createListeners = function () {
+    };
+    LayerView.DEFAULT_TEXT_LAYER_1_ID = "text_1";
+    LayerView.DEFAULT_TEXT_LAYER_2_ID = "text_2";
     return LayerView;
 }());
 //# sourceMappingURL=LayerView.js.map

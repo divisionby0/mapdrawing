@@ -37,11 +37,14 @@ class StarmapLayerView extends LayerView{
         this.canvas = this.j$("<canvas id='"+this.selfId+"' style='width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
         
-        console.log("backgroundColor="+backgroundColor);
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
         this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
+        
+        this.starmap.setBorderColor((this.layer as StarmapTemplateLayer).getBorderColor());
+        this.starmap.setBorderWeight((this.layer as StarmapTemplateLayer).getBorderWeight());
+        
         this.starmap.create();
 
         this.onResize();

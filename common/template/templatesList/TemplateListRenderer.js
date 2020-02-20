@@ -11,7 +11,7 @@ var TemplateListRenderer = (function () {
     }
     TemplateListRenderer.prototype.createChildren = function () {
         var parentContainer = this.j$("#" + this.parent);
-        var imageContainer = this.j$("<div class='col-md-4'></div>");
+        var imageContainer = this.j$("<div class='col-md-4' style='padding: 1.2em!important;'></div>");
         this.imageElement = this.j$("<img src='" + this.data.getPreview() + "' style='width: 100%;'>");
         this.imageElement.appendTo(imageContainer);
         imageContainer.appendTo(parentContainer);

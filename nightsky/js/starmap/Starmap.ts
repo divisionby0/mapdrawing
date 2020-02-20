@@ -1,6 +1,8 @@
 ///<reference path="PlanetFinder.ts"/>
 ///<reference path="MoonFinder.ts"/>
 ///<reference path="SkyTransform.ts"/>
+///<reference path="../../../common/lib/events/EventBus.ts"/>
+///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 declare var star:any;
 declare var planet:any;
 declare var conline:any;
@@ -16,11 +18,14 @@ class Starmap{
     private ck_conlabels:boolean = false;
     private ck_dsos:boolean = false;
     private ck_conlines:boolean = true;
-    
+    private hasBorder:boolean = true;
+    private hasConstellationsLines:boolean = true;
+
     private constellationColor:string = "#d8d8d8";
-    //private starColor:string = "#d8d8d8";
     private starColor:string;
     private bgcolor:string;
+    private borderColor:string;
+    private borderWeight:number;
     private containerId:string = "";
 
     private ver:string = "0.0.3";
@@ -32,6 +37,15 @@ class Starmap{
         this.containerId = containerId;
         this.coeff = coeff;
         console.log("Starmap ver="+this.ver);
+        EventBus.addEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (value)=>this.onConstellationsChanged(value));
+        EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (value)=>this.onCircleBorderChanged(value));
+    }
+    
+    public setBorderColor(value:string):void{
+        this.borderColor = value;
+    }
+    public setBorderWeight(value:number):void{
+        this.borderWeight = value;
     }
     
     public setBackgroundColor(value:string):void{
@@ -73,7 +87,7 @@ class Starmap{
         var dt:any = document.getElementById( "user_date" );
         var lon:any = document.getElementById( "user_lon" );
         var lat:any = document.getElementById( "user_lat" );
-        var clin:any = document.getElementById( "user_conline" );
+        var clin:any = document.getElementById( "constellationLinesButton" );
 
         var n = Date.parse( dt.value );
         if ( isNaN( n )) {
@@ -111,10 +125,16 @@ class Starmap{
             this.bgcolor = "rgba(0,0,0,0)";
         }
 
+        //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*3;
+        var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff;
+
+        //console.log("clipArcRadius="+clipArcRadius);
+        //console.log("w / 2="+w / 2);
+
         context.fillStyle = this.bgcolor;
 
         context.beginPath();
-        context.arc( w / 2, h / 2, w / 2, 0, 2 * Math.PI );
+        context.arc( w / 2, h / 2, clipArcRadius, 0, 2 * Math.PI );
 
         context.closePath();
         context.fill();
@@ -123,8 +143,6 @@ class Starmap{
             this.clipped = true;
         }
         context.lineWidth = 1;
-        
-        //context.fillStyle = this.bgcolor;
 
         for ( var i = 0; i < totalStars; i++ ) {
             var currentStar:any = star[ i ];
@@ -134,7 +152,7 @@ class Starmap{
             }
         }
 
-        if ( this.ck_conlines ) {
+        if ( this.hasConstellationsLines ) {
             context.strokeStyle = this.constellationColor;
             totalLines = conline.length;
             for ( i = 0; i < totalLines; i++ ) {
@@ -158,6 +176,15 @@ class Starmap{
         SkyTransform.execute( this.moon.pos, this.now, w, h );
         if ( this.moon.pos.visible ){
             this.draw_moon( context );
+        }
+
+        // draw border using stroke
+        if(this.hasBorder && this.borderColor!=null && this.borderColor!=undefined && this.borderColor!=""){
+            context.strokeStyle=this.borderColor;
+            context.lineWidth = this.borderWeight*this.coeff;
+            context.beginPath();
+            context.arc(w / 2, h / 2, w / 2-this.borderWeight*this.coeff/2, 0, 2 * Math.PI);
+            context.stroke();
         }
     }
     
@@ -362,5 +389,16 @@ class Starmap{
         // Converting the number of millisecond in date string 
         var a = d.toString();
         this.j$("#user_date").val(a);
+    }
+
+    private onConstellationsChanged(value:boolean):void {
+        console.log("onConstellationsChanged");
+        this.hasConstellationsLines = value;
+        this.update();
+    }
+
+    private onCircleBorderChanged(value:boolean):void {
+        this.hasBorder = value;
+        this.update();
     }
 }

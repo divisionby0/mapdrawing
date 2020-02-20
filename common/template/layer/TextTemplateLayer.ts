@@ -6,8 +6,8 @@ class TextTemplateLayer extends TemplateLayer{
     private textAlign:string;
     private fontWeight:string;
     
-    constructor(aspectRatio:number, type:string, text:string, color:string, fontSize:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = true, textAlign:string, fontWeight:string){
-        super(aspectRatio, type,  left, top, right, bottom, changeable);
+    constructor(id:string, aspectRatio:number, type:string, text:string, color:string, fontSize:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = true, textAlign:string, fontWeight:string){
+        super(id, aspectRatio, type,  left, top, right, bottom, changeable);
         this.text = text;
         this.color = color;
         this.fontSize = fontSize;

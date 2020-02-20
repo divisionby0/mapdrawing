@@ -48,6 +48,7 @@ class TemplatesParser{
 
             for(j=0; j<totalLayers; j++){
                 var layerData:any = layersData[j];
+                var id:string = layerData.getAttribute("id");
                 var type:string = layerData.getAttribute("type");
                 var left:string = layerData.getAttribute("left");
                 var top:string = layerData.getAttribute("top");
@@ -81,7 +82,7 @@ class TemplatesParser{
                             top = "0";
                             bottom = "0";
                         }
-                        templateLayer = new DivTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border);
+                        templateLayer = new DivTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border);
                         layers.add(templateLayer);
                         break;
                     case LayerType.TEXT_LAYER_TYPE:
@@ -91,12 +92,12 @@ class TemplatesParser{
                         var fontWeight:string = layerData.getAttribute("fontWeight");
                         var textAlign:string = layerData.getAttribute("text-align");
                         
-                        templateLayer = new TextTemplateLayer(aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        templateLayer = new TextTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.IMAGE_LAYER_TYPE:
                         var url:string = layerData.getAttribute("url");
-                        templateLayer = new ImageTemplateLayer(aspectRatio, type, url, left, top, right, bottom, changeable);
+                        templateLayer = new ImageTemplateLayer(id, aspectRatio, type, url, left, top, right, bottom, changeable);
                         layers.add(templateLayer);
                         break;
                     case LayerType.BORDER_CIRCLE_LAYER_TYPE:
@@ -105,15 +106,17 @@ class TemplatesParser{
                         var radiusWidth:string = layerData.getAttribute("width");
                         var border:string = layerData.getAttribute("border");
                         
-                        templateLayer = new BorderCircleTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, radius, radiusWidth, radiusColor, border);
+                        templateLayer = new BorderCircleTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, radius, radiusWidth, radiusColor, border);
                         layers.add(templateLayer);
                         break;
                     case LayerType.STARMAP_LAYER_TYPE:
                         var starsColor:string = layerData.getAttribute("starsColor");
                         var backgroundColor:string = layerData.getAttribute("backgroundColor");
                         var constellationColor:string = layerData.getAttribute("constellationColor");
+                        var borderColor:string = layerData.getAttribute("borderColor");
+                        var borderWeight:number = parseFloat(layerData.getAttribute("borderWeight"));
                         
-                        templateLayer = new StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor);
+                        templateLayer = new StarmapTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor, borderColor, borderWeight);
                         layers.add(templateLayer);
                         break;
                 }

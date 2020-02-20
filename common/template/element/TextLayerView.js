@@ -6,13 +6,21 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/TextTemplateLayer.ts"/>
 ///<reference path="../../lib/Utils.ts"/>
+///<reference path="../editor/EditorEvent.ts"/>
+///<reference path="../../lib/events/EventBus.ts"/>
 var TextLayerView = (function (_super) {
     __extends(TextLayerView, _super);
     function TextLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
+    TextLayerView.prototype.createListeners = function () {
+        var _this = this;
+        EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onTextChanged(data); });
+        EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, function (data) { return _this.onTextChanged(data); });
+    };
     TextLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
+        this.id = this.layer.getId();
         var text = this.layer.getText();
         var color = this.layer.getColor();
         var fontSize = this.layer.getFontSize();
@@ -26,8 +34,7 @@ var TextLayerView = (function (_super) {
         }
         fontSize = Utils.updateFontSizeString(fontSize, this.coeff);
         this.style += "color:" + color + "; font-size:" + fontSize + "; text-align:" + textAlign + "; font-weight:" + fontWeight + ";";
-        console.log("style=" + this.style);
-        this.layerContainer = this.j$("<div style='" + this.style + "'>" + text + "</div>");
+        this.layerContainer = this.j$("<div id='" + this.id + "' style='" + this.style + "'>" + text + "</div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
     };
     TextLayerView.prototype.onResize = function () {
@@ -46,6 +53,12 @@ var TextLayerView = (function (_super) {
         else {
             return false;
         }
+    };
+    TextLayerView.prototype.onTextChanged = function (data) {
+        var text = data.text;
+        var elementId = data.elementId;
+        var textElement = this.j$("#" + elementId);
+        textElement.text(text);
     };
     return TextLayerView;
 }(LayerView));

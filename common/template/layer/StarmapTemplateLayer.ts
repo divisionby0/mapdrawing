@@ -3,12 +3,16 @@ class StarmapTemplateLayer extends TemplateLayer{
     private starsColor:string;
     private backgroundColor:string;
     private constellationColor:string;
+    private borderColor:string;
+    private borderWeight:number;
     
-    constructor(aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = false, color:string = "0", backgroundColor:string, constellationColor:string){
-        super(aspectRatio, type, left, top, right, bottom, changeable);
+    constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = false, color:string = "0", backgroundColor:string, constellationColor:string, borderColor:string, borderWeight:number){
+        super(id, aspectRatio, type, left, top, right, bottom, changeable);
         this.starsColor = color;
         this.backgroundColor = backgroundColor;
         this.constellationColor = constellationColor;
+        this.borderColor = borderColor;
+        this.borderWeight = borderWeight;
     }
 
     public hasBackgroundColor():boolean{
@@ -37,8 +41,6 @@ class StarmapTemplateLayer extends TemplateLayer{
         }
     }
     
-    
-    
     public getBackgroundColor():string{
         return this.backgroundColor;
     }
@@ -48,5 +50,12 @@ class StarmapTemplateLayer extends TemplateLayer{
     }
     public getConstellationColor():string{
         return this.constellationColor;
+    }
+    
+    public getBorderColor():string{
+        return this.borderColor;
+    }
+    public getBorderWeight():number{
+        return this.borderWeight;
     }
 }

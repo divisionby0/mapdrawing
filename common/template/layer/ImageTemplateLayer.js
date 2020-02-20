@@ -6,13 +6,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="TemplateLayer.ts"/>
 var ImageTemplateLayer = (function (_super) {
     __extends(ImageTemplateLayer, _super);
-    function ImageTemplateLayer(aspectRatio, type, url, left, top, right, bottom, changeable) {
+    function ImageTemplateLayer(id, aspectRatio, type, url, left, top, right, bottom, changeable) {
         if (left === void 0) { left = null; }
         if (top === void 0) { top = null; }
         if (right === void 0) { right = null; }
         if (bottom === void 0) { bottom = null; }
         if (changeable === void 0) { changeable = false; }
-        _super.call(this, aspectRatio, type, left, top, right, bottom, changeable);
+        _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.url = url;
     }
     ImageTemplateLayer.prototype.getUrl = function () {

@@ -31,11 +31,12 @@ var StarmapLayerView = (function (_super) {
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
-        console.log("backgroundColor=" + backgroundColor);
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
         this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
+        this.starmap.setBorderColor(this.layer.getBorderColor());
+        this.starmap.setBorderWeight(this.layer.getBorderWeight());
         this.starmap.create();
         this.onResize();
         EventBus.addEventListener("UPDATE_STARMAP", function () { return _this.onUpdateStarmapRequest(); });

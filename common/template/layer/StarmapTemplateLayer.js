@@ -6,17 +6,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="TemplateLayer.ts"/>
 var StarmapTemplateLayer = (function (_super) {
     __extends(StarmapTemplateLayer, _super);
-    function StarmapTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, color, backgroundColor, constellationColor) {
+    function StarmapTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, color, backgroundColor, constellationColor, borderColor, borderWeight) {
         if (left === void 0) { left = null; }
         if (top === void 0) { top = null; }
         if (right === void 0) { right = null; }
         if (bottom === void 0) { bottom = null; }
         if (changeable === void 0) { changeable = false; }
         if (color === void 0) { color = "0"; }
-        _super.call(this, aspectRatio, type, left, top, right, bottom, changeable);
+        _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.starsColor = color;
         this.backgroundColor = backgroundColor;
         this.constellationColor = constellationColor;
+        this.borderColor = borderColor;
+        this.borderWeight = borderWeight;
     }
     StarmapTemplateLayer.prototype.hasBackgroundColor = function () {
         if (this.backgroundColor != null && this.backgroundColor != undefined && this.backgroundColor != "") {
@@ -50,6 +52,12 @@ var StarmapTemplateLayer = (function (_super) {
     };
     StarmapTemplateLayer.prototype.getConstellationColor = function () {
         return this.constellationColor;
+    };
+    StarmapTemplateLayer.prototype.getBorderColor = function () {
+        return this.borderColor;
+    };
+    StarmapTemplateLayer.prototype.getBorderWeight = function () {
+        return this.borderWeight;
     };
     return StarmapTemplateLayer;
 }(TemplateLayer));

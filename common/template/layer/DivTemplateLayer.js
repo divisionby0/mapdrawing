@@ -6,14 +6,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="TemplateLayer.ts"/>
 var DivTemplateLayer = (function (_super) {
     __extends(DivTemplateLayer, _super);
-    function DivTemplateLayer(aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border) {
+    function DivTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border) {
         if (right === void 0) { right = null; }
         if (bottom === void 0) { bottom = null; }
         if (changeable === void 0) { changeable = true; }
         if (backgroundColor === void 0) { backgroundColor = ""; }
         if (backgroundAlpha === void 0) { backgroundAlpha = ""; }
         if (border === void 0) { border = ""; }
-        _super.call(this, aspectRatio, type, left, top, right, bottom, changeable);
+        _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.backgroundColor = backgroundColor;
         this.backgroundAlpha = backgroundAlpha;
         this.border = border;
@@ -50,6 +50,9 @@ var DivTemplateLayer = (function (_super) {
     };
     DivTemplateLayer.prototype.getBorder = function () {
         return this.border;
+    };
+    DivTemplateLayer.prototype.setBorder = function (border) {
+        this.border = border;
     };
     return DivTemplateLayer;
 }(TemplateLayer));

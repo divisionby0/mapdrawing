@@ -5,8 +5,8 @@ class DivTemplateLayer extends TemplateLayer{
     private backgroundColor:string;
     private backgroundAlpha:string;
     
-    constructor(aspectRatio:number, type:string, left:any, top:any, right:any = null, bottom:any = null, changeable:boolean = true,  backgroundColor:string = "", backgroundAlpha:string = "", border:string = ""){
-        super(aspectRatio, type, left, top, right, bottom, changeable);
+    constructor(id:string, aspectRatio:number, type:string, left:any, top:any, right:any = null, bottom:any = null, changeable:boolean = true,  backgroundColor:string = "", backgroundAlpha:string = "", border:string = ""){
+        super(id, aspectRatio, type, left, top, right, bottom, changeable);
 
         this.backgroundColor = backgroundColor;
         this.backgroundAlpha = backgroundAlpha;
@@ -46,5 +46,8 @@ class DivTemplateLayer extends TemplateLayer{
     }
     public getBorder():string{
         return this.border;
+    }
+    public setBorder(border:string):void{
+        this.border = border;
     }
 }

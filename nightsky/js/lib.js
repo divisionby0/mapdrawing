@@ -27,7 +27,8 @@ function get_user_obs()
     var slab = document.getElementById( "user_starlab" );
     var clab = document.getElementById( "user_conlab" );
     var idso = document.getElementById( "user_dsos" );
-    var clin = document.getElementById( "user_conline" );
+    //var clin = document.getElementById( "user_conline" );
+    var clin = document.getElementById( "constellationLinesButton" );
 
     var n = Date.parse( dt.value );
     if ( isNaN( n )) {
@@ -48,6 +49,7 @@ function get_user_obs()
     ck_conlabels = clab.checked;
     ck_dsos = idso.checked;
     ck_conlines = clin.checked;
+    
     console.log( "slab " + ck_starlabels + " dsos " + ck_dsos );
     set_user_obs();
     refresh();

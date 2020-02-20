@@ -4,11 +4,13 @@ class TemplateLayer{
     protected right:any;
     protected bottom:any;
     
+    protected id:string;
     protected changeable:boolean;
     protected type:string;
     protected aspectRatio:number;
 
-    constructor(aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = true){
+    constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean){
+        this.id = id;
         this.aspectRatio = aspectRatio;
         this.type = type;
         this.left = left;
@@ -18,6 +20,9 @@ class TemplateLayer{
         this.changeable = changeable;
     }
     
+    public getId():string{
+        return this.id;
+    }
     
     public isChangeable():boolean{
         return this.changeable;

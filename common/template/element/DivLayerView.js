@@ -7,10 +7,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
 ///<reference path="../../lib/Utils.ts"/>
+///<reference path="../../lib/events/EventBus.ts"/>
+///<reference path="../editor/EditorEvent.ts"/>
 var DivLayerView = (function (_super) {
     __extends(DivLayerView, _super);
     function DivLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
+        var _this = this;
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
+        EventBus.addEventListener(EditorEvent.BORDER_CHANGED, function (value) { return _this.onBorderExistenceChanged(value); });
     }
     DivLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
@@ -22,8 +26,18 @@ var DivLayerView = (function (_super) {
             border = Utils.updateBorderString(border, this.coeff);
             this.style += "border:" + border + ";";
         }
-        this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
+        this.layerContainer = this.j$("<div id='" + this.layer.getId() + "' style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
+    };
+    DivLayerView.prototype.onBorderExistenceChanged = function (exists) {
+        if (this.layer.getId() == "backgroundBorder") {
+            if (exists) {
+                this.layerContainer.show();
+            }
+            else {
+                this.layerContainer.hide();
+            }
+        }
     };
     return DivLayerView;
 }(LayerView));

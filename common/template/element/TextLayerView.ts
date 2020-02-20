@@ -1,14 +1,23 @@
 ///<reference path="LayerView.ts"/>
 ///<reference path="../layer/TextTemplateLayer.ts"/>
 ///<reference path="../../lib/Utils.ts"/>
+///<reference path="../editor/EditorEvent.ts"/>
+///<reference path="../../lib/events/EventBus.ts"/>
 class TextLayerView extends LayerView{
+    private id:string;
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
+    }
+
+    protected createListeners():void{
+        EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, (data)=>this.onTextChanged(data));
+        EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onTextChanged(data));
     }
 
     protected create():void{
         super.create();
 
+        this.id = this.layer.getId();
         var text:string = (this.layer as TextTemplateLayer).getText();
         var color:string = (this.layer as TextTemplateLayer).getColor();
         var fontSize:string = (this.layer as TextTemplateLayer).getFontSize();
@@ -26,8 +35,7 @@ class TextLayerView extends LayerView{
         fontSize = Utils.updateFontSizeString(fontSize, this.coeff);
 
         this.style+="color:"+color+"; font-size:"+fontSize+"; text-align:"+textAlign+"; font-weight:"+fontWeight+";";
-        console.log("style="+this.style);
-        this.layerContainer = this.j$("<div style='"+this.style+"'>"+text+"</div>");
+        this.layerContainer = this.j$("<div id='"+this.id+"' style='"+this.style+"'>"+text+"</div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
     }
 
@@ -50,5 +58,14 @@ class TextLayerView extends LayerView{
         else{
             return false;
         }
+    }
+
+    private onTextChanged(data:any):void {
+        var text:string = data.text;
+        var elementId:string = data.elementId;
+
+        var textElement:any = this.j$("#"+elementId);
+
+        textElement.text(text);
     }
 }

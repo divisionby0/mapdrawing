@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reducer test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        window.onload = function(){
+            function reduce(arr, func, initialValue) {
+                for(var i=0; i<arr.length; i++){
+                    initialValue = func(initialValue, i);
+                }
+                return initialValue;
+            }
+
+            var srcArray= [1, 2, 3, 4];
+            const result = reduce(srcArray, reduce, 0); // 10
+
+            srcArray.reduce();
+
+            console.log("result:", result);
+        }
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
