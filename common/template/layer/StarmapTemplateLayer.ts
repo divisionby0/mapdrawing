@@ -5,7 +5,11 @@ class StarmapTemplateLayer extends TemplateLayer{
     private constellationColor:string;
     private borderColor:string;
     private borderWeight:number;
-    
+    private hasMulticoloredStars:boolean = false;
+
+    private cachedBorderColor:string;
+    private cachedConstellationColor:string;
+
     constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = false, color:string = "0", backgroundColor:string, constellationColor:string, borderColor:string, borderWeight:number){
         super(id, aspectRatio, type, left, top, right, bottom, changeable);
         this.starsColor = color;
@@ -13,6 +17,9 @@ class StarmapTemplateLayer extends TemplateLayer{
         this.constellationColor = constellationColor;
         this.borderColor = borderColor;
         this.borderWeight = borderWeight;
+        
+        this.cachedBorderColor = borderColor;
+        this.cachedConstellationColor = constellationColor;
     }
 
     public hasBackgroundColor():boolean{
@@ -58,4 +65,30 @@ class StarmapTemplateLayer extends TemplateLayer{
     public getBorderWeight():number{
         return this.borderWeight;
     }
+    
+    public setBorderVisible(visible:boolean):void{
+        if(visible){
+            this.borderColor = this.cachedBorderColor
+        }
+        else{
+            this.borderColor = "rgba(0,0,0,0)";
+        }
+    }
+
+    public setConstellationVisible(visible:boolean):void{
+        if(visible){
+            this.constellationColor = this.cachedConstellationColor
+        }
+        else{
+            this.constellationColor = "rgba(0,0,0,0)";
+        }
+    }
+
+    public getHasMulticoloredStars():boolean{
+        return this.hasMulticoloredStars;
+    }
+    public setStarsMulticolored(isMulticolored:boolean):void{
+        this.hasMulticoloredStars = isMulticolored;
+    }
+    
 }

@@ -1,4 +1,6 @@
 class TemplateLayer{
+    
+    
     protected left:any;
     protected top:any;
     protected right:any;

@@ -3,6 +3,11 @@
 ///<reference path="SkyTransform.ts"/>
 ///<reference path="../../../common/lib/events/EventBus.ts"/>
 ///<reference path="../../../common/template/editor/EditorEvent.ts"/>
+///<reference path="PlanetFinder.ts"/>
+///<reference path="MoonFinder.ts"/>
+///<reference path="SkyTransform.ts"/>
+///<reference path="../../../common/lib/events/EventBus.ts"/>
+///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 declare var star:any;
 declare var planet:any;
 declare var conline:any;
@@ -13,13 +18,14 @@ class Starmap{
     private now:any = {};
     private moon:any = {pos: {ra: 0, dec: 0}};
 
-    private clipped:boolean = true;
+    private clipped:boolean = false;
     private ck_starlabels:boolean = false;
     private ck_conlabels:boolean = false;
     private ck_dsos:boolean = false;
     private ck_conlines:boolean = true;
     private hasBorder:boolean = true;
     private hasConstellationsLines:boolean = true;
+    private hasColoredStars:boolean = false;
 
     private constellationColor:string = "#d8d8d8";
     private starColor:string;
@@ -31,7 +37,7 @@ class Starmap{
     private ver:string = "0.0.3";
 
     private coeff:number = 1;
-    
+
     constructor(j$:any, containerId:string, coeff:number){
         this.j$ = j$;
         this.containerId = containerId;
@@ -39,31 +45,36 @@ class Starmap{
         console.log("Starmap ver="+this.ver);
         EventBus.addEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (value)=>this.onConstellationsChanged(value));
         EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (value)=>this.onCircleBorderChanged(value));
+        EventBus.addEventListener(EditorEvent.STARS_CHANGED, (value)=>this.onStarsChanged(value));
     }
-    
+
+    public setHasColoredStars(value:boolean):void{
+        this.hasColoredStars = value;
+    }
+
     public setBorderColor(value:string):void{
         this.borderColor = value;
     }
     public setBorderWeight(value:number):void{
         this.borderWeight = value;
     }
-    
+
     public setBackgroundColor(value:string):void{
         this.bgcolor = value;
     }
-    
+
     public setConstellationColor(value:string):void{
         this.constellationColor = value;
     }
-    
+
     public setStarColor(value:string):void{
         this.starColor = value;
     }
-    
+
     public setContainer(value:string):void{
         this.containerId = value;
     }
-    
+
     public create():void{
         this.init_stars( star );
         this.init_dsos( dso );
@@ -73,7 +84,7 @@ class Starmap{
         this.refresh();
         this.setDateNow();
     }
-    
+
     public refresh()
     {
         var canvas:any = document.getElementById( this.containerId );
@@ -81,7 +92,7 @@ class Starmap{
         var context = canvas.getContext( "2d" );
         this.draw_sky( context, canvas.width, canvas.height );
     }
-    
+
     public update():void
     {
         var dt:any = document.getElementById( "user_date" );
@@ -103,13 +114,13 @@ class Starmap{
 
         if ( lat.value >= -90 && lat.value <= 90 )
             this.now.setLatDegrees( lat.value );
-        
+
         this.ck_conlines = clin.checked;
-        
+
         this.set_user_obs();
         this.refresh();
     }
-    
+
     private draw_sky( context, w, h )
     {
         var totalStars:number = star.length;
@@ -126,7 +137,8 @@ class Starmap{
         }
 
         //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*3;
-        var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff;
+        //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*2;
+        var clipArcRadius:number = w / 2;
 
         //console.log("clipArcRadius="+clipArcRadius);
         //console.log("w / 2="+w / 2);
@@ -180,6 +192,7 @@ class Starmap{
 
         // draw border using stroke
         if(this.hasBorder && this.borderColor!=null && this.borderColor!=undefined && this.borderColor!=""){
+            context.globalCompositeOperation = "source-over";
             context.strokeStyle=this.borderColor;
             context.lineWidth = this.borderWeight*this.coeff;
             context.beginPath();
@@ -187,7 +200,7 @@ class Starmap{
             context.stroke();
         }
     }
-    
+
     private init_stars( collection )
     {
         var clut:any = [
@@ -203,20 +216,27 @@ class Starmap{
         ];
 
         var len:any = collection.length;
-        
+
         for ( var i = 0; i < len; i++ ) {
             var currentStar:any = collection[ i ];
-            
+
             if ( currentStar.mag < 3.5 ) {
                 // near focused stars
                 var cindex = Math.round( 8 * ( currentStar.bv + 0.4 ) / 2.4 );
                 cindex = Math.max( 0, Math.min( 8, cindex ));
-                
-                if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
-                    currentStar.color = this.starColor;
+
+                if(this.hasColoredStars == true){
+                    currentStar.color = clut[ cindex ];
                 }
                 else{
-                    currentStar.color = clut[ cindex ];
+                    if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
+                        // template color
+                        currentStar.color = this.starColor;
+                    }
+                    else{
+                        // automatic color
+                        currentStar.color = clut[ cindex ];
+                    }
                 }
 
                 currentStar.radius = 3.1 - 0.6 * currentStar.mag;   // 1.0 to 4.0
@@ -226,19 +246,26 @@ class Starmap{
                 // far unfocused stars
                 var gray = 160 - Math.round(( currentStar.mag - 3.5 ) * 80.0 );
 
-                if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
-                    currentStar.color = this.starColor;
-                }
-                else{
+                if(this.hasColoredStars == true){
                     currentStar.color = "#" + ( 1 << 24 | gray << 16 | gray << 8 | gray ).toString( 16 ).slice( 1 );
                 }
-                
+                else{
+                    if(this.starColor!=null && this.starColor!=undefined && this.starColor!=""){
+                        // template color
+                        currentStar.color = this.starColor;
+                    }
+                    else{
+                        // automatic color
+                        currentStar.color = "#" + ( 1 << 24 | gray << 16 | gray << 8 | gray ).toString( 16 ).slice( 1 );
+                    }
+                }
+
                 currentStar.radius = 0.7;
                 currentStar.bright = false;
             }
         }
     }
-    
+
     private init_planets( collection )
     {
         var seps = 0.397777156;
@@ -249,7 +276,7 @@ class Starmap{
 
         for ( i = 0; i < 9; i++ ) {
             var currentPlanet:any = collection[ i ];
-            
+
             so = Math.sin( currentPlanet.o );
             co = Math.cos( currentPlanet.o );
             si = Math.sin( currentPlanet.i );
@@ -347,7 +374,7 @@ class Starmap{
         idso.checked = this.ck_dsos;
         clin.checked = this.ck_conlines;
     }
-    
+
     private draw_star( context, s )
     {
         context.fillStyle = s.color;
@@ -359,7 +386,7 @@ class Starmap{
         context.closePath();
         context.fill();
     }
-    
+
     private draw_line( context, s1, s2 )
     {
         if ( s1.pos.visible && s2.pos.visible ) {
@@ -374,7 +401,7 @@ class Starmap{
     {
         this.draw_star( context, p );
     }
-    
+
     private draw_moon( context )
     {
         context.globalCompositeOperation = "source-over";
@@ -383,10 +410,10 @@ class Starmap{
         context.drawImage( imageElement, i * 16, 0, 16, 16, this.moon.pos.x - 8, this.moon.pos.y - 8, 16, 16 );
         context.globalCompositeOperation = "lighter";
     }
-    
+
     private setDateNow(){
         var d = Date(Date.now());
-        // Converting the number of millisecond in date string 
+        // Converting the number of millisecond in date string
         var a = d.toString();
         this.j$("#user_date").val(a);
     }
@@ -399,6 +426,12 @@ class Starmap{
 
     private onCircleBorderChanged(value:boolean):void {
         this.hasBorder = value;
+        this.update();
+    }
+
+    private onStarsChanged(value:boolean):void{
+        this.hasColoredStars = value;
+        this.init_stars(star);
         this.update();
     }
 }

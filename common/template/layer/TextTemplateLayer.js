@@ -13,14 +13,21 @@ var TextTemplateLayer = (function (_super) {
         if (bottom === void 0) { bottom = null; }
         if (changeable === void 0) { changeable = true; }
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
+        this.visible = true;
         this.text = text;
         this.color = color;
         this.fontSize = fontSize;
         this.textAlign = textAlign;
         this.fontWeight = fontWeight;
     }
+    TextTemplateLayer.prototype.isVisible = function () {
+        return this.visible;
+    };
     TextTemplateLayer.prototype.getText = function () {
         return this.text;
+    };
+    TextTemplateLayer.prototype.setText = function (text) {
+        this.text = text;
     };
     TextTemplateLayer.prototype.getColor = function () {
         return this.color;

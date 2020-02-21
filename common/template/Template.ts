@@ -7,7 +7,10 @@ class Template{
     private aspectRatio:any;
     
     private layers:List<TemplateLayer>;
-    
+    private city:string;
+    private lat:string;
+    private lng:string;
+
     constructor(name:string, preview:string, width:number, height:number, layers:List<TemplateLayer>, aspectRatio:any){
         this.name = name;
         this.preview = preview;
@@ -15,6 +18,25 @@ class Template{
         this.height = height;
         this.layers = layers;
         this.aspectRatio = aspectRatio;
+    }
+
+    public setCity(city:string):void{
+        this.city = city;
+    }
+    public setLat(lat:string):void{
+        this.lat = lat;
+    }
+    public setLng(lng:string):void{
+        this.lng = lng;
+    }
+    public getCity():string{
+        return this.city;
+    }
+    public getLat():string{
+        return this.lat;
+    }
+    public getLng():string{
+        return this.lng;
     }
     
     public getPreview():string{

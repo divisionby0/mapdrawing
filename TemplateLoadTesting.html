@@ -24,14 +24,6 @@
         <div class="col-md-3">
             <div class="container" style="width: 100%!important;">
                 <div class="row">
-
-                    <div class="col-md-12" style="position: relative!important;">
-                        <input type="text" id="cityInput" class="form-control" placeholder="Введите имя города" style="position: relative!important;">
-                                 <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
-                                     <div id="places"></div>
-                                 </span>
-                    </div>
-
                     <div class="col-md-12">
                         <div class="col-md-12">
                             <span>Дата:<p><input type="text" id="datepicker" class="form-control" style="text-align: center;"></p></span>
@@ -90,18 +82,27 @@
 
                 <div class="row" id="templateSettingsContainer">
                     <div class="col-md-12" style="margin-bottom: 2em!important; margin-top: 1em!important;">
+                        <input type="text" id="cityInput" class="form-control" placeholder="Введите имя города" style="position: relative!important;">
+                            <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
+                                <div id="places"></div>
+                                </span>
+                    </div>
+
+                    <div class="col-md-12" style="margin-bottom: 2em!important; margin-top: 1em!important;">
                         <input id="text_1_input" type="text" class="form-control" placeholder="Введите текст 1">
                     </div>
                     <div class="col-md-12" style="margin-bottom: 2em!important;">
                         <input id="text_2_input" type="text" class="form-control" placeholder="Введите текст 2">
                     </div>
+
                     <div class="col-md-6"><input id="constellationLinesButton" checked type="checkbox"></div>
+                    <div class="col-md-6"><input id="starsMultiColorsButton" type="checkbox"></div>
                     <div class="col-md-6"><input id="dateButton" type="checkbox" data-onstyle="default"></div>
                     <div class="col-md-6"><input id="timeButton" type="checkbox" data-onstyle="default"></div>
-                    <div class="col-md-6"><input id="placeButton" type="checkbox" data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="placeButton" type="checkbox" checked data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="coordinatesButton" type="checkbox" data-onstyle="default"></div>
                     <div class="col-md-6"><input id="borderButton" type="checkbox" checked data-onstyle="default"></div>
                     <div class="col-md-6"><input id="circleBorderButton" type="checkbox" checked data-onstyle="default"></div>
-                    <div class="col-md-6"><input id="coordinatesButton" type="checkbox" data-onstyle="default"></div>
                 </div>
                 <div class="row" style="text-align: center!important; margin-top: 1em!important;">
                     <button style="font-size: 15px" class="btn btn-primary btn-lg" type="button" onclick="exportImage()">Создать картинку</button>
@@ -126,16 +127,19 @@
 <script type="text/javascript" src="common/lib/Utils.js"></script>
 <script type="text/javascript" src="common/GeocodingService.js"></script>
 
-<script type="text/javascript" src="common/city/SearchCityResultParses.js"></script>
-<script type="text/javascript" src="common/city/SearchCityEvent.js"></script>
-<script type="text/javascript" src="common/city/CityListRenderer.js"></script>
-<script type="text/javascript" src="common/city/SearchCityView.js"></script>
-<script type="text/javascript" src="common/city/SearchCityModel.js"></script>
-<script type="text/javascript" src="common/city/SearchCityController.js"></script>
+<script type="text/javascript" src="common/template/editor/city/SearchCityResultParses.js"></script>
+<script type="text/javascript" src="common/template/editor/city/SearchCityEvent.js"></script>
+<script type="text/javascript" src="common/template/editor/city/CityListRenderer.js"></script>
+<script type="text/javascript" src="common/template/editor/city/SearchCityView.js"></script>
+<script type="text/javascript" src="common/template/editor/city/SearchCityModel.js"></script>
+<script type="text/javascript" src="common/template/editor/city/SearchCityController.js"></script>
 
 <script type="text/javascript" src="nightsky/js/dateSelect/DateSelectView.js"></script>
 <script type="text/javascript" src="nightsky/js/dateSelect/DateSelectModel.js"></script>
 <script type="text/javascript" src="nightsky/js/dateSelect/DateSelectController.js"></script>
+
+<script type="text/javascript" src="common/template/LayerId.js"></script>
+<script type="text/javascript" src="common/template/TemplateUtil.js"></script>
 
 <script type="text/javascript" src="common/template/templatesList/TemplateListRenderer.js"></script>
 <script type="text/javascript" src="common/template/templatesList/TemplatesListView.js"></script>
@@ -146,6 +150,7 @@
 <script type="text/javascript" src="common/template/layer/DivTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/TextTemplateLayer.js"></script>
+<script type="text/javascript" src="common/template/layer/CityTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/ImageTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/StarmapTemplateLayer.js"></script>
@@ -160,6 +165,7 @@
 
 <script type="text/javascript" src="common/template/element/LayerView.js"></script>
 <script type="text/javascript" src="common/template/element/TextLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/CityLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/DivLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/BorderCircleLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/StarmapLayerView.js"></script>
@@ -193,6 +199,12 @@
 
     var currentTemplateIndex = 0;
     var currentTemplate;
+
+    var state;
+    var DEFAULT = "DEFAULT";
+    var USER_SELECTION = "USER_SELECTION";
+
+    state = DEFAULT;
 
     $(document).ready(function () {
         EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
@@ -261,12 +273,51 @@
         var model = new SearchCityModel(view, geocodingService);
         new SearchCityController(model);
 
-        EventBus.addEventListener("LOCATION_SELECTED", function(coord){
-            console.log("LOCATION_SELECTED coord=",coord);
+        EventBus.addEventListener(EditorEvent.CITY_CHANGED, function(data){
+            var coord = data.coord;
+            var city = data.city;
             $("#user_lat").val(coord[0]);
             $("#user_lon").val(coord[1]);
+
+            // update template
+            currentTemplate.setCity(city);
+            currentTemplate.setLat(coord[0]);
+            currentTemplate.setLng(coord[1]);
+
             EventBus.dispatchEvent("UPDATE_STARMAP", null);
         });
+
+        if(state == DEFAULT){
+            EventBus.addEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
+        }
+
+        function onDefaultCityGeocodingResult(data){
+            EventBus.removeEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
+            var resultParser = new SearchCityResultParses();
+            var resultData =resultParser.parse(data);
+
+            var firstCity = getFirstCity(resultData);
+            EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, firstCity);
+        }
+
+        function getFirstCity(data){
+            var cities = data.collection;
+            var firstCityData = cities.get(0);
+
+            var coord = firstCityData.coord;
+            var cityName = firstCityData.name;
+
+            if(firstCityData){
+                return {coord:coord, city:cityName};
+            }
+            else{
+                console.error("Did'n find template default city");
+            }
+        }
+
+        // find city by template's data
+        var defaultCity = TemplateUtil.getCurrentCity(currentTemplate);
+        EventBus.dispatchEvent(SearchCityEvent.ON_CITY_NAME, defaultCity);
     }
 
     function createDatepicker(){

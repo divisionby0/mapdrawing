@@ -14,11 +14,14 @@ var StarmapTemplateLayer = (function (_super) {
         if (changeable === void 0) { changeable = false; }
         if (color === void 0) { color = "0"; }
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
+        this.hasMulticoloredStars = false;
         this.starsColor = color;
         this.backgroundColor = backgroundColor;
         this.constellationColor = constellationColor;
         this.borderColor = borderColor;
         this.borderWeight = borderWeight;
+        this.cachedBorderColor = borderColor;
+        this.cachedConstellationColor = constellationColor;
     }
     StarmapTemplateLayer.prototype.hasBackgroundColor = function () {
         if (this.backgroundColor != null && this.backgroundColor != undefined && this.backgroundColor != "") {
@@ -58,6 +61,28 @@ var StarmapTemplateLayer = (function (_super) {
     };
     StarmapTemplateLayer.prototype.getBorderWeight = function () {
         return this.borderWeight;
+    };
+    StarmapTemplateLayer.prototype.setBorderVisible = function (visible) {
+        if (visible) {
+            this.borderColor = this.cachedBorderColor;
+        }
+        else {
+            this.borderColor = "rgba(0,0,0,0)";
+        }
+    };
+    StarmapTemplateLayer.prototype.setConstellationVisible = function (visible) {
+        if (visible) {
+            this.constellationColor = this.cachedConstellationColor;
+        }
+        else {
+            this.constellationColor = "rgba(0,0,0,0)";
+        }
+    };
+    StarmapTemplateLayer.prototype.getHasMulticoloredStars = function () {
+        return this.hasMulticoloredStars;
+    };
+    StarmapTemplateLayer.prototype.setStarsMulticolored = function (isMulticolored) {
+        this.hasMulticoloredStars = isMulticolored;
     };
     return StarmapTemplateLayer;
 }(TemplateLayer));

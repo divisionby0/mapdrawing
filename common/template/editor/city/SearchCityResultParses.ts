@@ -4,17 +4,11 @@ class SearchCityResultParses{
     }
 
     public parse(data:any):any{
-        console.log("parsing data=",data);
-
         var collection:List<any> = new List<any>("cities");
         var status:string = data.status;
 
-        console.log("request status:",status);
-
         if(status == "success"){
             var responseStatus:string = data.data.status;
-            
-            console.log("response status:",responseStatus);
 
             if(responseStatus != "ZERO_RESULTS"){
                 var features:any[] = data.data.results;

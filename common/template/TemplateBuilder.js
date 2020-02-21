@@ -2,6 +2,8 @@
 ///<reference path="element/TemplateElementView.ts"/>
 ///<reference path="element/TemplateElementModel.ts"/>
 ///<reference path="element/TemplateElementController.ts"/>
+///<reference path="editor/EditorEvent.ts"/>
+///<reference path="../lib/events/EventBus.ts"/>
 var TemplateBuilder = (function () {
     function TemplateBuilder(j$, data, parentContainerId, selfContainerId, coeff) {
         this.j$ = j$;

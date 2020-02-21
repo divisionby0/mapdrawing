@@ -1,6 +1,6 @@
-///<reference path="../lib/events/EventBus.ts"/>
 ///<reference path="SearchCityEvent.ts"/>
 ///<reference path="CityListRenderer.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
 var SearchCityView = (function () {
     function SearchCityView(j$) {
         var _this = this;
@@ -9,11 +9,11 @@ var SearchCityView = (function () {
         this.placesContainer = this.j$("#places");
         this.input.on("input", function () { return _this.onInputChanged(); });
         this.input.focusin(function (event) { return _this.onInputFocusIn(event); });
-        this.hide();
-        EventBus.addEventListener("LOCATION_SELECTED", function (coord) { return _this.onCitySelected(coord); });
+        this.hidePlaces();
+        //EventBus.addEventListener("LOCATION_SELECTED", (data)=>this.onCitySelected(data));
+        EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
     }
     SearchCityView.prototype.setCities = function (cities) {
-        //console.log("cities=",cities);
         this.j$("#places").empty();
         var iterator = cities.getIterator();
         while (iterator.hasNext()) {
@@ -28,20 +28,23 @@ var SearchCityView = (function () {
         //this.input.removeAttr('disabled');
         //this.input.focus();
     };
+    SearchCityView.prototype.setCity = function (cityName) {
+        this.input.val(cityName);
+    };
     SearchCityView.prototype.clear = function () {
         this.j$("#places").empty();
         this.input.val("");
     };
-    SearchCityView.prototype.hide = function () {
+    SearchCityView.prototype.hidePlaces = function () {
         this.j$("#placesListbox").hide();
     };
-    SearchCityView.prototype.show = function () {
+    SearchCityView.prototype.showPlaces = function () {
         this.j$("#placesListbox").show();
     };
     SearchCityView.prototype.onInputChanged = function () {
         var value = this.input.val();
         if (value.length > 0) {
-            this.show();
+            this.showPlaces();
             EventBus.dispatchEvent(SearchCityEvent.ON_CITY_NAME, this.input.val());
         }
         else {
@@ -49,10 +52,13 @@ var SearchCityView = (function () {
         }
     };
     SearchCityView.prototype.onInputFocusIn = function (event) {
-        this.show();
+        this.showPlaces();
     };
-    SearchCityView.prototype.onCitySelected = function (coord) {
-        this.hide();
+    SearchCityView.prototype.onCityChanged = function (data) {
+        var cityName = data.city;
+        this.input.val(cityName);
+        console.log("onCityChanged cityName=", cityName);
+        this.hidePlaces();
     };
     return SearchCityView;
 }());

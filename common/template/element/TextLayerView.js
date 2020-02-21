@@ -36,6 +36,12 @@ var TextLayerView = (function (_super) {
         this.style += "color:" + color + "; font-size:" + fontSize + "; text-align:" + textAlign + "; font-weight:" + fontWeight + ";";
         this.layerContainer = this.j$("<div id='" + this.id + "' style='" + this.style + "'>" + text + "</div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
+        if (this.layer.isVisible()) {
+            this.layerContainer.show();
+        }
+        else {
+            this.layerContainer.hide();
+        }
     };
     TextLayerView.prototype.onResize = function () {
         _super.prototype.onResize.call(this);

@@ -4,7 +4,8 @@
 ///<reference path="../editor/EditorEvent.ts"/>
 ///<reference path="../../lib/events/EventBus.ts"/>
 class TextLayerView extends LayerView{
-    private id:string;
+    protected id:string;
+    
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
@@ -37,6 +38,13 @@ class TextLayerView extends LayerView{
         this.style+="color:"+color+"; font-size:"+fontSize+"; text-align:"+textAlign+"; font-weight:"+fontWeight+";";
         this.layerContainer = this.j$("<div id='"+this.id+"' style='"+this.style+"'>"+text+"</div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
+
+        if((this.layer as TextTemplateLayer).isVisible()){
+            this.layerContainer.show();
+        }
+        else{
+            this.layerContainer.hide();
+        }
     }
 
     protected onResize():void{

@@ -18,6 +18,7 @@ var StarmapLayerView = (function (_super) {
         var backgroundColor = "";
         var starsColor = "";
         var constellationColor = "";
+        var hasMulticoloredStars = false;
         if (this.layer.hasBackgroundColor()) {
             backgroundColor = this.layer.getBackgroundColor();
         }
@@ -27,6 +28,7 @@ var StarmapLayerView = (function (_super) {
         if (this.layer.hasConstellationColor()) {
             constellationColor = this.layer.getConstellationColor();
         }
+        hasMulticoloredStars = this.layer.getHasMulticoloredStars();
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
@@ -35,6 +37,7 @@ var StarmapLayerView = (function (_super) {
         this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
+        this.starmap.setHasColoredStars(hasMulticoloredStars);
         this.starmap.setBorderColor(this.layer.getBorderColor());
         this.starmap.setBorderWeight(this.layer.getBorderWeight());
         this.starmap.create();

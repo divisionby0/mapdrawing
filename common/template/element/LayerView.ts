@@ -1,10 +1,6 @@
 ///<reference path="../layer/TemplateLayer.ts"/>
 ///<reference path="ITemplateSizeProvider.ts"/>
 class LayerView{
-
-    public static DEFAULT_TEXT_LAYER_1_ID:string = "text_1";
-    public static DEFAULT_TEXT_LAYER_2_ID:string = "text_2";
-    
     protected j$:any;
     protected layer:TemplateLayer;
     protected parentId:string;

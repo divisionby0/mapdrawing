@@ -20,6 +20,7 @@ class StarmapLayerView extends LayerView{
         var backgroundColor:string = "";
         var starsColor:string = "";
         var constellationColor:string = "";
+        var hasMulticoloredStars:boolean = false;
         
         if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
             backgroundColor = (this.layer as StarmapTemplateLayer).getBackgroundColor();
@@ -30,6 +31,8 @@ class StarmapLayerView extends LayerView{
         if((this.layer as StarmapTemplateLayer).hasConstellationColor()){
             constellationColor = (this.layer as StarmapTemplateLayer).getConstellationColor();
         }
+
+        hasMulticoloredStars = (this.layer as StarmapTemplateLayer).getHasMulticoloredStars();
         
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
@@ -41,6 +44,7 @@ class StarmapLayerView extends LayerView{
         this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
+        this.starmap.setHasColoredStars(hasMulticoloredStars);
         
         this.starmap.setBorderColor((this.layer as StarmapTemplateLayer).getBorderColor());
         this.starmap.setBorderWeight((this.layer as StarmapTemplateLayer).getBorderWeight());

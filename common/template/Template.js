@@ -8,6 +8,24 @@ var Template = (function () {
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
+    Template.prototype.setCity = function (city) {
+        this.city = city;
+    };
+    Template.prototype.setLat = function (lat) {
+        this.lat = lat;
+    };
+    Template.prototype.setLng = function (lng) {
+        this.lng = lng;
+    };
+    Template.prototype.getCity = function () {
+        return this.city;
+    };
+    Template.prototype.getLat = function () {
+        return this.lat;
+    };
+    Template.prototype.getLng = function () {
+        return this.lng;
+    };
     Template.prototype.getPreview = function () {
         return this.preview;
     };

@@ -2,13 +2,10 @@ var SearchCityResultParses = (function () {
     function SearchCityResultParses() {
     }
     SearchCityResultParses.prototype.parse = function (data) {
-        console.log("parsing data=", data);
         var collection = new List("cities");
         var status = data.status;
-        console.log("request status:", status);
         if (status == "success") {
             var responseStatus = data.data.status;
-            console.log("response status:", responseStatus);
             if (responseStatus != "ZERO_RESULTS") {
                 var features = data.data.results;
                 var i;

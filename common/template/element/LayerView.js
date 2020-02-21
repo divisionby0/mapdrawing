@@ -41,8 +41,6 @@ var LayerView = (function () {
     };
     LayerView.prototype.createListeners = function () {
     };
-    LayerView.DEFAULT_TEXT_LAYER_1_ID = "text_1";
-    LayerView.DEFAULT_TEXT_LAYER_2_ID = "text_2";
     return LayerView;
 }());
 //# sourceMappingURL=LayerView.js.map

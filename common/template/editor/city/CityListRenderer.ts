@@ -1,4 +1,5 @@
-///<reference path="../lib/events/EventBus.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../EditorEvent.ts"/>
 class CityListRenderer{
     private j$:any;
     private coord:any;
@@ -18,11 +19,14 @@ class CityListRenderer{
         nameContainer.appendTo(container);
         //placeNameContainer.appendTo(container);
         
-        container.click(()=>this.onClick());
+        container.click((event)=>this.onClick(event));
     }
     
-    private onClick():void{
-        console.log("clicked");
-        EventBus.dispatchEvent("LOCATION_SELECTED", this.coord);
+    private onClick(event:any):void{
+        //console.log("city clicked target=",event.target);
+        var cityName:string = this.j$(event.target).text();
+        //console.log("city name = ", cityName);
+        //EventBus.dispatchEvent("LOCATION_SELECTED", {coord:this.coord, city:cityName});
+        EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, {coord:this.coord, city:cityName});
     }
 }

@@ -1,6 +1,6 @@
 ///<reference path="SearchCityView.ts"/>
-///<reference path="../../../common/GeocodingService.ts"/>
 ///<reference path="SearchCityResultParses.ts"/>
+///<reference path="../../../GeocodingService.ts"/>
 class SearchCityModel{
     private view:SearchCityView;
     private geocodingService:GeocodingService;
@@ -17,7 +17,6 @@ class SearchCityModel{
     }
     
     public onSearchCityNameEmpty():void{
-        console.log("onSearchCityNameEmpty");
         this.view.enable();
         this.view.clear();
     }
@@ -25,6 +24,8 @@ class SearchCityModel{
     public onGeocodingResult(data:any):void{
         this.view.enable();
         var resultData:any = this.resultParser.parse(data);
+        
+        console.log("onGeocodingResult data=",data);
         
         var status:string = resultData.status;
         
@@ -34,5 +35,9 @@ class SearchCityModel{
         else{
             alert("No cities found");
         }
+    }
+
+    public setCity(cityName:string):void {
+        this.view.setCity(cityName);
     }
 }

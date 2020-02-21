@@ -5,6 +5,7 @@
 ///<reference path="layer/LayerType.ts"/>
 ///<reference path="layer/BorderCircleTemplateLayer.ts"/>
 ///<reference path="layer/StarmapTemplateLayer.ts"/>
+///<reference path="layer/CityTemplateLayer.ts"/>
 class TemplatesParser{
     private j$:any;
 
@@ -86,7 +87,7 @@ class TemplatesParser{
                         layers.add(templateLayer);
                         break;
                     case LayerType.TEXT_LAYER_TYPE:
-                        var text:string = layerData.childNodes[0].nodeValue;
+                        var text:string = layerData.childNodes[0].nodeValue.toUpperCase();
                         var textColor:string = layerData.getAttribute("color");
                         var fontSize:string = layerData.getAttribute("size");
                         var fontWeight:string = layerData.getAttribute("fontWeight");
@@ -95,6 +96,24 @@ class TemplatesParser{
                         templateLayer = new TextTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
+
+                    case LayerType.CITY_LAYER_TYPE:
+                        var text:string;
+                        try{
+                            text= layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new CityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    
                     case LayerType.IMAGE_LAYER_TYPE:
                         var url:string = layerData.getAttribute("url");
                         templateLayer = new ImageTemplateLayer(id, aspectRatio, type, url, left, top, right, bottom, changeable);

@@ -1,6 +1,6 @@
 ///<reference path="SearchCityView.ts"/>
-///<reference path="../../../common/GeocodingService.ts"/>
 ///<reference path="SearchCityResultParses.ts"/>
+///<reference path="../../../GeocodingService.ts"/>
 var SearchCityModel = (function () {
     function SearchCityModel(view, geocodingService) {
         this.resultParser = new SearchCityResultParses();
@@ -12,13 +12,13 @@ var SearchCityModel = (function () {
         this.geocodingService.getCoordinates(cityName);
     };
     SearchCityModel.prototype.onSearchCityNameEmpty = function () {
-        console.log("onSearchCityNameEmpty");
         this.view.enable();
         this.view.clear();
     };
     SearchCityModel.prototype.onGeocodingResult = function (data) {
         this.view.enable();
         var resultData = this.resultParser.parse(data);
+        console.log("onGeocodingResult data=", data);
         var status = resultData.status;
         if (status != "error") {
             this.view.setCities(resultData.collection);
@@ -26,6 +26,9 @@ var SearchCityModel = (function () {
         else {
             alert("No cities found");
         }
+    };
+    SearchCityModel.prototype.setCity = function (cityName) {
+        this.view.setCity(cityName);
     };
     return SearchCityModel;
 }());

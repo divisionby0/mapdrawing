@@ -1,4 +1,5 @@
-///<reference path="../lib/events/EventBus.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../EditorEvent.ts"/>
 var CityListRenderer = (function () {
     function CityListRenderer(j$, data, parent) {
         var _this = this;
@@ -12,11 +13,14 @@ var CityListRenderer = (function () {
         container.appendTo(parent);
         nameContainer.appendTo(container);
         //placeNameContainer.appendTo(container);
-        container.click(function () { return _this.onClick(); });
+        container.click(function (event) { return _this.onClick(event); });
     }
-    CityListRenderer.prototype.onClick = function () {
-        console.log("clicked");
-        EventBus.dispatchEvent("LOCATION_SELECTED", this.coord);
+    CityListRenderer.prototype.onClick = function (event) {
+        //console.log("city clicked target=",event.target);
+        var cityName = this.j$(event.target).text();
+        //console.log("city name = ", cityName);
+        //EventBus.dispatchEvent("LOCATION_SELECTED", {coord:this.coord, city:cityName});
+        EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, { coord: this.coord, city: cityName });
     };
     return CityListRenderer;
 }());

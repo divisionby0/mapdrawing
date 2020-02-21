@@ -1,10 +1,11 @@
 ///<reference path="TemplateLayer.ts"/>
 class TextTemplateLayer extends TemplateLayer{
-    private text:string;
-    private color:string;
-    private fontSize:string;
-    private textAlign:string;
-    private fontWeight:string;
+    protected text:string;
+    protected color:string;
+    protected fontSize:string;
+    protected textAlign:string;
+    protected fontWeight:string;
+    protected visible:boolean = true;
     
     constructor(id:string, aspectRatio:number, type:string, text:string, color:string, fontSize:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = true, textAlign:string, fontWeight:string){
         super(id, aspectRatio, type,  left, top, right, bottom, changeable);
@@ -15,8 +16,15 @@ class TextTemplateLayer extends TemplateLayer{
         this.fontWeight = fontWeight;
     }
     
+    public isVisible():boolean{
+        return this.visible;
+    }
+    
     public getText():string{
         return this.text;
+    }
+    public setText(text:string):void{
+        this.text = text;
     }
     public getColor():string{
         return this.color;

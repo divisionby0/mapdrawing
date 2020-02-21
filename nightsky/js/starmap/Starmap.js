@@ -3,18 +3,24 @@
 ///<reference path="SkyTransform.ts"/>
 ///<reference path="../../../common/lib/events/EventBus.ts"/>
 ///<reference path="../../../common/template/editor/EditorEvent.ts"/>
+///<reference path="PlanetFinder.ts"/>
+///<reference path="MoonFinder.ts"/>
+///<reference path="SkyTransform.ts"/>
+///<reference path="../../../common/lib/events/EventBus.ts"/>
+///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 var Starmap = (function () {
     function Starmap(j$, containerId, coeff) {
         var _this = this;
         this.now = {};
         this.moon = { pos: { ra: 0, dec: 0 } };
-        this.clipped = true;
+        this.clipped = false;
         this.ck_starlabels = false;
         this.ck_conlabels = false;
         this.ck_dsos = false;
         this.ck_conlines = true;
         this.hasBorder = true;
         this.hasConstellationsLines = true;
+        this.hasColoredStars = false;
         this.constellationColor = "#d8d8d8";
         this.containerId = "";
         this.ver = "0.0.3";
@@ -25,7 +31,11 @@ var Starmap = (function () {
         console.log("Starmap ver=" + this.ver);
         EventBus.addEventListener(EditorEvent.CONSTELLATIONS_CHANGED, function (value) { return _this.onConstellationsChanged(value); });
         EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, function (value) { return _this.onCircleBorderChanged(value); });
+        EventBus.addEventListener(EditorEvent.STARS_CHANGED, function (value) { return _this.onStarsChanged(value); });
     }
+    Starmap.prototype.setHasColoredStars = function (value) {
+        this.hasColoredStars = value;
+    };
     Starmap.prototype.setBorderColor = function (value) {
         this.borderColor = value;
     };
@@ -92,7 +102,8 @@ var Starmap = (function () {
             this.bgcolor = "rgba(0,0,0,0)";
         }
         //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*3;
-        var clipArcRadius = w / 2 - this.borderWeight * this.coeff;
+        //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*2;
+        var clipArcRadius = w / 2;
         //console.log("clipArcRadius="+clipArcRadius);
         //console.log("w / 2="+w / 2);
         context.fillStyle = this.bgcolor;
@@ -136,6 +147,7 @@ var Starmap = (function () {
         }
         // draw border using stroke
         if (this.hasBorder && this.borderColor != null && this.borderColor != undefined && this.borderColor != "") {
+            context.globalCompositeOperation = "source-over";
             context.strokeStyle = this.borderColor;
             context.lineWidth = this.borderWeight * this.coeff;
             context.beginPath();
@@ -162,11 +174,18 @@ var Starmap = (function () {
                 // near focused stars
                 var cindex = Math.round(8 * (currentStar.bv + 0.4) / 2.4);
                 cindex = Math.max(0, Math.min(8, cindex));
-                if (this.starColor != null && this.starColor != undefined && this.starColor != "") {
-                    currentStar.color = this.starColor;
+                if (this.hasColoredStars == true) {
+                    currentStar.color = clut[cindex];
                 }
                 else {
-                    currentStar.color = clut[cindex];
+                    if (this.starColor != null && this.starColor != undefined && this.starColor != "") {
+                        // template color
+                        currentStar.color = this.starColor;
+                    }
+                    else {
+                        // automatic color
+                        currentStar.color = clut[cindex];
+                    }
                 }
                 currentStar.radius = 3.1 - 0.6 * currentStar.mag; // 1.0 to 4.0
                 currentStar.bright = true;
@@ -174,11 +193,18 @@ var Starmap = (function () {
             else {
                 // far unfocused stars
                 var gray = 160 - Math.round((currentStar.mag - 3.5) * 80.0);
-                if (this.starColor != null && this.starColor != undefined && this.starColor != "") {
-                    currentStar.color = this.starColor;
+                if (this.hasColoredStars == true) {
+                    currentStar.color = "#" + (1 << 24 | gray << 16 | gray << 8 | gray).toString(16).slice(1);
                 }
                 else {
-                    currentStar.color = "#" + (1 << 24 | gray << 16 | gray << 8 | gray).toString(16).slice(1);
+                    if (this.starColor != null && this.starColor != undefined && this.starColor != "") {
+                        // template color
+                        currentStar.color = this.starColor;
+                    }
+                    else {
+                        // automatic color
+                        currentStar.color = "#" + (1 << 24 | gray << 16 | gray << 8 | gray).toString(16).slice(1);
+                    }
                 }
                 currentStar.radius = 0.7;
                 currentStar.bright = false;
@@ -326,7 +352,7 @@ var Starmap = (function () {
     };
     Starmap.prototype.setDateNow = function () {
         var d = Date(Date.now());
-        // Converting the number of millisecond in date string 
+        // Converting the number of millisecond in date string
         var a = d.toString();
         this.j$("#user_date").val(a);
     };
@@ -337,6 +363,11 @@ var Starmap = (function () {
     };
     Starmap.prototype.onCircleBorderChanged = function (value) {
         this.hasBorder = value;
+        this.update();
+    };
+    Starmap.prototype.onStarsChanged = function (value) {
+        this.hasColoredStars = value;
+        this.init_stars(star);
         this.update();
     };
     return Starmap;

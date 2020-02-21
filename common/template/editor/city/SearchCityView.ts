@@ -1,6 +1,6 @@
-///<reference path="../lib/events/EventBus.ts"/>
 ///<reference path="SearchCityEvent.ts"/>
 ///<reference path="CityListRenderer.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
 class SearchCityView{
     private j$:any;
     private input:any;
@@ -13,14 +13,13 @@ class SearchCityView{
         this.input.on("input",()=>this.onInputChanged());
 
         this.input.focusin((event)=>this.onInputFocusIn(event));
-        this.hide();
-
-
-        EventBus.addEventListener("LOCATION_SELECTED", (coord)=>this.onCitySelected(coord));
+        this.hidePlaces();
+        
+        //EventBus.addEventListener("LOCATION_SELECTED", (data)=>this.onCitySelected(data));
+        EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
     }
 
     public setCities(cities:List<any>):void{
-        //console.log("cities=",cities);
         this.j$("#places").empty();
         var iterator:ListIterator = cities.getIterator();
         while(iterator.hasNext()){
@@ -37,22 +36,26 @@ class SearchCityView{
         //this.input.removeAttr('disabled');
         //this.input.focus();
     }
+
+    public setCity(cityName:string):void {
+        this.input.val(cityName);
+    }
     
     public clear():void{
         this.j$("#places").empty();
         this.input.val("");
     }
-    public hide():void{
+    public hidePlaces():void{
         this.j$("#placesListbox").hide();
     }
-    public show():void{
+    public showPlaces():void{
         this.j$("#placesListbox").show();
     }
 
     private onInputChanged():void {
         var value:string = this.input.val();
         if(value.length > 0){
-            this.show();
+            this.showPlaces();
             EventBus.dispatchEvent(SearchCityEvent.ON_CITY_NAME, this.input.val());
         }
         else{
@@ -61,10 +64,13 @@ class SearchCityView{
     }
 
     private onInputFocusIn(event:any):void {
-        this.show();
+        this.showPlaces();
     }
 
-    private onCitySelected(coord:any):void {
-        this.hide();
+    private onCityChanged(data:any):void {
+        var cityName:string = data.city;
+        this.input.val(cityName);
+        console.log("onCityChanged cityName=",cityName);
+        this.hidePlaces();
     }
 }

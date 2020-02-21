@@ -7,6 +7,7 @@
 ///<reference path="StarmapLayerView.ts"/>
 ///<reference path="ImageLayerView.ts"/>
 ///<reference path="ITemplateSizeProvider.ts"/>
+///<reference path="CityLayerView.ts"/>
 class TemplateElementView implements ITemplateSizeProvider{
     private j$:any;
     private parentContainerId:string;
@@ -44,6 +45,9 @@ class TemplateElementView implements ITemplateSizeProvider{
                     break;
                 case LayerType.TEXT_LAYER_TYPE:
                     new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
+                case LayerType.CITY_LAYER_TYPE:
+                    new CityLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.IMAGE_LAYER_TYPE:
                     new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
