@@ -155,7 +155,6 @@ class TemplateEditorView{
     }
 
     private onText1Changed():void {
-        console.log("onText1Changed");
         EventBus.dispatchEvent(EditorEvent.TEXT_1_CHANGED, {text:this.text_1_input.val(), elementId:LayerId.TEXT_LAYER_1_ID});
     }
 

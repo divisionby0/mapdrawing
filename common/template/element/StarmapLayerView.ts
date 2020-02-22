@@ -17,10 +17,14 @@ class StarmapLayerView extends LayerView{
     }
 
     protected create():void{
+        console.log("StarmapLayerView.create()");
         var backgroundColor:string = "";
         var starsColor:string = "";
         var constellationColor:string = "";
         var hasMulticoloredStars:boolean = false;
+        var hasBorder:boolean = (this.layer as StarmapTemplateLayer).hasBorder();
+
+        console.log("create starmap hasBorder=",hasBorder);
         
         if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
             backgroundColor = (this.layer as StarmapTemplateLayer).getBackgroundColor();
@@ -37,7 +41,7 @@ class StarmapLayerView extends LayerView{
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
         
-        this.canvas = this.j$("<canvas id='"+this.selfId+"' style='width: 100%; height: 100%;'></canvas>");
+        this.canvas = this.j$("<canvas id='"+this.selfId+"' style='position:absolute; width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
         
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
@@ -45,6 +49,7 @@ class StarmapLayerView extends LayerView{
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
         this.starmap.setHasColoredStars(hasMulticoloredStars);
+        this.starmap.setHasBorder(hasBorder);
         
         this.starmap.setBorderColor((this.layer as StarmapTemplateLayer).getBorderColor());
         this.starmap.setBorderWeight((this.layer as StarmapTemplateLayer).getBorderWeight());
@@ -82,22 +87,17 @@ class StarmapLayerView extends LayerView{
         this.layerContainer.css({"left":left});
         this.layerContainer.css({"right":right});
 
-        this.canvas.attr("width", this.layerContainer.width());
-        this.canvas.attr("height", this.layerContainer.width());
+        var newWidth:number = this.layerContainer.width();
+        
+        this.canvas.attr("width", newWidth);
+        this.canvas.attr("height", newWidth);
 
-        this.canvas.width(this.layerContainer.width()+"px");
-        this.canvas.height(this.layerContainer.width()+"px");
+        this.canvas.width(newWidth+"px");
+        this.canvas.height(newWidth+"px");
 
+        this.starmap.resize(newWidth, newWidth);
+        
         this.starmap.update();
-        //get_user_obs();
-
-        /*
-        this.canvas.attr("width", this.layerContainer.width());
-        this.canvas.attr("height", this.layerContainer.width());
-
-        this.canvas.width(this.layerContainer.width()+"px");
-        this.canvas.height(this.layerContainer.width()+"px");
-        */
     }
 
     private onConstLinesCheckboxChanged(event:any):void {

@@ -5,6 +5,7 @@ class StarmapTemplateLayer extends TemplateLayer{
     private constellationColor:string;
     private borderColor:string;
     private borderWeight:number;
+    private borderVisible:boolean = true;
     private hasMulticoloredStars:boolean = false;
 
     private cachedBorderColor:string;
@@ -66,7 +67,13 @@ class StarmapTemplateLayer extends TemplateLayer{
         return this.borderWeight;
     }
     
+    public hasBorder():boolean{
+        return this.borderVisible;
+    }
+    
     public setBorderVisible(visible:boolean):void{
+        this.borderVisible = visible;
+
         if(visible){
             this.borderColor = this.cachedBorderColor
         }

@@ -18,7 +18,6 @@ var SearchCityModel = (function () {
     SearchCityModel.prototype.onGeocodingResult = function (data) {
         this.view.enable();
         var resultData = this.resultParser.parse(data);
-        console.log("onGeocodingResult data=", data);
         var status = resultData.status;
         if (status != "error") {
             this.view.setCities(resultData.collection);

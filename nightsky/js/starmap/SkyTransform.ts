@@ -3,8 +3,13 @@ class SkyTransform{
     public static execute(pos, now, w, h):any{
         var coord = [ pos.ra, pos.dec ];
         Astro.precess( Astro.JD_J2000, now.jd, coord );
+        
         coord[ 0 ] = now.lst - coord[ 0 ];
+        
         Astro.aa_hadec( now.latitude, coord, coord );
+
+        //console.log("invisiblePositionValue="+invisiblePositionValue+" coord[ 1 ]="+coord[ 1 ]);
+
         if ( coord[ 1 ] < 0 )
             pos.visible = false;
         else {

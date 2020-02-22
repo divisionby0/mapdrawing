@@ -15,10 +15,13 @@ var StarmapLayerView = (function (_super) {
     }
     StarmapLayerView.prototype.create = function () {
         var _this = this;
+        console.log("StarmapLayerView.create()");
         var backgroundColor = "";
         var starsColor = "";
         var constellationColor = "";
         var hasMulticoloredStars = false;
+        var hasBorder = this.layer.hasBorder();
+        console.log("create starmap hasBorder=", hasBorder);
         if (this.layer.hasBackgroundColor()) {
             backgroundColor = this.layer.getBackgroundColor();
         }
@@ -31,13 +34,14 @@ var StarmapLayerView = (function (_super) {
         hasMulticoloredStars = this.layer.getHasMulticoloredStars();
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
-        this.canvas = this.j$("<canvas id='" + this.selfId + "' style='width: 100%; height: 100%;'></canvas>");
+        this.canvas = this.j$("<canvas id='" + this.selfId + "' style='position:absolute; width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
         this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
         this.starmap.setBackgroundColor(backgroundColor);
         this.starmap.setStarColor(starsColor);
         this.starmap.setConstellationColor(constellationColor);
         this.starmap.setHasColoredStars(hasMulticoloredStars);
+        this.starmap.setHasBorder(hasBorder);
         this.starmap.setBorderColor(this.layer.getBorderColor());
         this.starmap.setBorderWeight(this.layer.getBorderWeight());
         this.starmap.create();
@@ -62,19 +66,13 @@ var StarmapLayerView = (function (_super) {
         this.layerContainer.css({ "top": top });
         this.layerContainer.css({ "left": left });
         this.layerContainer.css({ "right": right });
-        this.canvas.attr("width", this.layerContainer.width());
-        this.canvas.attr("height", this.layerContainer.width());
-        this.canvas.width(this.layerContainer.width() + "px");
-        this.canvas.height(this.layerContainer.width() + "px");
+        var newWidth = this.layerContainer.width();
+        this.canvas.attr("width", newWidth);
+        this.canvas.attr("height", newWidth);
+        this.canvas.width(newWidth + "px");
+        this.canvas.height(newWidth + "px");
+        this.starmap.resize(newWidth, newWidth);
         this.starmap.update();
-        //get_user_obs();
-        /*
-        this.canvas.attr("width", this.layerContainer.width());
-        this.canvas.attr("height", this.layerContainer.width());
-
-        this.canvas.width(this.layerContainer.width()+"px");
-        this.canvas.height(this.layerContainer.width()+"px");
-        */
     };
     StarmapLayerView.prototype.onConstLinesCheckboxChanged = function (event) {
         if (this.starmap) {

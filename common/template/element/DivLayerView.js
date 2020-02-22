@@ -9,6 +9,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../../lib/Utils.ts"/>
 ///<reference path="../../lib/events/EventBus.ts"/>
 ///<reference path="../editor/EditorEvent.ts"/>
+///<reference path="../LayerId.ts"/>
 var DivLayerView = (function (_super) {
     __extends(DivLayerView, _super);
     function DivLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
@@ -30,7 +31,7 @@ var DivLayerView = (function (_super) {
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
     };
     DivLayerView.prototype.onBorderExistenceChanged = function (exists) {
-        if (this.layer.getId() == "backgroundBorder") {
+        if (this.layer.getId() == LayerId.BACKGROUND_BORDER) {
             if (exists) {
                 this.layerContainer.show();
             }

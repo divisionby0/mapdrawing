@@ -25,8 +25,6 @@ class SearchCityModel{
         this.view.enable();
         var resultData:any = this.resultParser.parse(data);
         
-        console.log("onGeocodingResult data=",data);
-        
         var status:string = resultData.status;
         
         if(status != "error"){

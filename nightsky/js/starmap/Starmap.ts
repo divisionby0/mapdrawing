@@ -23,7 +23,7 @@ class Starmap{
     private ck_conlabels:boolean = false;
     private ck_dsos:boolean = false;
     private ck_conlines:boolean = true;
-    private hasBorder:boolean = true;
+    private hasBorder:boolean;
     private hasConstellationsLines:boolean = true;
     private hasColoredStars:boolean = false;
 
@@ -34,20 +34,35 @@ class Starmap{
     private borderWeight:number;
     private containerId:string = "";
 
-    private ver:string = "0.0.3";
+    private ver:string = "0.0.4";
 
     private coeff:number = 1;
+
+    //private borderContainerId:string = "starmapBorder";
+    private borderCanvas:any;
+    private borderContainerContext:any;
 
     constructor(j$:any, containerId:string, coeff:number){
         this.j$ = j$;
         this.containerId = containerId;
         this.coeff = coeff;
+
+        this.borderCanvas = this.j$("<canvas style='position:absolute; width: 100%; height: 100%;'></canvas>");
+
+        var parent:any = this.j$("#"+this.containerId).parent();
+        parent.append(this.borderCanvas);
+
         console.log("Starmap ver="+this.ver);
         EventBus.addEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (value)=>this.onConstellationsChanged(value));
         EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (value)=>this.onCircleBorderChanged(value));
         EventBus.addEventListener(EditorEvent.STARS_CHANGED, (value)=>this.onStarsChanged(value));
     }
 
+    public setHasBorder(value:boolean):void{
+        this.clipped = false;
+        this.hasBorder = value;
+    }
+    
     public setHasColoredStars(value:boolean):void{
         this.hasColoredStars = value;
     }
@@ -74,6 +89,14 @@ class Starmap{
     public setContainer(value:string):void{
         this.containerId = value;
     }
+    
+    public resize(w:number, h:number):void{
+        this.borderCanvas.attr("width", w);
+        this.borderCanvas.attr("height", h);
+
+        this.borderCanvas.width(w+"px");
+        this.borderCanvas.height(h+"px");
+    }
 
     public create():void{
         this.init_stars( star );
@@ -90,6 +113,10 @@ class Starmap{
         var canvas:any = document.getElementById( this.containerId );
         if ( !canvas || !canvas.getContext ) return;
         var context = canvas.getContext( "2d" );
+
+        var canvas:any = document.getElementById( this.containerId );
+        this.borderContainerContext = this.borderCanvas[0].getContext( "2d" );
+        
         this.draw_sky( context, canvas.width, canvas.height );
     }
 
@@ -128,41 +155,39 @@ class Starmap{
         var totalPlanets:number = 0;
 
         PlanetFinder.find(planet[ 2 ], null, this.now.jd);
-        var azalt = SkyTransform.execute( planet[ 2 ].pos, this.now, w, h );
+
+        context.beginPath();
+        context.rect(0, 0, w, h);
+        context.fillStyle = "rgba(0,0,0,0)";
+        context.fill();
 
         context.clearRect( 0, 0, w, h );
+        this.borderContainerContext.clearRect( 0, 0, w, h );
 
         if(this.bgcolor == null || this.bgcolor == undefined || this.bgcolor == ""){
             this.bgcolor = "rgba(0,0,0,0)";
         }
-
-        //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*3;
-        //var clipArcRadius:number = w / 2 - this.borderWeight*this.coeff*2;
+        
         var clipArcRadius:number = w / 2;
-
-        //console.log("clipArcRadius="+clipArcRadius);
-        //console.log("w / 2="+w / 2);
 
         context.fillStyle = this.bgcolor;
 
         context.beginPath();
         context.arc( w / 2, h / 2, clipArcRadius, 0, 2 * Math.PI );
-
         context.closePath();
         context.fill();
-        if ( !this.clipped ) {
-            context.clip();
-            this.clipped = true;
-        }
+        context.clip();
+
         context.lineWidth = 1;
 
         for ( var i = 0; i < totalStars; i++ ) {
             var currentStar:any = star[ i ];
-            SkyTransform.execute( currentStar.pos, this.now, w, h );
+            SkyTransform.execute( currentStar.pos, this.now, w, h);
             if ( currentStar.pos.visible ) {
                 this.draw_star(context, currentStar);
             }
         }
+
 
         if ( this.hasConstellationsLines ) {
             context.strokeStyle = this.constellationColor;
@@ -177,7 +202,7 @@ class Starmap{
             var currentPlanet:any = planet[ i ];
             if ( i != 2 ) {
                 PlanetFinder.find( currentPlanet, planet[ 2 ], this.now.jd );
-                SkyTransform.execute( currentPlanet.pos, this.now, w, h );
+                SkyTransform.execute( currentPlanet.pos, this.now, w, h);
             }
             if ( currentPlanet.pos.visible )
                 this.draw_planet( context, currentPlanet);
@@ -185,19 +210,18 @@ class Starmap{
 
         MoonFinder.find(this.moon, planet[ 2 ], this.now.jd );
 
-        SkyTransform.execute( this.moon.pos, this.now, w, h );
+        SkyTransform.execute( this.moon.pos, this.now, w, h);
         if ( this.moon.pos.visible ){
             this.draw_moon( context );
         }
-
+        
         // draw border using stroke
         if(this.hasBorder && this.borderColor!=null && this.borderColor!=undefined && this.borderColor!=""){
-            context.globalCompositeOperation = "source-over";
-            context.strokeStyle=this.borderColor;
-            context.lineWidth = this.borderWeight*this.coeff;
-            context.beginPath();
-            context.arc(w / 2, h / 2, w / 2-this.borderWeight*this.coeff/2, 0, 2 * Math.PI);
-            context.stroke();
+            this.borderContainerContext.strokeStyle=this.borderColor;
+            this.borderContainerContext.lineWidth = this.borderWeight*this.coeff;
+            this.borderContainerContext.beginPath();
+            this.borderContainerContext.arc(w / 2, h / 2, w / 2-this.borderWeight*this.coeff/2, 0, 2 * Math.PI);
+            this.borderContainerContext.stroke();
         }
     }
 
@@ -419,7 +443,6 @@ class Starmap{
     }
 
     private onConstellationsChanged(value:boolean):void {
-        console.log("onConstellationsChanged");
         this.hasConstellationsLines = value;
         this.update();
     }

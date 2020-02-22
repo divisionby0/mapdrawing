@@ -14,6 +14,7 @@ var StarmapTemplateLayer = (function (_super) {
         if (changeable === void 0) { changeable = false; }
         if (color === void 0) { color = "0"; }
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
+        this.borderVisible = true;
         this.hasMulticoloredStars = false;
         this.starsColor = color;
         this.backgroundColor = backgroundColor;
@@ -62,7 +63,11 @@ var StarmapTemplateLayer = (function (_super) {
     StarmapTemplateLayer.prototype.getBorderWeight = function () {
         return this.borderWeight;
     };
+    StarmapTemplateLayer.prototype.hasBorder = function () {
+        return this.borderVisible;
+    };
     StarmapTemplateLayer.prototype.setBorderVisible = function (visible) {
+        this.borderVisible = visible;
         if (visible) {
             this.borderColor = this.cachedBorderColor;
         }

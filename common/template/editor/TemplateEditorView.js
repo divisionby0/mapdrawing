@@ -122,7 +122,6 @@ var TemplateEditorView = (function () {
         EventBus.dispatchEvent(EditorEvent.BORDER_CHANGED, this.borderButton.is(':checked'));
     };
     TemplateEditorView.prototype.onText1Changed = function () {
-        console.log("onText1Changed");
         EventBus.dispatchEvent(EditorEvent.TEXT_1_CHANGED, { text: this.text_1_input.val(), elementId: LayerId.TEXT_LAYER_1_ID });
     };
     TemplateEditorView.prototype.onText2Changed = function () {

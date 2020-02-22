@@ -10,7 +10,6 @@ var SearchCityView = (function () {
         this.input.on("input", function () { return _this.onInputChanged(); });
         this.input.focusin(function (event) { return _this.onInputFocusIn(event); });
         this.hidePlaces();
-        //EventBus.addEventListener("LOCATION_SELECTED", (data)=>this.onCitySelected(data));
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
     }
     SearchCityView.prototype.setCities = function (cities) {
@@ -57,7 +56,6 @@ var SearchCityView = (function () {
     SearchCityView.prototype.onCityChanged = function (data) {
         var cityName = data.city;
         this.input.val(cityName);
-        console.log("onCityChanged cityName=", cityName);
         this.hidePlaces();
     };
     return SearchCityView;

@@ -41,6 +41,7 @@ class Utils{
     
     public static updateBorderString(sourceBorderString:string, coeff:any):string{
         var i:number;
+
         var borderParseResult:any = this.parseBorderWeightAndRestParameters(sourceBorderString);
         
         var borderWeight:string = borderParseResult[0][0];

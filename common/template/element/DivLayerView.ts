@@ -4,6 +4,7 @@
 ///<reference path="../../lib/Utils.ts"/>
 ///<reference path="../../lib/events/EventBus.ts"/>
 ///<reference path="../editor/EditorEvent.ts"/>
+///<reference path="../LayerId.ts"/>
 class DivLayerView extends LayerView{
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId,selfId,  templateSizeProvider, coeff);
@@ -28,7 +29,7 @@ class DivLayerView extends LayerView{
     }
 
     private onBorderExistenceChanged(exists:boolean):void {
-        if(this.layer.getId() == "backgroundBorder"){
+        if(this.layer.getId() == LayerId.BACKGROUND_BORDER){
             if(exists){
                 this.layerContainer.show();
             }

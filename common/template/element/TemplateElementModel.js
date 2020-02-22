@@ -2,6 +2,7 @@
 ///<reference path="../Template.ts"/>
 ///<reference path="../layer/DivTemplateLayer.ts"/>
 ///<reference path="../layer/border/Border.ts"/>
+///<reference path="../LayerId.ts"/>
 var TemplateElementModel = (function () {
     function TemplateElementModel(view) {
         this.view = view;
@@ -30,10 +31,9 @@ var TemplateElementModel = (function () {
             var isDivLayer = layer instanceof DivTemplateLayer;
             if (isDivLayer) {
                 var layerId = layer.getId();
-                if (layerId == TemplateLayer.BACKGROUND_BORDER) {
+                if (layerId == LayerId.BACKGROUND_BORDER) {
                     var currentBorder = layer.getBorder();
                     var borderParameters = Utils.parseBorderParameters(currentBorder);
-                    var currentBorderStyle = borderParameters.getRest()[0];
                     if (visible == true) {
                         borderParameters.getRest()[0] = "solid";
                     }
@@ -52,7 +52,7 @@ var TemplateElementModel = (function () {
             var isStarmapLayer = layer instanceof StarmapTemplateLayer;
             if (isStarmapLayer) {
                 var layerId = layer.getId();
-                if (layerId == TemplateLayer.STARMAP) {
+                if (layerId == LayerId.STARMAP) {
                     layer.setBorderVisible(visible);
                 }
             }

@@ -64,12 +64,6 @@
                 </div>
                 <div class="row" style="display: none;">
                     <div class="col-md-4">
-                        <input id="user_lat" size="6" onchange="get_user_obs()" value="40" type="text">
-                    </div>
-                    <div class="col-md-4">
-                        <input id="user_lon" size="6" onchange="get_user_obs()" value="-75" type="text">
-                    </div>
-                    <div class="col-md-4">
                         <select name="increment" id="increment" style="display: none;">
                             <option value="1" selected="selected">hour</option>
                             <option value="24">day</option>
@@ -86,6 +80,14 @@
                             <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
                                 <div id="places"></div>
                                 </span>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <input id="user_lat" class="form-control" onchange="get_user_obs()" value="" type="text" placeholder="Широта">
+                        </div>
+                        <div class="col-md-6">
+                            <input id="user_lon" class="form-control" onchange="get_user_obs()" value="" type="text" placeholder="Долгота">
+                        </div>
                     </div>
 
                     <div class="col-md-12" style="margin-bottom: 2em!important; margin-top: 1em!important;">
@@ -197,14 +199,8 @@
     var templates;
     var templateBuilder;
 
-    var currentTemplateIndex = 0;
+    var currentTemplateIndex = 1;
     var currentTemplate;
-
-    var state;
-    var DEFAULT = "DEFAULT";
-    var USER_SELECTION = "USER_SELECTION";
-
-    state = DEFAULT;
 
     $(document).ready(function () {
         EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
@@ -276,8 +272,8 @@
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function(data){
             var coord = data.coord;
             var city = data.city;
-            $("#user_lat").val(coord[0]);
-            $("#user_lon").val(coord[1]);
+            $("#user_lat").val(parseFloat(coord[0]).toFixed(4));
+            $("#user_lon").val(parseFloat(coord[1]).toFixed(4));
 
             // update template
             currentTemplate.setCity(city);
@@ -287,12 +283,9 @@
             EventBus.dispatchEvent("UPDATE_STARMAP", null);
         });
 
-        if(state == DEFAULT){
-            EventBus.addEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
-        }
-
         function onDefaultCityGeocodingResult(data){
             EventBus.removeEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
+
             var resultParser = new SearchCityResultParses();
             var resultData =resultParser.parse(data);
 
@@ -316,6 +309,8 @@
         }
 
         // find city by template's data
+        EventBus.addEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
+
         var defaultCity = TemplateUtil.getCurrentCity(currentTemplate);
         EventBus.dispatchEvent(SearchCityEvent.ON_CITY_NAME, defaultCity);
     }
@@ -366,7 +361,6 @@
             tempContainer = null;
         });
     }
-
 </script>
 </body>
 </html>

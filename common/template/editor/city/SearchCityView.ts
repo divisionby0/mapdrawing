@@ -15,7 +15,6 @@ class SearchCityView{
         this.input.focusin((event)=>this.onInputFocusIn(event));
         this.hidePlaces();
         
-        //EventBus.addEventListener("LOCATION_SELECTED", (data)=>this.onCitySelected(data));
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
     }
 
@@ -70,7 +69,6 @@ class SearchCityView{
     private onCityChanged(data:any):void {
         var cityName:string = data.city;
         this.input.val(cityName);
-        console.log("onCityChanged cityName=",cityName);
         this.hidePlaces();
     }
 }
