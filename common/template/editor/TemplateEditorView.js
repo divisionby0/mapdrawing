@@ -44,6 +44,7 @@ var TemplateEditorView = (function () {
         this.circleBorderButton.change(function () { return _this.onCircleBorderChanged(); });
         this.borderButton.change(function () { return _this.onBorderChanged(); });
         this.cityButton.change(function () { return _this.onCityVisibilityChanged(); });
+        this.coordinatesButton.change(function () { return _this.onCoordinatesVisibilityChanged(); });
         this.text_1_input.on("input", function () { return _this.onText1Changed(); });
         this.text_2_input.on("input", function () { return _this.onText2Changed(); });
         this.text_3_input.on("input", function () { return _this.onText3Changed(); });
@@ -132,6 +133,9 @@ var TemplateEditorView = (function () {
     };
     TemplateEditorView.prototype.onCityVisibilityChanged = function () {
         EventBus.dispatchEvent(EditorEvent.CITY_VISIBILITY_CHANGED, { visible: this.cityButton.is(':checked') });
+    };
+    TemplateEditorView.prototype.onCoordinatesVisibilityChanged = function () {
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_VISIBILITY_CHANGED, { visible: this.coordinatesButton.is(':checked') });
     };
     return TemplateEditorView;
 }());

@@ -81,7 +81,7 @@
                                 <div id="places"></div>
                                 </span>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="display: none;">
                         <div class="col-md-6">
                             <input id="user_lat" class="form-control" onchange="get_user_obs()" value="" type="text" placeholder="Широта">
                         </div>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12" style="margin-bottom: 2em!important; margin-top: 1em!important;">
+                    <div class="col-md-12" style="margin-bottom: 2em!important;">
                         <input id="text_1_input" type="text" class="form-control" placeholder="Введите текст 1">
                     </div>
                     <div class="col-md-12" style="margin-bottom: 2em!important;">
@@ -102,7 +102,7 @@
                     <div class="col-md-6"><input id="dateButton" type="checkbox" data-onstyle="default"></div>
                     <div class="col-md-6"><input id="timeButton" type="checkbox" data-onstyle="default"></div>
                     <div class="col-md-6"><input id="placeButton" type="checkbox" checked data-onstyle="default"></div>
-                    <div class="col-md-6"><input id="coordinatesButton" type="checkbox" data-onstyle="default"></div>
+                    <div class="col-md-6"><input id="coordinatesButton" type="checkbox" checked data-onstyle="default"></div>
                     <div class="col-md-6"><input id="borderButton" type="checkbox" checked data-onstyle="default"></div>
                     <div class="col-md-6"><input id="circleBorderButton" type="checkbox" checked data-onstyle="default"></div>
                 </div>
@@ -153,6 +153,7 @@
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/TextTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/CityTemplateLayer.js"></script>
+<script type="text/javascript" src="common/template/layer/CoordinatesTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/ImageTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/StarmapTemplateLayer.js"></script>
@@ -168,6 +169,7 @@
 <script type="text/javascript" src="common/template/element/LayerView.js"></script>
 <script type="text/javascript" src="common/template/element/TextLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/CityLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/CoordinatesLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/DivLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/BorderCircleLayerView.js"></script>
 <script type="text/javascript" src="common/template/element/StarmapLayerView.js"></script>
@@ -199,7 +201,7 @@
     var templates;
     var templateBuilder;
 
-    var currentTemplateIndex = 1;
+    var currentTemplateIndex = 0;
     var currentTemplate;
 
     $(document).ready(function () {
@@ -210,7 +212,6 @@
             EventBus.dispatchEvent("ON_TEMPLATES_LOADED", templates);
 
             currentTemplate = templates.get(currentTemplateIndex);
-            console.log("currentTemplate=",currentTemplate);
             EventBus.dispatchEvent("TEMPLATE_CHANGED", currentTemplate);
 
             createTemplateElement(currentTemplate, "templateElement", "planicanvaZZ", 1);
@@ -275,6 +276,8 @@
             $("#user_lat").val(parseFloat(coord[0]).toFixed(4));
             $("#user_lon").val(parseFloat(coord[1]).toFixed(4));
 
+            EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, coord);
+
             // update template
             currentTemplate.setCity(city);
             currentTemplate.setLat(coord[0]);
@@ -287,10 +290,13 @@
             EventBus.removeEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
 
             var resultParser = new SearchCityResultParses();
-            var resultData =resultParser.parse(data);
+            var resultData = resultParser.parse(data);
 
             var firstCity = getFirstCity(resultData);
             EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, firstCity);
+
+            console.log("default coordinates ",firstCity.coord);
+            EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, firstCity.coord);
         }
 
         function getFirstCity(data){

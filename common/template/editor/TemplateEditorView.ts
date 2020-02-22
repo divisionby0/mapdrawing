@@ -65,6 +65,7 @@ class TemplateEditorView{
         this.circleBorderButton.change(()=>this.onCircleBorderChanged());
         this.borderButton.change(()=>this.onBorderChanged());
         this.cityButton.change(()=>this.onCityVisibilityChanged());
+        this.coordinatesButton.change(()=>this.onCoordinatesVisibilityChanged());
         
         this.text_1_input.on("input", ()=>this.onText1Changed());
         this.text_2_input.on("input", ()=>this.onText2Changed());
@@ -168,5 +169,8 @@ class TemplateEditorView{
 
     private onCityVisibilityChanged():void {
         EventBus.dispatchEvent(EditorEvent.CITY_VISIBILITY_CHANGED, {visible:this.cityButton.is(':checked')});
+    }
+    private onCoordinatesVisibilityChanged():void {
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_VISIBILITY_CHANGED, {visible:this.coordinatesButton.is(':checked')});
     }
 }

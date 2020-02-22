@@ -7,4 +7,7 @@ class EditorEvent{
     public static TEXT_2_CHANGED:string = "TEXT_2_CHANGED";
     public static CITY_CHANGED:string = "CITY_CHANGED";
     public static CITY_VISIBILITY_CHANGED:string = "CITY_VISIBILITY_CHANGED";
+
+    public static COORDINATES_CHANGED:string = "COORDINATES_CHANGED";
+    public static COORDINATES_VISIBILITY_CHANGED:string = "COORDINATES_VISIBILITY_CHANGED";
 }

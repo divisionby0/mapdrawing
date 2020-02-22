@@ -6,6 +6,7 @@ class LayerId{
     public static TEXT_LAYER_2_ID:string = "text_2";
     
     public static CITY_TEXT_LAYER_ID:string = "cityText";
+    public static COORDINATES_TEXT_LAYER_ID:string = "coordinatesText";
     
     /*
     public static TEXT_LAYER_3_ID:string = "text_3";

@@ -6,6 +6,7 @@
         <layer id="text_1" type="text" size="3.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center">Шаблон 1 заголовок</layer>
         <layer id="text_2" type="text" size="3.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center">Шаблон 1 текст</layer>
         <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="77%" text-align="center">Москва</layer>
+        <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
         <layer id="starmap" type="starmap" left="6%" top="4%" right="6%" borderColor="#d8d8d8" borderWeight="4" starsColor="#d8d8d8" constellationColor="#d8d8d8"></layer>
     </template>
 

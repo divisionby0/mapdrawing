@@ -8,7 +8,7 @@ class CityTemplateLayer extends TextTemplateLayer{
         this.createListener();
     }
     
-    private createListener() {
+    protected createListener() {
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));
     }
