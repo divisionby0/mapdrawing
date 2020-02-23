@@ -11,13 +11,10 @@ var CoordinatesTemplateLayer = (function (_super) {
     }
     CoordinatesTemplateLayer.prototype.createListener = function () {
         var _this = this;
-        //EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
-        //EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, function (coord) { return _this.onCoordinatesChanged(coord); });
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, function (data) { return _this.onCoordinatesVisibilityChanged(data); });
     };
     CoordinatesTemplateLayer.prototype.onCoordinatesChanged = function (data) {
-        console.log("onCoordinatesChanged data=", data);
         var coordinates = data[0] + " " + data[1];
         this.text = coordinates;
     };

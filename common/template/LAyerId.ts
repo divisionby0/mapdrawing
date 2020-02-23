@@ -8,6 +8,8 @@ class LayerId{
     public static CITY_TEXT_LAYER_ID:string = "cityText";
     public static COORDINATES_TEXT_LAYER_ID:string = "coordinatesText";
     
+    public static DATE_TIME_TEXT_LAYER_ID:string = "dateTimeTextText";
+    
     /*
     public static TEXT_LAYER_3_ID:string = "text_3";
     public static TEXT_LAYER_4_ID:string = "text_4";

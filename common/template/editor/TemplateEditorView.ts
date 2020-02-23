@@ -67,6 +67,9 @@ class TemplateEditorView{
         this.cityButton.change(()=>this.onCityVisibilityChanged());
         this.coordinatesButton.change(()=>this.onCoordinatesVisibilityChanged());
         
+        this.dateButton.change(()=>this.onDateVisibilityChanged());
+        this.timeButton.change(()=>this.onTimeVisibilityChanged());
+        
         this.text_1_input.on("input", ()=>this.onText1Changed());
         this.text_2_input.on("input", ()=>this.onText2Changed());
         this.text_3_input.on("input", ()=>this.onText3Changed());
@@ -172,5 +175,13 @@ class TemplateEditorView{
     }
     private onCoordinatesVisibilityChanged():void {
         EventBus.dispatchEvent(EditorEvent.COORDINATES_VISIBILITY_CHANGED, {visible:this.coordinatesButton.is(':checked')});
+    }
+
+    private onDateVisibilityChanged():void {
+        EventBus.dispatchEvent(EditorEvent.DATE_VISIBILITY_CHANGED, {visible:this.dateButton.is(':checked')});
+    }
+
+    private onTimeVisibilityChanged():void {
+        EventBus.dispatchEvent(EditorEvent.TIME_VISIBILITY_CHANGED, {visible:this.timeButton.is(':checked')});
     }
 }

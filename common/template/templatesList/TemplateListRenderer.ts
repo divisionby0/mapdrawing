@@ -39,6 +39,6 @@ class TemplateListRenderer{
     }
 
     private onClicked() {
-        EventBus.dispatchEvent("TEMPLATE_SELECTED", this.index)
+        EventBus.dispatchEvent(Template.ON_SELECT, this.index)
     }
 }

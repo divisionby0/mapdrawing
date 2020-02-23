@@ -9,6 +9,7 @@
 ///<reference path="ITemplateSizeProvider.ts"/>
 ///<reference path="CityLayerView.ts"/>
 ///<reference path="CoordinatesLayerView.ts"/>
+///<reference path="DateTimeLayerView.ts"/>
 class TemplateElementView implements ITemplateSizeProvider{
     private j$:any;
     private parentContainerId:string;
@@ -52,6 +53,9 @@ class TemplateElementView implements ITemplateSizeProvider{
                     break;
                 case LayerType.COORDINATES_LAYER_TYPE:
                     new CoordinatesLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
+                case LayerType.DATE_TIME_LAYER_TYPE:
+                    new DateTimeLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.IMAGE_LAYER_TYPE:
                     new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);

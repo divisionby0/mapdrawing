@@ -15,7 +15,6 @@ var CoordinatesLayerView = (function (_super) {
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, function (data) { return _this.onCoordinatesVisibilityChanged(data); });
     };
     CoordinatesLayerView.prototype.onCoordinatesChanged = function (data) {
-        console.log("onCoordinatesChanged data=", data);
         var coordinates = data[0] + " " + data[1];
         this.layerContainer.text(coordinates);
     };

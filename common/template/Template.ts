@@ -10,6 +10,8 @@ class Template{
     private city:string;
     private lat:string;
     private lng:string;
+    
+    public static ON_SELECT:string = "ON_SELECT";
 
     constructor(name:string, preview:string, width:number, height:number, layers:List<TemplateLayer>, aspectRatio:any){
         this.name = name;
@@ -22,6 +24,9 @@ class Template{
 
     public setCity(city:string):void{
         this.city = city;
+    }
+    public getCity():string{
+        return this.city;
     }
     public setLat(lat:string):void{
         this.lat = lat;

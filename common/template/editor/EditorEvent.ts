@@ -10,4 +10,10 @@ class EditorEvent{
 
     public static COORDINATES_CHANGED:string = "COORDINATES_CHANGED";
     public static COORDINATES_VISIBILITY_CHANGED:string = "COORDINATES_VISIBILITY_CHANGED";
+    
+    public static DATE_TIME_CHANGED:string = "DATE_TIME_CHANGED";
+    public static DATE_VISIBILITY_CHANGED:string = "DATE_VISIBILITY_CHANGED";
+    public static TIME_VISIBILITY_CHANGED:string = "TIME_VISIBILITY_CHANGED";
+
+    public static SET_CURRENT_DATE_TIME:string = "SET_CURRENT_DATE_TIME";
 }

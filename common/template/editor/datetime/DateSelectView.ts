@@ -1,4 +1,5 @@
-///<reference path="../../../common/lib/events/EventBus.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../EditorEvent.ts"/>
 class DateSelectView{
     private j$:any;    
     
@@ -8,33 +9,16 @@ class DateSelectView{
     
     constructor(j$:any){
         this.j$ = j$;
-        this.createDatepicker();
+        this.j$("#currentTimeButton").click(()=>this.onCurrentTimeButtonClicked());
     }
     
-    private createDatepicker():void{
-        var todayDate:any = new Date();
-        var day:string = todayDate.getUTCDate().toString();
-        var month:string = (parseInt(todayDate.getMonth())+1).toString();
-        var year:string = todayDate.getFullYear().toString();
+    public setDate(data:any):void{
+        this.createDatepicker(data);
+    }
+    
+    private createDatepicker(currentDate:any):void{
 
-        var hour:string = todayDate.getHours().toString();
-        var minute:string = todayDate.getMinutes().toString();
-
-        if(day.length<2){
-            day = "0"+day;
-        }
-        if(month.length<2){
-            month = "0"+month;
-        }
-
-        if(hour.length<2){
-            hour = "0"+hour;
-        }
-        if(minute.length<2){
-            minute = "0"+minute;
-        }
-
-        this.j$("#datepicker").val(day+"-"+month+"-"+year);
+        this.j$("#datepicker").val(currentDate.day+"-"+currentDate.month+"-"+currentDate.year);
 
         this.j$( "#datepicker" ).datepicker({
             dateFormat : "dd-mm-yy",
@@ -42,8 +26,8 @@ class DateSelectView{
             dayNamesMin : ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
         });
 
-        this.j$("#hourInput").val(hour);
-        this.j$("#minuteInput").val(minute);
+        this.j$("#hourInput").val(currentDate.hour);
+        this.j$("#minuteInput").val(currentDate.minute);
 
         this.j$("#datepicker").change(()=>this.onDateChanged());
         this.j$("#hourInput").change(()=>this.onHourChanged());
@@ -68,13 +52,16 @@ class DateSelectView{
         this.onUserDateChanged(userDate);
     }
 
+    private onCurrentTimeButtonClicked():void {
+        EventBus.dispatchEvent(EditorEvent.SET_CURRENT_DATE_TIME, null);
+    }
+
     private createUserDate():any{
         var userDate:string = this.j$("#datepicker").val();
         var userHours:string = this.j$("#hourInput").val();
         var userMinutes:string = this.j$("#minuteInput").val();
 
         var userSelectedDate:string = userDate+" "+userHours+":"+userMinutes;
-        console.log(userSelectedDate);
         
         var day;
         var month;
@@ -92,6 +79,6 @@ class DateSelectView{
     }
     
     private onUserDateChanged(newDate:string):void{
-        EventBus.dispatchEvent("ON_USER_DATE_CHANGED", newDate);
+        EventBus.dispatchEvent(EditorEvent.DATE_TIME_CHANGED, newDate);
     }
 }

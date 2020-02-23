@@ -28,8 +28,6 @@ class LayerView{
     }
 
     protected create():void {
-        //var style:string = "position:absolute;";
-
         if(this.layer.hasLeft()){
             this.style+="left:"+this.layer.getLeft()+";";
         }
@@ -45,7 +43,6 @@ class LayerView{
     }
 
     protected calculateHeight():void{
-        //this.currentWidth = this.layerContainer.outerWidth();
         this.currentWidth = this.templateWidthProvider.getTemplateWidth();
         var aspectRatio:number = this.layer.getAspectRatio();
         this.currentHeight = this.templateWidthProvider.getTemplateHeight();

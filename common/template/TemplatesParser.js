@@ -7,6 +7,7 @@
 ///<reference path="layer/StarmapTemplateLayer.ts"/>
 ///<reference path="layer/CityTemplateLayer.ts"/>
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
+///<reference path="layer/DateTimeTemplateLayer.ts"/>
 var TemplatesParser = (function () {
     function TemplatesParser(j$) {
         this.j$ = j$;
@@ -105,6 +106,21 @@ var TemplatesParser = (function () {
                         var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
                         templateLayer = new CoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.DATE_TIME_LAYER_TYPE:
+                        var text;
+                        try {
+                            text = layerData.childNodes[0].nodeValue;
+                        }
+                        catch (error) {
+                            text = "";
+                        }
+                        var textColor = layerData.getAttribute("color");
+                        var fontSize = layerData.getAttribute("size");
+                        var fontWeight = layerData.getAttribute("fontWeight");
+                        var textAlign = layerData.getAttribute("text-align");
+                        templateLayer = new DateTimeTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.IMAGE_LAYER_TYPE:

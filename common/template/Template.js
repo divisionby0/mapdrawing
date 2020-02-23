@@ -11,6 +11,9 @@ var Template = (function () {
     Template.prototype.setCity = function (city) {
         this.city = city;
     };
+    Template.prototype.getCity = function () {
+        return this.city;
+    };
     Template.prototype.setLat = function (lat) {
         this.lat = lat;
     };
@@ -41,6 +44,7 @@ var Template = (function () {
     Template.prototype.getAspectRatio = function () {
         return this.aspectRatio;
     };
+    Template.ON_SELECT = "ON_SELECT";
     return Template;
 }());
 //# sourceMappingURL=Template.js.map

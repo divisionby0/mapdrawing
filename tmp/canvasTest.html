@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas test</title>
+    <script src="../common/lib/jquery.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            var img = new Image();
+            img.src = "../common/templates/space1.png";
+            img.onload = function(){
+                console.log("loaded this=",this);
+            };
+        });
+    </script>
+</body>
+</html>

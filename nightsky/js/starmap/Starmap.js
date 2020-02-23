@@ -317,21 +317,25 @@ var Starmap = (function () {
         }
     };
     Starmap.prototype.set_user_obs = function () {
-        var dt = new Date().toString(); //Thu Feb 22 2018 14:13:07 GMT-0500
-        var lon = -75;
-        var lat = 40;
-        var slab = 0;
-        var clab = 0;
-        var idso = 1;
-        var clin = 1;
+        /*
+        var dt:any = new Date().toString(); //Thu Feb 22 2018 14:13:07 GMT-0500
+
+        var lon:any = -75;
+        var lat:any = 40;
+        var slab:any = 0;
+        var clab:any = 0;
+        var idso:any = 1;
+        var clin:any = 1;
+
         var d = this.now.getDate();
-        dt.value = d.toString().slice(0, 33);
+        dt.value = d.toString().slice( 0, 33 );
         lon.value = this.now.getLonDegrees();
         lat.value = this.now.getLatDegrees();
         slab.checked = this.ck_starlabels;
         clab.checked = this.ck_conlabels;
         idso.checked = this.ck_dsos;
         clin.checked = this.ck_conlines;
+        */
     };
     Starmap.prototype.draw_star = function (context, s) {
         context.fillStyle = s.color;

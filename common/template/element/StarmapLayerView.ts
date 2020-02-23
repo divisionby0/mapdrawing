@@ -12,19 +12,17 @@ declare var setContainer:Function;
 class StarmapLayerView extends LayerView{
     private canvas:any;
     private starmap:Starmap;
+    
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
     protected create():void{
-        console.log("StarmapLayerView.create()");
         var backgroundColor:string = "";
         var starsColor:string = "";
         var constellationColor:string = "";
         var hasMulticoloredStars:boolean = false;
         var hasBorder:boolean = (this.layer as StarmapTemplateLayer).hasBorder();
-
-        console.log("create starmap hasBorder=",hasBorder);
         
         if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
             backgroundColor = (this.layer as StarmapTemplateLayer).getBackgroundColor();

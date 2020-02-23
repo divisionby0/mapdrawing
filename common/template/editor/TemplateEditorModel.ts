@@ -5,7 +5,7 @@ class TemplateEditorModel{
     private view:TemplateEditorView;
     private currentTemplate:Template;
 
-    private defaultSettings:any = {constellations:true, date:false, time:false, place:true, border:true, circle:true, coordinates:true};
+    private defaultSettings:any = {constellations:true, date:true, time:true, place:true, border:true, circle:true, coordinates:true};
 
     constructor(view:TemplateEditorView){
         this.view = view;

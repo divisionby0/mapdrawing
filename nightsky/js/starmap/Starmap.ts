@@ -380,6 +380,7 @@ class Starmap{
 
     private set_user_obs()
     {
+        /*
         var dt:any = new Date().toString(); //Thu Feb 22 2018 14:13:07 GMT-0500
 
         var lon:any = -75;
@@ -397,6 +398,7 @@ class Starmap{
         clab.checked = this.ck_conlabels;
         idso.checked = this.ck_dsos;
         clin.checked = this.ck_conlines;
+        */
     }
 
     private draw_star( context, s )

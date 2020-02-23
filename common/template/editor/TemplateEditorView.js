@@ -45,6 +45,8 @@ var TemplateEditorView = (function () {
         this.borderButton.change(function () { return _this.onBorderChanged(); });
         this.cityButton.change(function () { return _this.onCityVisibilityChanged(); });
         this.coordinatesButton.change(function () { return _this.onCoordinatesVisibilityChanged(); });
+        this.dateButton.change(function () { return _this.onDateVisibilityChanged(); });
+        this.timeButton.change(function () { return _this.onTimeVisibilityChanged(); });
         this.text_1_input.on("input", function () { return _this.onText1Changed(); });
         this.text_2_input.on("input", function () { return _this.onText2Changed(); });
         this.text_3_input.on("input", function () { return _this.onText3Changed(); });
@@ -136,6 +138,12 @@ var TemplateEditorView = (function () {
     };
     TemplateEditorView.prototype.onCoordinatesVisibilityChanged = function () {
         EventBus.dispatchEvent(EditorEvent.COORDINATES_VISIBILITY_CHANGED, { visible: this.coordinatesButton.is(':checked') });
+    };
+    TemplateEditorView.prototype.onDateVisibilityChanged = function () {
+        EventBus.dispatchEvent(EditorEvent.DATE_VISIBILITY_CHANGED, { visible: this.dateButton.is(':checked') });
+    };
+    TemplateEditorView.prototype.onTimeVisibilityChanged = function () {
+        EventBus.dispatchEvent(EditorEvent.TIME_VISIBILITY_CHANGED, { visible: this.timeButton.is(':checked') });
     };
     return TemplateEditorView;
 }());

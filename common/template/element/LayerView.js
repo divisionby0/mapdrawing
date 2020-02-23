@@ -16,7 +16,6 @@ var LayerView = (function () {
         this.onResize();
     }
     LayerView.prototype.create = function () {
-        //var style:string = "position:absolute;";
         if (this.layer.hasLeft()) {
             this.style += "left:" + this.layer.getLeft() + ";";
         }
@@ -31,7 +30,6 @@ var LayerView = (function () {
         }
     };
     LayerView.prototype.calculateHeight = function () {
-        //this.currentWidth = this.layerContainer.outerWidth();
         this.currentWidth = this.templateWidthProvider.getTemplateWidth();
         var aspectRatio = this.layer.getAspectRatio();
         this.currentHeight = this.templateWidthProvider.getTemplateHeight();

@@ -7,6 +7,7 @@
 ///<reference path="layer/StarmapTemplateLayer.ts"/>
 ///<reference path="layer/CityTemplateLayer.ts"/>
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
+///<reference path="layer/DateTimeTemplateLayer.ts"/>
 class TemplatesParser{
     private j$:any;
 
@@ -131,7 +132,22 @@ class TemplatesParser{
                         templateLayer = new CoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
-                    
+                    case LayerType.DATE_TIME_LAYER_TYPE:
+                        var text:string;
+                        try{
+                            text= layerData.childNodes[0].nodeValue;
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new DateTimeTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
                     case LayerType.IMAGE_LAYER_TYPE:
                         var url:string = layerData.getAttribute("url");
                         templateLayer = new ImageTemplateLayer(id, aspectRatio, type, url, left, top, right, bottom, changeable);

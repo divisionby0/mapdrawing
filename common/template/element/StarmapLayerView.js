@@ -15,13 +15,11 @@ var StarmapLayerView = (function (_super) {
     }
     StarmapLayerView.prototype.create = function () {
         var _this = this;
-        console.log("StarmapLayerView.create()");
         var backgroundColor = "";
         var starsColor = "";
         var constellationColor = "";
         var hasMulticoloredStars = false;
         var hasBorder = this.layer.hasBorder();
-        console.log("create starmap hasBorder=", hasBorder);
         if (this.layer.hasBackgroundColor()) {
             backgroundColor = this.layer.getBackgroundColor();
         }

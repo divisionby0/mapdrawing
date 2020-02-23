@@ -3,10 +3,11 @@
     <template name="template 1" printSize="2481x3509" preview="common/templates/template1_preview.jpg" aspectRatio="1.414">
         <layer id="backgroundImage" type="image" left="0" top="0" right="0" bottom="0" url="common/templates/night6.jpg"></layer>
         <layer id="backgroundBorder" type="div" left="3.4%" top="2.1%" right="3.4%" bottom="2.1%" border="#a1a0a0 0.26em solid"></layer>
-        <layer id="text_1" type="text" size="3.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center">Шаблон 1 заголовок</layer>
-        <layer id="text_2" type="text" size="3.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center">Шаблон 1 текст</layer>
-        <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="77%" text-align="center">Москва</layer>
+        <layer id="text_1" type="text" size="3.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="81%" text-align="center">Шаблон 1 заголовок</layer>
+        <layer id="text_2" type="text" size="3.1em" color="#d8d8d8" left="0" right="0" top="86%" text-align="center">Шаблон 1 текст</layer>
+        <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="78%" text-align="center">Москва</layer>
         <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
+        <layer id="dateTimeTextText" type="dateTime" size="1.2em" color="#d8d8d8" left="0" right="0" top="76%" text-align="center"></layer>
         <layer id="starmap" type="starmap" left="6%" top="4%" right="6%" borderColor="#d8d8d8" borderWeight="4" starsColor="#d8d8d8" constellationColor="#d8d8d8"></layer>
     </template>
 
@@ -16,16 +17,21 @@
         <layer id="text_1" type="text" size="3.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center">Шаблон 2 заголовок</layer>
         <layer id="text_2" type="text" size="3.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center">Шаблон 2 текст</layer>
         <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="77%" text-align="center">Москва</layer>
+        <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
+        <layer id="dateTimeTextText" type="dateTime" size="1.2em" color="#d8d8d8" left="0" right="0" top="76%" text-align="center"></layer>
         <layer id="starmap" type="starmap" left="6%" top="4%" right="6%" borderColor="#d8d8d8" borderWeight="8" starsColor="#d8d8d8" constellationColor="#d8d8d8"></layer>
     </template>
 
     <template name="template 3" printSize="2481x3509" preview="common/templates/template3_preview.jpg" aspectRatio="1.414">
         <layer type="div" backgroundColor="#000000"></layer>
-        <layer id="backgroundImage" type="image" left="3%" top="2%" right="3%" bottom="30%" url="common/templates/space1.png"></layer>
-        <layer id="backgroundBorder" type="div" border="#a1a0a0 0.86em solid"></layer>
+        <layer id="backgroundImage" type="image" left="6%" top="4%" right="7%" bottom="34%" url="common/templates/space1.png"></layer>
+        <layer id="backgroundBorder" type="div" left="3.4%" top="2.1%" right="3.4%" bottom="2.1%" border="#d8d8d8 0.26em solid"></layer>
         <layer id="text_1" type="text" size="4.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center">Шаблон 3 заголовок</layer>
         <layer id="text_2" type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center">Шаблон 3 текст</layer>
-        <layer id="starmap" type="starmap" left="3%" top="2%" right="3%" starsColor="#d8d8d8" borderColor="#d8d8d8" borderWeight="4" constellationColor="#d8d8d8"></layer>
+        <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="78%" text-align="center">Москва</layer>
+        <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
+        <layer id="dateTimeTextText" type="dateTime" size="1.2em" color="#d8d8d8" left="0" right="0" top="76%" text-align="center"></layer>
+        <layer id="starmap" type="starmap" left="6%" top="4%" right="6%" borderColor="#d8d8d8" borderWeight="4" starsColor="#d8d8d8" constellationColor="#d8d8d8"></layer>
     </template>
 
     <template name="template 4" printSize="2481x3509" preview="common/templates/template4_preview.jpg" aspectRatio="1.414">
@@ -33,6 +39,9 @@
         <layer id="backgroundBorder" type="div" left="3.4%" top="2.1%" right="3.4%" bottom="2.1%" border="#d8d8d8 0.26em solid" backgroundColor="rgba(0,0,0,0)" changeable="true"></layer>
         <layer id="text_1" type="text" size="4.6em" fontWeight="700" color="#d8d8d8" left="0" right="0" top="80%" text-align="center" changeable="true">Шаблон 4 заголовок</layer>
         <layer id="text_2" type="text" size="2.1em" color="#d8d8d8" left="0" right="0" top="87%" text-align="center" changeable="true">Шаблон 4 текст</layer>
+        <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="78%" text-align="center">Москва</layer>
+        <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
+        <layer id="dateTimeTextText" type="dateTime" size="1.2em" color="#d8d8d8" left="0" right="0" top="76%" text-align="center"></layer>
         <layer id="starmap" type="starmap" left="6%" top="4%" right="6%" borderColor="#d8d8d8" borderWeight="4" starsColor="#d8d8d8" backgroundColor="#000000" constellationColor="#d8d8d8" changeable="false"></layer>
     </template>
 </templates>

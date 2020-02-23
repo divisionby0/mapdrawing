@@ -21,7 +21,7 @@ var TemplateListRenderer = (function () {
         this.imageElement.click(function () { return _this.onClicked(); });
     };
     TemplateListRenderer.prototype.onClicked = function () {
-        EventBus.dispatchEvent("TEMPLATE_SELECTED", this.index);
+        EventBus.dispatchEvent(Template.ON_SELECT, this.index);
     };
     TemplateListRenderer.NORMAl = "NORMAL";
     TemplateListRenderer.SELECTED = "SELECTED";

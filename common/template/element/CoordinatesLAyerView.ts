@@ -7,7 +7,6 @@ class CoordinatesLayerView extends CityLayerView{
     }
 
     private onCoordinatesChanged(data:any):void {
-        console.log("onCoordinatesChanged data=",data);
         var coordinates:string = data[0]+" "+data[1];
         this.layerContainer.text(coordinates);
     }
