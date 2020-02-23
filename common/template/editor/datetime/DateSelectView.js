@@ -52,7 +52,7 @@ var DateSelectView = (function () {
         if (jsDate !== null) {
             jsDate instanceof Date; // -> true
             day = jsDate.getDate();
-            month = parseInt(jsDate.getMonth()) + 1;
+            month = parseInt(jsDate.getMonth()) + 1; // TODO эта единица переводит на 1 месяц врепед - разобраться. НО уменьшать надо чтобы получить правильные названия месяцев
             year = jsDate.getFullYear();
         }
         return { day: day, month: month, year: year, hours: userHours, minutes: userMinutes };

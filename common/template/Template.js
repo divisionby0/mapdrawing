@@ -11,9 +11,6 @@ var Template = (function () {
     Template.prototype.setCity = function (city) {
         this.city = city;
     };
-    Template.prototype.getCity = function () {
-        return this.city;
-    };
     Template.prototype.setLat = function (lat) {
         this.lat = lat;
     };

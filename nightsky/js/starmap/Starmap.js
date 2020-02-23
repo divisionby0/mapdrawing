@@ -22,7 +22,7 @@ var Starmap = (function () {
         this.hasColoredStars = false;
         this.constellationColor = "#d8d8d8";
         this.containerId = "";
-        this.ver = "0.0.4";
+        this.ver = "0.0.5";
         this.coeff = 1;
         this.j$ = j$;
         this.containerId = containerId;
@@ -35,6 +35,18 @@ var Starmap = (function () {
         EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, function (value) { return _this.onCircleBorderChanged(value); });
         EventBus.addEventListener(EditorEvent.STARS_CHANGED, function (value) { return _this.onStarsChanged(value); });
     }
+    Starmap.prototype.destroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.CONSTELLATIONS_CHANGED, function (value) { return _this.onConstellationsChanged(value); });
+        EventBus.removeEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, function (value) { return _this.onCircleBorderChanged(value); });
+        EventBus.removeEventListener(EditorEvent.STARS_CHANGED, function (value) { return _this.onStarsChanged(value); });
+    };
+    Starmap.prototype.setDate = function (date) {
+        var n = Date.parse(date);
+        var d = new Date(n);
+        this.now.setDate(d);
+        this.refresh();
+    };
     Starmap.prototype.setHasBorder = function (value) {
         this.clipped = false;
         this.hasBorder = value;
@@ -71,7 +83,6 @@ var Starmap = (function () {
         this.init_dsos(dso);
         this.init_planets(planet);
         this.now = new Observer();
-        this.set_user_obs();
         this.refresh();
         this.setDateNow();
     };
@@ -83,27 +94,6 @@ var Starmap = (function () {
         var canvas = document.getElementById(this.containerId);
         this.borderContainerContext = this.borderCanvas[0].getContext("2d");
         this.draw_sky(context, canvas.width, canvas.height);
-    };
-    Starmap.prototype.update = function () {
-        var dt = document.getElementById("user_date");
-        var lon = document.getElementById("user_lon");
-        var lat = document.getElementById("user_lat");
-        var clin = document.getElementById("constellationLinesButton");
-        var n = Date.parse(dt.value);
-        if (isNaN(n)) {
-            alert("Your browser doesn't think\n'" + dt.value + "'\nis a valid date.");
-            this.set_user_obs();
-            return;
-        }
-        var d = new Date(n);
-        this.now.setDate(d);
-        if (lon.value >= -180 && lon.value < 360)
-            this.now.setLonDegrees(lon.value);
-        if (lat.value >= -90 && lat.value <= 90)
-            this.now.setLatDegrees(lat.value);
-        this.ck_conlines = clin.checked;
-        this.set_user_obs();
-        this.refresh();
     };
     Starmap.prototype.draw_sky = function (context, w, h) {
         var totalStars = star.length;
@@ -316,27 +306,6 @@ var Starmap = (function () {
             }
         }
     };
-    Starmap.prototype.set_user_obs = function () {
-        /*
-        var dt:any = new Date().toString(); //Thu Feb 22 2018 14:13:07 GMT-0500
-
-        var lon:any = -75;
-        var lat:any = 40;
-        var slab:any = 0;
-        var clab:any = 0;
-        var idso:any = 1;
-        var clin:any = 1;
-
-        var d = this.now.getDate();
-        dt.value = d.toString().slice( 0, 33 );
-        lon.value = this.now.getLonDegrees();
-        lat.value = this.now.getLatDegrees();
-        slab.checked = this.ck_starlabels;
-        clab.checked = this.ck_conlabels;
-        idso.checked = this.ck_dsos;
-        clin.checked = this.ck_conlines;
-        */
-    };
     Starmap.prototype.draw_star = function (context, s) {
         context.fillStyle = s.color;
         context.beginPath();
@@ -368,20 +337,23 @@ var Starmap = (function () {
         var d = Date(Date.now());
         // Converting the number of millisecond in date string
         var a = d.toString();
-        this.j$("#user_date").val(a);
+        var n = Date.parse(a);
+        var d = new Date(n);
+        this.now.setDate(d);
+        this.refresh();
     };
     Starmap.prototype.onConstellationsChanged = function (value) {
         this.hasConstellationsLines = value;
-        this.update();
+        this.refresh();
     };
     Starmap.prototype.onCircleBorderChanged = function (value) {
         this.hasBorder = value;
-        this.update();
+        this.refresh();
     };
     Starmap.prototype.onStarsChanged = function (value) {
         this.hasColoredStars = value;
         this.init_stars(star);
-        this.update();
+        this.refresh();
     };
     return Starmap;
 }());

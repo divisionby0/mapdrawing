@@ -8,6 +8,16 @@ var TemplateElementController = (function () {
         this.model.setData(data);
         this.createListeners();
     }
+    TemplateElementController.prototype.destroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onTextChanged(data); });
+        EventBus.removeEventListener(EditorEvent.TEXT_2_CHANGED, function (data) { return _this.onTextChanged(data); });
+        EventBus.removeEventListener(EditorEvent.BORDER_CHANGED, function (data) { return _this.onBorderChanged(data); });
+        EventBus.removeEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, function (data) { return _this.onCircleBorderChanged(data); });
+        EventBus.removeEventListener(EditorEvent.CONSTELLATIONS_CHANGED, function (data) { return _this.onConstellationsChanged(data); });
+        EventBus.removeEventListener(EditorEvent.STARS_CHANGED, function (data) { return _this.onStarsChanged(data); });
+        this.model.destroy();
+    };
     TemplateElementController.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onTextChanged(data); });

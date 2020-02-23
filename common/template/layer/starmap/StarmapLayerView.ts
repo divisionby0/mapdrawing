@@ -1,40 +1,50 @@
-///<reference path="LayerView.ts"/>
-///<reference path="../layer/DivTemplateLayer.ts"/>
-///<reference path="../layer/StarmapTemplateLayer.ts"/>
-///<reference path="../../../nightsky/js/starmap/Starmap.ts"/>
-///<reference path="../../lib/events/EventBus.ts"/>
-declare var canvasApp:Function;
-declare var get_user_obs:Function;
-declare var setConstellationColor:Function;
-declare var setStarNameColor:Function;
-declare var setBackgroundColor:Function;
-declare var setContainer:Function;
+///<reference path="../../element/LayerView.ts"/>
+///<reference path="../DivTemplateLayer.ts"/>
+///<reference path="./StarmapLayerModel.ts"/>
+///<reference path="../../../../nightsky/js/starmap/Starmap.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+//declare var canvasApp:Function;
 class StarmapLayerView extends LayerView{
     private canvas:any;
     private starmap:Starmap;
-    
+
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
+    public setDate(date:string):void{
+        this.j$("#user_date").val(date);
+        this.starmap.setDate(date);
+    }
+    
+    protected onDestroy() {
+        console.log("destroy()");
+        EventBus.removeEventListener("UPDATE_STARMAP", ()=>this.onUpdateStarmapRequest());
+        
+        if(this.starmap){
+            this.starmap.destroy();
+            this.starmap = null;
+        }
+    }
+    
     protected create():void{
         var backgroundColor:string = "";
         var starsColor:string = "";
         var constellationColor:string = "";
         var hasMulticoloredStars:boolean = false;
-        var hasBorder:boolean = (this.layer as StarmapTemplateLayer).hasBorder();
+        var hasBorder:boolean = (this.layer as StarmapLayerModel).hasBorder();
         
-        if((this.layer as StarmapTemplateLayer).hasBackgroundColor()){
-            backgroundColor = (this.layer as StarmapTemplateLayer).getBackgroundColor();
+        if((this.layer as StarmapLayerModel).hasBackgroundColor()){
+            backgroundColor = (this.layer as StarmapLayerModel).getBackgroundColor();
         }
-        if((this.layer as StarmapTemplateLayer).hasStarsColor()){
-            starsColor = (this.layer as StarmapTemplateLayer).getStarsColor();
+        if((this.layer as StarmapLayerModel).hasStarsColor()){
+            starsColor = (this.layer as StarmapLayerModel).getStarsColor();
         }
-        if((this.layer as StarmapTemplateLayer).hasConstellationColor()){
-            constellationColor = (this.layer as StarmapTemplateLayer).getConstellationColor();
+        if((this.layer as StarmapLayerModel).hasConstellationColor()){
+            constellationColor = (this.layer as StarmapLayerModel).getConstellationColor();
         }
 
-        hasMulticoloredStars = (this.layer as StarmapTemplateLayer).getHasMulticoloredStars();
+        hasMulticoloredStars = (this.layer as StarmapLayerModel).getHasMulticoloredStars();
         
         this.layerContainer = this.j$("<div style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
@@ -49,23 +59,19 @@ class StarmapLayerView extends LayerView{
         this.starmap.setHasColoredStars(hasMulticoloredStars);
         this.starmap.setHasBorder(hasBorder);
         
-        this.starmap.setBorderColor((this.layer as StarmapTemplateLayer).getBorderColor());
-        this.starmap.setBorderWeight((this.layer as StarmapTemplateLayer).getBorderWeight());
+        this.starmap.setBorderColor((this.layer as StarmapLayerModel).getBorderColor());
+        this.starmap.setBorderWeight((this.layer as StarmapLayerModel).getBorderWeight());
         
         this.starmap.create();
 
         this.onResize();
-
-        EventBus.addEventListener("UPDATE_STARMAP", ()=>this.onUpdateStarmapRequest());
-        
-        this.j$("#user_conline").change((event)=>this.onConstLinesCheckboxChanged(event));
 
         super.create();
     }
 
     private onUpdateStarmapRequest():void{
         if(this.starmap){
-            this.starmap.update();
+            this.starmap.refresh();
         }
     }
 
@@ -95,12 +101,6 @@ class StarmapLayerView extends LayerView{
 
         this.starmap.resize(newWidth, newWidth);
         
-        this.starmap.update();
-    }
-
-    private onConstLinesCheckboxChanged(event:any):void {
-        if(this.starmap){
-            this.starmap.update();
-        }
+        this.starmap.refresh();
     }
 }

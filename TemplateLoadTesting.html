@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <input id="user_date" size="36" onchange="get_user_obs()" value="" type="text" style="display: none;">
+                        <input id="user_date" size="36" onchange="get_user_obs()" value="" type="text" style="display: block;">
 
                         <input id="user_dec" value="&lt;" onclick="dec_button()" type="button" style="display: none;">
                         <input id="user_inc" value="&gt;" onclick="inc_button()" type="button" style="display: none;">
@@ -156,7 +156,20 @@
 <script type="text/javascript" src="common/template/layer/DateTimeTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/ImageTemplateLayer.js"></script>
 <script type="text/javascript" src="common/template/layer/BorderCircleTemplateLayer.js"></script>
-<script type="text/javascript" src="common/template/layer/StarmapTemplateLayer.js"></script>
+
+<script type="text/javascript" src="common/template/element/LayerView.js"></script>
+<script type="text/javascript" src="common/template/element/TextLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/CityLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/CoordinatesLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/DateTimeLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/DivLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/BorderCircleLayerView.js"></script>
+<script type="text/javascript" src="common/template/element/ImageLayerView.js"></script>
+
+<script type="text/javascript" src="common/template/layer/starmap/StarmapLayerModel.js"></script>
+<script type="text/javascript" src="common/template/layer/starmap/StarmapLayerController.js"></script>
+<script type="text/javascript" src="common/template/layer/starmap/StarmapLayerView.js"></script>
+
 <script type="text/javascript" src="common/template/layer/Parameter.js"></script>
 
 <script type="text/javascript" src="common/template/layer/border/Border.js"></script>
@@ -166,15 +179,7 @@
 <script type="text/javascript" src="common/template/element/TemplateElementModel.js"></script>
 <script type="text/javascript" src="common/template/element/TemplateElementController.js"></script>
 
-<script type="text/javascript" src="common/template/element/LayerView.js"></script>
-<script type="text/javascript" src="common/template/element/TextLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/CityLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/CoordinatesLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/DateTimeLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/DivLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/BorderCircleLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/StarmapLayerView.js"></script>
-<script type="text/javascript" src="common/template/element/ImageLayerView.js"></script>
+
 
 <script type="text/javascript" src="common/template/editor/EditorEvent.js"></script>
 <script type="text/javascript" src="common/template/editor/TemplateEditorView.js"></script>
@@ -187,7 +192,6 @@
 <script type="text/javascript" src="common/template/TemplateBuilder.js"></script>
 
 <script type="text/javascript" src="common/template/TemplateLoader.js"></script>
-<script type="text/javascript" src="common/template/TemplateEditor.js"></script>
 <script type="text/javascript" src="common/lib/collections.min.js"></script>
 <script type="text/javascript" src="common/lib/events/EventBus.js"></script>
 
@@ -199,7 +203,6 @@
 <script type="text/javascript" src="nightsky/js/lib.js"></script>
 
 <script>
-
     var templates;
     var templateBuilder;
 
@@ -231,7 +234,6 @@
 
 
         EventBus.addEventListener(Template.ON_SELECT, function(index){
-            console.log("on template selected");
 
             if(index==currentTemplateIndex){
                 return;
@@ -257,7 +259,9 @@
 
 
     function createTemplateEditor(){
-        new TemplateEditor($);
+        var view = new TemplateEditorView($);
+        var model = new TemplateEditorModel(view);
+        new TemplateEditorController(model);
     }
 
 
@@ -268,6 +272,12 @@
     }
 
     function createTemplateElement(template, parentContainerId, selfContainerId, coeff){
+
+        if(templateBuilder){
+            templateBuilder.destroy();
+            templateBuilder = null;
+        }
+
         templateBuilder = new TemplateBuilder($, template, parentContainerId, selfContainerId, coeff);
     }
 
@@ -332,6 +342,7 @@
 
     function createDatepicker(){
         EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, function(newDate){
+            /*
             var userDate = new Date();
             userDate.setFullYear(newDate.year);
             userDate.setMonth(newDate.month);
@@ -342,6 +353,7 @@
             $("#user_date").val(userDate.toString());
 
             EventBus.dispatchEvent("UPDATE_STARMAP", null);
+            */
         });
 
         var dateSelectView = new DateSelectView($);

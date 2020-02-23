@@ -4,10 +4,11 @@
 ///<reference path="layer/ImageTemplateLayer.ts"/>
 ///<reference path="layer/LayerType.ts"/>
 ///<reference path="layer/BorderCircleTemplateLayer.ts"/>
-///<reference path="layer/StarmapTemplateLayer.ts"/>
+///<reference path="layer/starmap/StarmapLayerModel.ts"/>
 ///<reference path="layer/CityTemplateLayer.ts"/>
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
 ///<reference path="layer/DateTimeTemplateLayer.ts"/>
+///<reference path="layer/starmap/StarmapLayerController.ts"/>
 var TemplatesParser = (function () {
     function TemplatesParser(j$) {
         this.j$ = j$;
@@ -142,7 +143,8 @@ var TemplatesParser = (function () {
                         var constellationColor = layerData.getAttribute("constellationColor");
                         var borderColor = layerData.getAttribute("borderColor");
                         var borderWeight = parseFloat(layerData.getAttribute("borderWeight"));
-                        templateLayer = new StarmapTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor, borderColor, borderWeight);
+                        templateLayer = new StarmapLayerModel(id, aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor, borderColor, borderWeight);
+                        //var controller:StarmapLayerController = new StarmapLayerController(templateLayer as TemplateLayer);
                         layers.add(templateLayer);
                         break;
                 }

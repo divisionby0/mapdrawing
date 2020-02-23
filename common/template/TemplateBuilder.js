@@ -13,10 +13,13 @@ var TemplateBuilder = (function () {
         this.coeff = coeff;
         this.build();
     }
+    TemplateBuilder.prototype.destroy = function () {
+        this.controller.destroy();
+    };
     TemplateBuilder.prototype.build = function () {
         var view = new TemplateElementView(this.j$, this.parentContainerId, this.selfContainerId, this.coeff);
         var model = new TemplateElementModel(view);
-        new TemplateElementController(model, this.data);
+        this.controller = new TemplateElementController(model, this.data);
     };
     return TemplateBuilder;
 }());

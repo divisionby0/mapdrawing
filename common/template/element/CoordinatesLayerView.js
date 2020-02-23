@@ -9,6 +9,11 @@ var CoordinatesLayerView = (function (_super) {
     function CoordinatesLayerView() {
         _super.apply(this, arguments);
     }
+    CoordinatesLayerView.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.COORDINATES_CHANGED, function (coord) { return _this.onCoordinatesChanged(coord); });
+        EventBus.removeEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, function (data) { return _this.onCoordinatesVisibilityChanged(data); });
+    };
     CoordinatesLayerView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, function (coord) { return _this.onCoordinatesChanged(coord); });

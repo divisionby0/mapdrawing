@@ -45,7 +45,8 @@ class DateSelectModel{
         if(minute.length<2){
             minute = "0"+minute;
         }
+        var retValue:any = {day:day, month:month, year:year, hour:hour, minute:minute};
 
-        return {day:day, month:month, year:year, hour:hour, minute:minute};
+        return retValue;
     }
 }

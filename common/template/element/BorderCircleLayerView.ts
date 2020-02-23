@@ -36,7 +36,5 @@ class BorderCircleLayerView extends LayerView{
         this.layerContainer.css({"top":top});
         this.layerContainer.css({"left":left});
         this.layerContainer.css({"right":right});
-
-        
     }
 }

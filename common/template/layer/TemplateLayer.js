@@ -1,3 +1,4 @@
+///<reference path="../element/LayerView.ts"/>
 var TemplateLayer = (function () {
     function TemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable) {
         if (left === void 0) { left = null; }
@@ -13,6 +14,15 @@ var TemplateLayer = (function () {
         this.bottom = bottom;
         this.changeable = changeable;
     }
+    TemplateLayer.prototype.setView = function (view) {
+        if (this.view) {
+            this.view.destroy();
+        }
+        this.view = view;
+    };
+    TemplateLayer.prototype.destroy = function () {
+        this.onDestroy();
+    };
     TemplateLayer.prototype.getId = function () {
         return this.id;
     };
@@ -68,6 +78,8 @@ var TemplateLayer = (function () {
     };
     TemplateLayer.prototype.getAspectRatio = function () {
         return this.aspectRatio;
+    };
+    TemplateLayer.prototype.onDestroy = function () {
     };
     return TemplateLayer;
 }());

@@ -1,3 +1,4 @@
+///<reference path="../element/LayerView.ts"/>
 class TemplateLayer{
     protected left:any;
     protected top:any;
@@ -9,6 +10,8 @@ class TemplateLayer{
     protected type:string;
     protected aspectRatio:number;
 
+    protected view:LayerView;
+    
     constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean){
         this.id = id;
         this.aspectRatio = aspectRatio;
@@ -18,6 +21,17 @@ class TemplateLayer{
         this.right = right;
         this.bottom = bottom;
         this.changeable = changeable;
+    }
+    
+    public setView(view:LayerView):void{
+        if(this.view){
+            this.view.destroy();
+        }
+        this.view = view;
+    }
+    
+    public destroy():void{
+        this.onDestroy();
     }
     
     public getId():string{
@@ -79,5 +93,9 @@ class TemplateLayer{
     
     public getAspectRatio():number{
         return this.aspectRatio;
+    }
+
+    protected onDestroy():void {
+        
     }
 }

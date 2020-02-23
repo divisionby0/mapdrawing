@@ -11,6 +11,12 @@ var DateTimeLayerView = (function (_super) {
     function DateTimeLayerView() {
         _super.apply(this, arguments);
     }
+    DateTimeLayerView.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.DATE_TIME_CHANGED, function (data) { return _this.onDateTimeChanged(data); });
+        EventBus.removeEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, function (data) { return _this.onDateVisibilityChanged(data); });
+        EventBus.removeEventListener(EditorEvent.TIME_VISIBILITY_CHANGED, function (data) { return _this.onTimeVisibilityChanged(data); });
+    };
     DateTimeLayerView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, function (data) { return _this.onDateTimeChanged(data); });

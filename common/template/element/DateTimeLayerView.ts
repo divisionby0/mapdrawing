@@ -2,7 +2,12 @@
 ///<reference path="../editor/EditorEvent.ts"/>
 ///<reference path="../../lib/events/EventBus.ts"/>
 class DateTimeLayerView extends TextLayerView{
-
+    protected onDestroy() {
+        EventBus.removeEventListener(EditorEvent.DATE_TIME_CHANGED, (data)=>this.onDateTimeChanged(data));
+        EventBus.removeEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, (data)=>this.onDateVisibilityChanged(data));
+        EventBus.removeEventListener(EditorEvent.TIME_VISIBILITY_CHANGED, (data)=>this.onTimeVisibilityChanged(data));
+    }
+    
     protected createListeners():void{
         EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, (data)=>this.onDateTimeChanged(data));
         EventBus.addEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, (data)=>this.onDateVisibilityChanged(data));

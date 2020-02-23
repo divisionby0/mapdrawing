@@ -17,6 +17,10 @@ var DivLayerView = (function (_super) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
         EventBus.addEventListener(EditorEvent.BORDER_CHANGED, function (value) { return _this.onBorderExistenceChanged(value); });
     }
+    DivLayerView.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.BORDER_CHANGED, function (value) { return _this.onBorderExistenceChanged(value); });
+    };
     DivLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
         if (this.layer.hasBackgroundColor()) {

@@ -25,9 +25,7 @@ class Template{
     public setCity(city:string):void{
         this.city = city;
     }
-    public getCity():string{
-        return this.city;
-    }
+
     public setLat(lat:string):void{
         this.lat = lat;
     }

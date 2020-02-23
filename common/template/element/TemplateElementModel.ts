@@ -12,6 +12,10 @@ class TemplateElementModel{
         this.view = view;
     }
     
+    public destroy():void{
+        
+    }
+    
     public setData(data:Template):void{
         this.data = data;
         this.view.setData(data);
@@ -64,12 +68,12 @@ class TemplateElementModel{
 
         while(layersIterator.hasNext()){
             var layer:TemplateLayer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
 
             if(isStarmapLayer){
                 var layerId:string = layer.getId();
                 if(layerId == LayerId.STARMAP){
-                    (layer as StarmapTemplateLayer).setBorderVisible(visible);
+                    (layer as StarmapLayerModel).setBorderVisible(visible);
                 }
             }
         }
@@ -80,12 +84,12 @@ class TemplateElementModel{
 
         while(layersIterator.hasNext()){
             var layer:TemplateLayer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
 
             if(isStarmapLayer){
                 var layerId:string = layer.getId();
                 if(layerId == TemplateLayer.STARMAP){
-                    (layer as StarmapTemplateLayer).setConstellationVisible(visible);
+                    (layer as StarmapLayerModel).setConstellationVisible(visible);
                 }
             }
         }
@@ -96,12 +100,12 @@ class TemplateElementModel{
 
         while(layersIterator.hasNext()){
             var layer:TemplateLayer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
 
             if(isStarmapLayer){
                 var layerId:string = layer.getId();
                 if(layerId == TemplateLayer.STARMAP){
-                    (layer as StarmapTemplateLayer).setStarsMulticolored(isMulticolored);
+                    (layer as StarmapLayerModel).setStarsMulticolored(isMulticolored);
                 }
             }
         }

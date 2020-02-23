@@ -7,6 +7,8 @@ var TemplateElementModel = (function () {
     function TemplateElementModel(view) {
         this.view = view;
     }
+    TemplateElementModel.prototype.destroy = function () {
+    };
     TemplateElementModel.prototype.setData = function (data) {
         this.data = data;
         this.view.setData(data);
@@ -49,7 +51,7 @@ var TemplateElementModel = (function () {
         var layersIterator = this.data.getLayersIterator();
         while (layersIterator.hasNext()) {
             var layer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
             if (isStarmapLayer) {
                 var layerId = layer.getId();
                 if (layerId == LayerId.STARMAP) {
@@ -62,7 +64,7 @@ var TemplateElementModel = (function () {
         var layersIterator = this.data.getLayersIterator();
         while (layersIterator.hasNext()) {
             var layer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
             if (isStarmapLayer) {
                 var layerId = layer.getId();
                 if (layerId == TemplateLayer.STARMAP) {
@@ -75,7 +77,7 @@ var TemplateElementModel = (function () {
         var layersIterator = this.data.getLayersIterator();
         while (layersIterator.hasNext()) {
             var layer = layersIterator.next();
-            var isStarmapLayer = layer instanceof StarmapTemplateLayer;
+            var isStarmapLayer = layer instanceof StarmapLayerModel;
             if (isStarmapLayer) {
                 var layerId = layer.getId();
                 if (layerId == TemplateLayer.STARMAP) {

@@ -15,6 +15,9 @@ var LayerView = (function () {
         this.j$(window).resize(function () { return _this.onResize(); });
         this.onResize();
     }
+    LayerView.prototype.destroy = function () {
+        this.onDestroy();
+    };
     LayerView.prototype.create = function () {
         if (this.layer.hasLeft()) {
             this.style += "left:" + this.layer.getLeft() + ";";
@@ -38,6 +41,8 @@ var LayerView = (function () {
         this.calculateHeight();
     };
     LayerView.prototype.createListeners = function () {
+    };
+    LayerView.prototype.onDestroy = function () {
     };
     return LayerView;
 }());

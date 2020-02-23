@@ -34,11 +34,10 @@ class Starmap{
     private borderWeight:number;
     private containerId:string = "";
 
-    private ver:string = "0.0.4";
+    private ver:string = "0.0.5";
 
     private coeff:number = 1;
-
-    //private borderContainerId:string = "starmapBorder";
+    
     private borderCanvas:any;
     private borderContainerContext:any;
 
@@ -56,6 +55,19 @@ class Starmap{
         EventBus.addEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (value)=>this.onConstellationsChanged(value));
         EventBus.addEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (value)=>this.onCircleBorderChanged(value));
         EventBus.addEventListener(EditorEvent.STARS_CHANGED, (value)=>this.onStarsChanged(value));
+    }
+    
+    public destroy():void{
+        EventBus.removeEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (value)=>this.onConstellationsChanged(value));
+        EventBus.removeEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (value)=>this.onCircleBorderChanged(value));
+        EventBus.removeEventListener(EditorEvent.STARS_CHANGED, (value)=>this.onStarsChanged(value));
+    }
+
+    public setDate(date:string):void {
+        var n = Date.parse( date );
+        var d:any = new Date( n );
+        this.now.setDate( d );
+        this.refresh();
     }
 
     public setHasBorder(value:boolean):void{
@@ -103,7 +115,6 @@ class Starmap{
         this.init_dsos( dso );
         this.init_planets( planet );
         this.now = new Observer();
-        this.set_user_obs();
         this.refresh();
         this.setDateNow();
     }
@@ -118,34 +129,6 @@ class Starmap{
         this.borderContainerContext = this.borderCanvas[0].getContext( "2d" );
         
         this.draw_sky( context, canvas.width, canvas.height );
-    }
-
-    public update():void
-    {
-        var dt:any = document.getElementById( "user_date" );
-        var lon:any = document.getElementById( "user_lon" );
-        var lat:any = document.getElementById( "user_lat" );
-        var clin:any = document.getElementById( "constellationLinesButton" );
-
-        var n = Date.parse( dt.value );
-        if ( isNaN( n )) {
-            alert( "Your browser doesn't think\n'" + dt.value + "'\nis a valid date." );
-            this.set_user_obs();
-            return;
-        }
-        var d:any = new Date( n );
-        this.now.setDate( d );
-
-        if ( lon.value >= -180 && lon.value < 360 )
-            this.now.setLonDegrees( lon.value );
-
-        if ( lat.value >= -90 && lat.value <= 90 )
-            this.now.setLatDegrees( lat.value );
-
-        this.ck_conlines = clin.checked;
-
-        this.set_user_obs();
-        this.refresh();
     }
 
     private draw_sky( context, w, h )
@@ -187,7 +170,6 @@ class Starmap{
                 this.draw_star(context, currentStar);
             }
         }
-
 
         if ( this.hasConstellationsLines ) {
             context.strokeStyle = this.constellationColor;
@@ -378,29 +360,6 @@ class Starmap{
         }
     }
 
-    private set_user_obs()
-    {
-        /*
-        var dt:any = new Date().toString(); //Thu Feb 22 2018 14:13:07 GMT-0500
-
-        var lon:any = -75;
-        var lat:any = 40;
-        var slab:any = 0;
-        var clab:any = 0;
-        var idso:any = 1;
-        var clin:any = 1;
-
-        var d = this.now.getDate();
-        dt.value = d.toString().slice( 0, 33 );
-        lon.value = this.now.getLonDegrees();
-        lat.value = this.now.getLatDegrees();
-        slab.checked = this.ck_starlabels;
-        clab.checked = this.ck_conlabels;
-        idso.checked = this.ck_dsos;
-        clin.checked = this.ck_conlines;
-        */
-    }
-
     private draw_star( context, s )
     {
         context.fillStyle = s.color;
@@ -441,22 +400,26 @@ class Starmap{
         var d = Date(Date.now());
         // Converting the number of millisecond in date string
         var a = d.toString();
-        this.j$("#user_date").val(a);
+
+        var n = Date.parse( a );
+        var d:any = new Date( n );
+        this.now.setDate( d );
+        this.refresh();
     }
 
     private onConstellationsChanged(value:boolean):void {
         this.hasConstellationsLines = value;
-        this.update();
+        this.refresh();
     }
 
     private onCircleBorderChanged(value:boolean):void {
         this.hasBorder = value;
-        this.update();
+        this.refresh();
     }
 
     private onStarsChanged(value:boolean):void{
         this.hasColoredStars = value;
         this.init_stars(star);
-        this.update();
+        this.refresh();
     }
 }

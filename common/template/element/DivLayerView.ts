@@ -10,6 +10,10 @@ class DivLayerView extends LayerView{
         super(j$, layer, parentId,selfId,  templateSizeProvider, coeff);
         EventBus.addEventListener(EditorEvent.BORDER_CHANGED, (value)=>this.onBorderExistenceChanged(value));
     }
+
+    protected onDestroy() {
+        EventBus.removeEventListener(EditorEvent.BORDER_CHANGED, (value)=>this.onBorderExistenceChanged(value));
+    }
     
     protected create():void{
         super.create();

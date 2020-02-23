@@ -13,6 +13,12 @@ class DateTimeTemplateLayer extends TextTemplateLayer{
         this.createListener();
     }
 
+    protected onDestroy():void {
+        EventBus.removeEventListener(EditorEvent.DATE_TIME_CHANGED, (data)=>this.onDateTimeChanged(data));
+        EventBus.removeEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, (data)=>this.onDateVisibilityChanged(data));
+        EventBus.removeEventListener(EditorEvent.TIME_VISIBILITY_CHANGED, (data)=>this.onTimeVisibilityChanged(data));
+    }
+    
     protected createListener() {
         EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, (data)=>this.onDateTimeChanged(data));
         EventBus.addEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, (data)=>this.onDateVisibilityChanged(data));
@@ -42,7 +48,7 @@ class DateTimeTemplateLayer extends TextTemplateLayer{
             else{
                 day = this.data.day;
             }
-            month = this.parseMonthName(parseInt(this.data.month)-1);
+            month = this.parseMonthName(parseInt(this.data.month));
             this.text+=day+" "+month+" "+this.data.year;
         }
         if(this.timeVisible){

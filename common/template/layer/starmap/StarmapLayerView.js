@@ -3,18 +3,31 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-///<reference path="LayerView.ts"/>
-///<reference path="../layer/DivTemplateLayer.ts"/>
-///<reference path="../layer/StarmapTemplateLayer.ts"/>
-///<reference path="../../../nightsky/js/starmap/Starmap.ts"/>
-///<reference path="../../lib/events/EventBus.ts"/>
+///<reference path="../../element/LayerView.ts"/>
+///<reference path="../DivTemplateLayer.ts"/>
+///<reference path="./StarmapLayerModel.ts"/>
+///<reference path="../../../../nightsky/js/starmap/Starmap.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+//declare var canvasApp:Function;
 var StarmapLayerView = (function (_super) {
     __extends(StarmapLayerView, _super);
     function StarmapLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
-    StarmapLayerView.prototype.create = function () {
+    StarmapLayerView.prototype.setDate = function (date) {
+        this.j$("#user_date").val(date);
+        this.starmap.setDate(date);
+    };
+    StarmapLayerView.prototype.onDestroy = function () {
         var _this = this;
+        console.log("destroy()");
+        EventBus.removeEventListener("UPDATE_STARMAP", function () { return _this.onUpdateStarmapRequest(); });
+        if (this.starmap) {
+            this.starmap.destroy();
+            this.starmap = null;
+        }
+    };
+    StarmapLayerView.prototype.create = function () {
         var backgroundColor = "";
         var starsColor = "";
         var constellationColor = "";
@@ -44,13 +57,11 @@ var StarmapLayerView = (function (_super) {
         this.starmap.setBorderWeight(this.layer.getBorderWeight());
         this.starmap.create();
         this.onResize();
-        EventBus.addEventListener("UPDATE_STARMAP", function () { return _this.onUpdateStarmapRequest(); });
-        this.j$("#user_conline").change(function (event) { return _this.onConstLinesCheckboxChanged(event); });
         _super.prototype.create.call(this);
     };
     StarmapLayerView.prototype.onUpdateStarmapRequest = function () {
         if (this.starmap) {
-            this.starmap.update();
+            this.starmap.refresh();
         }
     };
     StarmapLayerView.prototype.onResize = function () {
@@ -70,12 +81,7 @@ var StarmapLayerView = (function (_super) {
         this.canvas.width(newWidth + "px");
         this.canvas.height(newWidth + "px");
         this.starmap.resize(newWidth, newWidth);
-        this.starmap.update();
-    };
-    StarmapLayerView.prototype.onConstLinesCheckboxChanged = function (event) {
-        if (this.starmap) {
-            this.starmap.update();
-        }
+        this.starmap.refresh();
     };
     return StarmapLayerView;
 }(LayerView));

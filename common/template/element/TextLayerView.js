@@ -13,6 +13,11 @@ var TextLayerView = (function (_super) {
     function TextLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
+    TextLayerView.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onTextChanged(data); });
+        EventBus.removeEventListener(EditorEvent.TEXT_2_CHANGED, function (data) { return _this.onTextChanged(data); });
+    };
     TextLayerView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onTextChanged(data); });

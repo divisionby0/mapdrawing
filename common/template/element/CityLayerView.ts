@@ -5,6 +5,11 @@ class CityLayerView extends TextLayerView{
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
+    protected onDestroy() {
+        EventBus.removeEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
+        EventBus.removeEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));
+    }
+    
     protected createListeners():void{
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));

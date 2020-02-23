@@ -9,6 +9,11 @@ var CityLayerView = (function (_super) {
     function CityLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
+    CityLayerView.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
+        EventBus.removeEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, function (data) { return _this.onCityVisibilityChanged(data); });
+    };
     CityLayerView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });

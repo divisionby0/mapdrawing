@@ -10,6 +10,11 @@ class TextLayerView extends LayerView{
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
+    protected onDestroy() {
+        EventBus.removeEventListener(EditorEvent.TEXT_1_CHANGED, (data)=>this.onTextChanged(data));
+        EventBus.removeEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onTextChanged(data));
+    }
+
     protected createListeners():void{
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, (data)=>this.onTextChanged(data));
         EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onTextChanged(data));

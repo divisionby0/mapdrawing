@@ -13,6 +13,17 @@ class TemplateElementController{
         this.createListeners();
     }
 
+    public destroy():void{
+        EventBus.removeEventListener(EditorEvent.TEXT_1_CHANGED, (data)=>this.onTextChanged(data));
+        EventBus.removeEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onTextChanged(data));
+        EventBus.removeEventListener(EditorEvent.BORDER_CHANGED, (data)=>this.onBorderChanged(data));
+        EventBus.removeEventListener(EditorEvent.CIRCLE_BORDER_CHANGED, (data)=>this.onCircleBorderChanged(data));
+        EventBus.removeEventListener(EditorEvent.CONSTELLATIONS_CHANGED, (data)=>this.onConstellationsChanged(data));
+        EventBus.removeEventListener(EditorEvent.STARS_CHANGED, (data)=>this.onStarsChanged(data));
+        
+        this.model.destroy();
+    }
+    
     private createListeners():void {
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, (data)=>this.onTextChanged(data));
         EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onTextChanged(data));

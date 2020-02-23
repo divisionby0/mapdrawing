@@ -19,6 +19,12 @@ var DateTimeTemplateLayer = (function (_super) {
         this.monthNames = new Array("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря");
         this.createListener();
     }
+    DateTimeTemplateLayer.prototype.onDestroy = function () {
+        var _this = this;
+        EventBus.removeEventListener(EditorEvent.DATE_TIME_CHANGED, function (data) { return _this.onDateTimeChanged(data); });
+        EventBus.removeEventListener(EditorEvent.DATE_VISIBILITY_CHANGED, function (data) { return _this.onDateVisibilityChanged(data); });
+        EventBus.removeEventListener(EditorEvent.TIME_VISIBILITY_CHANGED, function (data) { return _this.onTimeVisibilityChanged(data); });
+    };
     DateTimeTemplateLayer.prototype.createListener = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, function (data) { return _this.onDateTimeChanged(data); });
@@ -45,7 +51,7 @@ var DateTimeTemplateLayer = (function (_super) {
             else {
                 day = this.data.day;
             }
-            month = this.parseMonthName(parseInt(this.data.month) - 1);
+            month = this.parseMonthName(parseInt(this.data.month));
             this.text += day + " " + month + " " + this.data.year;
         }
         if (this.timeVisible) {

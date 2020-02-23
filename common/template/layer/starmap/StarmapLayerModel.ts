@@ -1,5 +1,8 @@
-///<reference path="TemplateLayer.ts"/>
-class StarmapTemplateLayer extends TemplateLayer{
+///<reference path="../TemplateLayer.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../../editor/EditorEvent.ts"/>
+///<reference path="StarmapLayerView.ts"/>
+class StarmapLayerModel extends TemplateLayer{
     private starsColor:string;
     private backgroundColor:string;
     private constellationColor:string;
@@ -11,6 +14,11 @@ class StarmapTemplateLayer extends TemplateLayer{
     private cachedBorderColor:string;
     private cachedConstellationColor:string;
 
+    private currentLat:number;
+    private currentLng:number;
+    private currentCity:string;
+    private currentDate:string;
+
     constructor(id:string, aspectRatio:number, type:string, left:any = null, top:any = null, right:any = null, bottom:any = null, changeable:boolean = false, color:string = "0", backgroundColor:string, constellationColor:string, borderColor:string, borderWeight:number){
         super(id, aspectRatio, type, left, top, right, bottom, changeable);
         this.starsColor = color;
@@ -21,8 +29,33 @@ class StarmapTemplateLayer extends TemplateLayer{
         
         this.cachedBorderColor = borderColor;
         this.cachedConstellationColor = constellationColor;
+
+        EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, (date)=>this.onDateTimeChanged(date));
     }
 
+    public setView(view:LayerView):void{
+        super.setView(view);
+        
+        if(this.currentDate){
+            (this.view as StarmapLayerView).setDate(this.currentDate);
+        }
+    }
+    
+    public onDateTimeChanged(date:any):void {
+        var userDate = new Date();
+        userDate.setFullYear(date.year);
+        userDate.setMonth(date.month);
+        userDate.setDate(date.day);
+        userDate.setHours(date.hours);
+        userDate.setMinutes(date.minutes);
+
+        this.currentDate = userDate.toString();
+        if(this.view){
+            (this.view as StarmapLayerView).setDate(this.currentDate);
+        }
+    }
+    
+    
     public hasBackgroundColor():boolean{
         if(this.backgroundColor!=null && this.backgroundColor!=undefined && this.backgroundColor!=""){
             return true;
@@ -97,5 +130,4 @@ class StarmapTemplateLayer extends TemplateLayer{
     public setStarsMulticolored(isMulticolored:boolean):void{
         this.hasMulticoloredStars = isMulticolored;
     }
-    
 }

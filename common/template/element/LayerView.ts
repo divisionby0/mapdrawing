@@ -26,7 +26,12 @@ class LayerView{
         
         this.onResize();
     }
-
+    
+    public destroy():void{
+        this.onDestroy();
+    }
+    
+    
     protected create():void {
         if(this.layer.hasLeft()){
             this.style+="left:"+this.layer.getLeft()+";";
@@ -53,6 +58,10 @@ class LayerView{
     }
     
     protected createListeners():void{
+        
+    }
+
+    protected onDestroy() {
         
     }
 }
