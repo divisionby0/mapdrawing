@@ -7,6 +7,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"/>
     <link rel="stylesheet" href="../common/lib/bootstrap.min.css"/>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">
     <link
             rel="stylesheet"
             href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
@@ -15,170 +16,50 @@
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 
-<body style="background-image: linear-gradient(to top, #d5d4d0 0%, #d5d4d0 1%, #eeeeec 31%, #efeeec 75%, #e9e9e7 100%);">
+<body>
 <div class="container">
-
-    <div class="page-header">
-    </div>
-
-    <noscript>
-        <div class="alert alert-danger" role="alert">
-            This site requires JavaScript to function, but it seems to be disabled in your browser.
-        </div>
-    </noscript>
-
-    <form onsubmit="generateMap(); return false;" id="config">
-        <fieldset id="config-fields" style="display: block;">
-            <div class="row" style="">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label>Unit</label><br>
-                        <label class="radio-inline">
-                            <input type="radio" name="unitOptions" value="in" id="inUnit"> Inch
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="unitOptions" value="mm" id="mmUnit" checked> Millimeter
-                        </label>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Output format</label><br>
-                        <label class="radio-inline">
-                            <input type="radio" name="outputOptions" value="png" checked> PNG
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="outputOptions" value="pdf"> PDF
-                        </label>
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="form-group">
-                        <label for="styleSelect">Map style</label>
-                        <select id="styleSelect" class="form-control">
-                            <option value="mapbox://styles/divby0/ck66s9jnz3sip1is40kna2d1t">Monochrome</option>
-                            <option value="mapbox://styles/divby0/ck728h6k6148a1inhmjq0j5yn">Monochrome no streets</option>
-                            <option value="mapbox://styles/divby0/ck72z1wek1b451it8t864s6yf">Spring</option>
-                            <option value="mapbox://styles/divby0/ck72z2mr91sto1iop6pusf46d">Spring no streets</option>
-                            <!--
-                            <option value="mapbox://styles/divby0/ck71osyyh0lli1imk9zxsdmqf">2</option>
-                            <option value="mapbox://styles/divby0/ck71pcwga0m8t1io3p4fp46jh">3</option>
-                            <option value="mapbox://styles/divby0/ck71qdivn0ne81hmsr4plk7a1">4</option>
-                            -->
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="">
-                <div class="col-sm-2">
-                    <div class="form-group" id="widthGroup">
-                        <label for="widthInput">Width</label>
-                        <input type="text" class="form-control" id="widthInput" autocomplete="off" value="210">
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group" id="heightGroup">
-                        <label for="heightInput">Height</label>
-                        <input type="text" class="form-control" id="heightInput" autocomplete="off" value="297">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group" id="dpiGroup">
-                        <label for="dpiInput">DPI</label>
-                        <input type="text" class="form-control" id="dpiInput" autocomplete="off" value="300">
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group" id="latGroup">
-                                <label for="latInput">Latitude</label>
-                                <input type="text" class="form-control" id="latInput" autocomplete="off" value="55,65910568824154">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group" id="lonGroup">
-                                <label for="lonInput">Longitude</label>
-                                <input type="text" class="form-control" id="lonInput" autocomplete="off" value="37,620551183254975">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group" id="zoomGroup">
-                                <label for="zoomInput">Zoom</label>
-                                <input type="text" class="form-control" id="zoomInput" autocomplete="off" value="11,933242053191053">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-    <div class="alert alert-danger" role="alert" id="error-message"></div>
-
     <div class="row">
         <div id="templateElement" class="col-md-6">
 
         </div>
-    </div>
-
-    <div class="row" style="padding-top: 20px;">
-        <div class="col-md-4" style="position: relative!important;">
-            <input type="text" id="cityInput" class="form-control" placeholder="Введите имя города" style="position: relative!important;">
-            <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
-                <div id="places"></div>
-            </span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <input type="text" id="firstTextInput" class="form-control" placeholder="Enter first text">
-        </div>
-        <div class="col-md-4">
-            <input type="text" id="secondTextInput" class="form-control" placeholder="Enter second text">
-        </div>
-        <div class="col-md-4">
-            <input type="text" id="thirdTextInput" class="form-control" placeholder="Enter third text">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-lg" id="generate-btn">Создать картинку</button>
-            <div id="spinner"></div>
-        </div>
-    </div>
-
-    <!-- Error Modal -->
-    <div class="modal in" id="errorModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" onclick="closeErrorModal()"><span>&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Print Maps Error</h4>
+        <div class="col-md-3">
+            <div class="container" style="width: 100%!important;">
+                <div class="row" style="padding-top: 20px;">
+                    <input type="text" id="cityInput" class="form-control" placeholder="Введите имя города" style="position: relative!important;">
+                        <span class="dropdown-menu ap-with-places" role="listbox" id="placesListbox" style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto;">
+                            <div id="places"></div>
+                        </span>
                 </div>
-                <div class="modal-body">
-                    <p id="modal-error-text"></p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <input id="placeLabelsButton" type="checkbox">
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="closeErrorModal()">Close</button>
+                <div class="row">
+                    <input type="text" id="text_1_Input" class="form-control">
+                </div>
+                <div class="row">
+                    <input type="text" id="text_2_Input" class="form-control">
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-lg" id="generate-btn">Создать картинку</button>
+                        <div id="spinner"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="row" id="templatesListContainer" style="overflow-x: hidden; overflow-y: scroll;"></div>
+        </div>
     </div>
-    <div class="modal-backdrop in" id="modalBackdrop" style="display: none;"></div>
-
-    <hr>
-
-    <footer>
-        <p>
-
-        </p>
-    </footer>
 </div>
 
 <script src="../common/lib/jquery.js"></script>
 <script src="../common/lib/html2canvas.js"></script>
-
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap2-toggle.min.js"></script>
 <script type="text/javascript" src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/canvas-toblob/0.1/canvas-toBlob.min.js"></script>
@@ -196,12 +77,12 @@
 <script type="text/javascript" src="../common/template/element/TemplateElementModel.js"></script>
 <script type="text/javascript" src="../common/template/element/TemplateElementController.js"></script>
 
-
 <script type="text/javascript" src="../common/template/layer/TemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/DivTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/BorderCircleTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/TextTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/CityTemplateLayer.js"></script>
+<script type="text/javascript" src="../common/template/layer/CountryTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/CoordinatesTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/DateTimeTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/ImageTemplateLayer.js"></script>
@@ -210,6 +91,7 @@
 <script type="text/javascript" src="../common/template/element/LayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/TextLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/CityLayerView.js"></script>
+<script type="text/javascript" src="../common/template/element/CountryLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/CoordinatesLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/DateTimeLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/DivLayerView.js"></script>
@@ -230,6 +112,11 @@
 <script type="text/javascript" src="../common/template/editor/city/SearchCityController.js"></script>
 
 <script type="text/javascript" src="../common/template/layer/LayerType.js"></script>
+
+<script type="text/javascript" src="../common/template/editor/TemplateEditorView.js"></script>
+<script type="text/javascript" src="../common/template/editor/geographicMap/GeographicEditorView.js"></script>
+<script type="text/javascript" src="../common/template/editor/TemplateEditorController.js"></script>
+<script type="text/javascript" src="../common/template/editor/TemplateEditorModel.js"></script>
 
 <script type="text/javascript" src="../common/template/Template.js"></script>
 <script type="text/javascript" src="../common/template/TemplatesParser.js"></script>

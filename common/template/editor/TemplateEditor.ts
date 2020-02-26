@@ -41,7 +41,7 @@ class TemplateEditor{
         new TemplatesList(j$, this.templateCollection);
     }
 
-    private onTemplateSelected(index:number):void{
+    protected onTemplateSelected(index:number):void{
         
         if(index==this.currentTemplateIndex){
             return;
@@ -65,7 +65,7 @@ class TemplateEditor{
         
     }
 
-    private createDateTimeSelector():void {
+    protected createDateTimeSelector():void {
         new DateTimeSelector(this.j$);
     }
 }

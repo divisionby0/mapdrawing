@@ -1,3 +1,5 @@
+///<reference path="../../../common/lib/events/EventBus.ts"/>
+///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 declare var mapboxgl:any;
 class GeographicMap{
     private j$:any;
@@ -7,12 +9,14 @@ class GeographicMap{
     private position:string[];
     private lng:string;
     private currentStyle:string;
+    private placementHorizontal:boolean = false;
     
     constructor(j$:any, parameters:any){
         this.j$ = j$;
         this.zoom = parameters.zoom;
         this.position = parameters.position;
         this.currentStyle = parameters.currentStyle;
+        this.createMap();
     }
     
     public setZoom(zoom:string):void{
@@ -30,26 +34,37 @@ class GeographicMap{
             console.log("map not created yet");
         }
     }
-    
+
     public setStyle(style:string):void{
         this.currentStyle = style;
         if(this.map){
-            this.map.destroy();
-            this.map = null;
+            this.map.setStyle(this.currentStyle);
         }
-        this.createMap();
+    }
+
+    public resize(w:number, h:number):void{
+        var mapCanvas:any = document.getElementsByClassName('mapboxgl-canvas')[0];
+        var mapDiv:any = document.getElementById('map');
+
+        mapDiv.style.width = w;
+        mapCanvas.style.width = h;
+
+        this.map.resize();
     }
 
     private createMap():void{
-        console.log("position=",this.position);
         try {
+            console.log("create map pos=",this.position);
             this.map = new mapboxgl.Map({
                 container: 'map',
                 center: this.position, // lng, lat
                 zoom: this.zoom,
                 fadeDuration: 0,
-                style: this.currentStyle
+                style: this.currentStyle,
+                attributionControl: false
             });
+
+            this.j$(".mapboxgl-control-container").hide();
 
             this.map.on('moveend', ()=>this.onMapMoved());
             this.onMapMoved();
@@ -61,9 +76,10 @@ class GeographicMap{
     private onMapMoved():void {
         var center = this.map.getCenter().toArray();
 
-        var zoom:string = parseFloat(this.map.getZoom()).toFixed(6);
-        var lat:string = parseFloat(center[1]).toFixed(6);
-        var lng:string = parseFloat(center[0]).toFixed(6);
-        console.log("lat=",lat,"lng=",lng);
+        var lat:string = parseFloat(center[1]).toFixed(13);
+        var lng:string = parseFloat(center[0]).toFixed(13);
+        var coord:any[] = [lat,lng];
+        
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, coord);
     }
 }

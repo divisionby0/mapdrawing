@@ -15,7 +15,7 @@ class CityLayerView extends TextLayerView{
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));
     }
 
-    private onCityChanged(data:any):void {
+    protected onCityChanged(data:any):void {
         var city:string = data.city;
         this.layerContainer.text(city);
     }

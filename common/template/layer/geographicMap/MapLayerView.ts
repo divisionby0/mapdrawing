@@ -35,11 +35,28 @@ class MapLayerView extends LayerView{
             this.map.setPosition(position);
         }
     }
-
+    
     protected onResize():void{
         super.onResize();
-
+        
         if(this.layerContainer){
+            /*
+            var left=0;
+            var right=0;
+            var top=0;
+            var bottom=0;
+
+            this.layerContainer.css({"left":left});
+            this.layerContainer.css({"right":right});
+            this.layerContainer.css({"top":top});
+            this.layerContainer.css({"bottom":bottom});
+
+            this.layerContainer.height(200);
+            this.layerContainer.width(200);
+            this.map.resize();
+            */
+
+
             var left:any = this.layerContainer.width()/100 * parseInt(this.layer.getLeft());
             var right:any = this.layerContainer.width()/100 * parseInt(this.layer.getRight());
             
@@ -61,6 +78,9 @@ class MapLayerView extends LayerView{
 
             this.layerContainer.height(this.currentHeight - top - bottom);
             this.layerContainer.width(this.currentWidth - left - right);
+
+
+            this.map.resize(this.layerContainer.width(), this.layerContainer.height());
         }
     }
     

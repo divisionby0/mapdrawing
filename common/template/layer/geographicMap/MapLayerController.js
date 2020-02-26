@@ -9,10 +9,13 @@ var MapLayerController = (function () {
     MapLayerController.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onLocationChanged(data); });
+        EventBus.addEventListener(EditorEvent.PLACE_LABELS_CHANGED, function (visible) { return _this.onPlaceLabelsChanged(visible); });
     };
     MapLayerController.prototype.onLocationChanged = function (data) {
-        console.log("LOCATION changed data=", data);
         this.model.locationChanged(data.coord);
+    };
+    MapLayerController.prototype.onPlaceLabelsChanged = function (visible) {
+        this.model.placeLabelsVisibilityChanged(visible);
     };
     return MapLayerController;
 }());

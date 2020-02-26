@@ -3,6 +3,8 @@ class EditorEvent{
     public static BORDER_CHANGED:string = "BORDER_CHANGED";
     public static CONSTELLATIONS_CHANGED:string = "CONSTELLATIONS_CHANGED";
     public static STARS_CHANGED:string = "STARS_CHANGED";
+    public static PLACE_LABELS_CHANGED:string = "PLACE_LABELS_CHANGED";
+    public static PLACEMENT_CHANGED:string = "PLACEMENT_CHANGED";
     public static TEXT_1_CHANGED:string = "TEXT_1_CHANGED";
     public static TEXT_2_CHANGED:string = "TEXT_2_CHANGED";
     public static CITY_CHANGED:string = "CITY_CHANGED";

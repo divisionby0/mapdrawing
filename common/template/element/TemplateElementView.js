@@ -12,8 +12,8 @@
 ///<reference path="DateTimeLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
+///<reference path="CountryLayerView.ts"/>
 var TemplateElementView = (function () {
-    //private views:List<LayerView> = new List<LayerView>("views");
     function TemplateElementView(j$, parentContainerId, selfContainerId, coeff) {
         this.j$ = j$;
         this.parentContainerId = parentContainerId;
@@ -21,14 +21,6 @@ var TemplateElementView = (function () {
         this.coeff = coeff;
     }
     TemplateElementView.prototype.destroy = function () {
-        /*
-        var layersIterator:ListIterator = this.views.getIterator();
-        while(layersIterator.hasNext()){
-            var layerView:LayerView = layersIterator.next();
-            layerView.destroy();
-            layerView = null;
-        }
-        */
     };
     TemplateElementView.prototype.getTemplateWidth = function () {
         return this.j$("#" + this.parentContainerId).outerWidth();
@@ -52,6 +44,9 @@ var TemplateElementView = (function () {
                     break;
                 case LayerType.CITY_LAYER_TYPE:
                     new CityLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
+                case LayerType.COUNTRY_LAYER_TYPE:
+                    new CountryLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.COORDINATES_LAYER_TYPE:
                     new CoordinatesLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);

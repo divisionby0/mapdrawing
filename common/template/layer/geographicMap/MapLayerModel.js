@@ -10,6 +10,7 @@ var MapLayerModel = (function (_super) {
     function MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, styles, position) {
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.styles = new Array();
+        this.placeLabelsVisible = false;
         this.border = border;
         this.zoom = zoom;
         this.styles = styles;
@@ -18,7 +19,6 @@ var MapLayerModel = (function (_super) {
     }
     MapLayerModel.prototype.setView = function (view) {
         _super.prototype.setView.call(this, view);
-        console.log("setView this.position=", this.position);
         this.view.setZoom(this.zoom);
         this.view.setPosition(this.position);
         this.view.setMapStyle(this.mapStyle);
@@ -30,6 +30,18 @@ var MapLayerModel = (function (_super) {
         }
         else {
             console.error("View not set yet. Cannot apply new position.");
+        }
+    };
+    MapLayerModel.prototype.placeLabelsVisibilityChanged = function (visible) {
+        this.placeLabelsVisible = visible;
+        if (visible) {
+            this.mapStyle = this.styles[1];
+        }
+        else {
+            this.mapStyle = this.styles[0];
+        }
+        if (this.view) {
+            this.view.setMapStyle(this.mapStyle);
         }
     };
     MapLayerModel.prototype.getBorder = function () {

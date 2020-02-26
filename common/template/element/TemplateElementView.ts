@@ -12,13 +12,13 @@
 ///<reference path="DateTimeLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
+///<reference path="CountryLayerView.ts"/>
 class TemplateElementView implements ITemplateSizeProvider{
     private j$:any;
     private parentContainerId:string;
     private selfContainerId:string;
     private data:Template;
     private coeff:number;
-    //private views:List<LayerView> = new List<LayerView>("views");
     
     constructor(j$:any, parentContainerId:string, selfContainerId:string, coeff:number){
         this.j$ = j$;
@@ -28,19 +28,12 @@ class TemplateElementView implements ITemplateSizeProvider{
     }
 
     public destroy():void{
-        /*
-        var layersIterator:ListIterator = this.views.getIterator();
-        while(layersIterator.hasNext()){
-            var layerView:LayerView = layersIterator.next();
-            layerView.destroy();
-            layerView = null;
-        }
-        */
     }
     
     public getTemplateWidth():number{
         return this.j$("#"+this.parentContainerId).outerWidth();
     }
+    
     public getTemplateHeight():number{
         var aspectRatio:any = parseFloat(this.data.getAspectRatio());
         return this.getTemplateWidth()*aspectRatio;
@@ -64,6 +57,9 @@ class TemplateElementView implements ITemplateSizeProvider{
                     break;
                 case LayerType.CITY_LAYER_TYPE:
                     new CityLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
+                case LayerType.COUNTRY_LAYER_TYPE:
+                    new CountryLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.COORDINATES_LAYER_TYPE:
                     new CoordinatesLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);

@@ -11,6 +11,7 @@
 ///<reference path="layer/starmap/StarmapLayerController.ts"/>
 ///<reference path="layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="layer/geographicMap/MapLayerController.ts"/>
+///<reference path="layer/CountryTemplateLayer.ts"/>
 class TemplatesParser{
     private j$:any;
 
@@ -119,6 +120,22 @@ class TemplatesParser{
                         templateLayer = new CityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
+                    case LayerType.COUNTRY_LAYER_TYPE:
+                        var text:string;
+                        try{
+                            text= layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new CountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
 
                     case LayerType.COORDINATES_LAYER_TYPE:
                         var text:string;
@@ -196,7 +213,7 @@ class TemplatesParser{
                             bottom = "0";
                         }
                         
-                        templateLayer = new MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, [noStreetLabelsStyle, noStreetLabelsStyle], position);
+                        templateLayer = new MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, [noStreetLabelsStyle, normalStyle], position);
                         new MapLayerController((templateLayer as MapLayerModel));
                         layers.add(templateLayer);
 

@@ -7,6 +7,7 @@ class MapLayerModel extends TemplateLayer{
     private mapStyle:string;
     private styles:string[] = new Array();
     private border:string;
+    private placeLabelsVisible:boolean = false;
 
     constructor(id:string, aspectRatio:number, type:string, left:any, top:any, right:any, bottom:any, border:string, changeable:boolean, zoom:string, styles:string[], position:any[]){
         super(id, aspectRatio, type, left, top, right, bottom, changeable);
@@ -21,7 +22,6 @@ class MapLayerModel extends TemplateLayer{
     public setView(view:LayerView):void{
         super.setView(view);
         
-        console.log("setView this.position=",this.position);
         (this.view as MapLayerView).setZoom(this.zoom);
         (this.view as MapLayerView).setPosition(this.position);
         (this.view as MapLayerView).setMapStyle(this.mapStyle);
@@ -37,6 +37,18 @@ class MapLayerModel extends TemplateLayer{
         }
     }
     
+    public placeLabelsVisibilityChanged(visible:boolean):void{
+        this.placeLabelsVisible = visible;
+        if(visible){
+            this.mapStyle = this.styles[1];
+        }
+        else{
+            this.mapStyle = this.styles[0];
+        }
+        if(this.view){
+            (this.view as MapLayerView).setMapStyle(this.mapStyle);
+        }
+    }
     public getBorder():string{
         return this.border;
     }

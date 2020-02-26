@@ -5,7 +5,7 @@
 ///<reference path="../element/LayerView.ts"/>
 ///<reference path="../LayerId.ts"/>
 class TemplateEditorView{
-    private j$:any;
+    protected j$:any;
 
     private constellationLinesButton:any;
     private starsMultiColorsButton:any;
@@ -16,8 +16,8 @@ class TemplateEditorView{
     private circleBorderButton:any;
     private coordinatesButton:any;
     
-    private text_1_input:any;
-    private text_2_input:any;
+    protected text_1_input:any;
+    protected text_2_input:any;
     private text_3_input:any;
 
     constructor(j$:any){
@@ -59,7 +59,7 @@ class TemplateEditorView{
     }
 
     
-    private createListeners():void {
+    protected createListeners():void {
         this.constellationLinesButton.change(()=>this.onConstellationsChanged());
         this.starsMultiColorsButton.change(()=>this.onStarsChanged());
         this.circleBorderButton.change(()=>this.onCircleBorderChanged());
@@ -75,7 +75,7 @@ class TemplateEditorView{
         this.text_3_input.on("input", ()=>this.onText3Changed());
     }
 
-    private addControls():void {
+    protected addControls():void {
         this.constellationLinesButton = this.j$('#constellationLinesButton');
         this.starsMultiColorsButton = this.j$('#starsMultiColorsButton');
         this.dateButton = this.j$('#dateButton');

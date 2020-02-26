@@ -20,6 +20,11 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+#templateElement{
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.28);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.28);
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.28);
+}
 
 /*
  * Hide high-res map rendering
@@ -32,6 +37,13 @@ body {
 .hidden-map-container {
     height: 210mm;
     width: 297mm;
+}
+
+.starmapEditorButton{
+    width: 100%!important;
+    height: 34px!important;
+    padding: 6px 12px!important;
+    margin: 0.2em!important;
 }
 
 /*

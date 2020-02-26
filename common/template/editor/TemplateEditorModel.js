@@ -3,7 +3,7 @@
 ///<reference path="../layer/LayerType.ts"/>
 var TemplateEditorModel = (function () {
     function TemplateEditorModel(view) {
-        this.defaultSettings = { constellations: true, date: true, time: true, place: true, border: true, circle: true, coordinates: true };
+        this.defaultSettings = { constellations: true, date: true, time: true, place: true, border: true, circle: true, coordinates: true, showPlaceLabels: false };
         this.view = view;
     }
     TemplateEditorModel.prototype.onTemplateChanged = function (template) {

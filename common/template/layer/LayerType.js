@@ -4,6 +4,7 @@ var LayerType = (function () {
     LayerType.DIV_LAYER_TYPE = "div";
     LayerType.TEXT_LAYER_TYPE = "text";
     LayerType.CITY_LAYER_TYPE = "city";
+    LayerType.COUNTRY_LAYER_TYPE = "country";
     LayerType.COORDINATES_LAYER_TYPE = "coordinates";
     LayerType.DATE_TIME_LAYER_TYPE = "dateTime";
     LayerType.IMAGE_LAYER_TYPE = "image";
