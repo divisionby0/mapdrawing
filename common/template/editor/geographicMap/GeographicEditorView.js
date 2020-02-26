@@ -15,6 +15,8 @@ var GeographicEditorView = (function (_super) {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
         this.placeLabelsButton.change(function () { return _this.onPlaceLabelsChanged(); });
+        this.text_1_input.on("input", function () { return _this.onText_1_changed(); });
+        this.text_2_input.on("input", function () { return _this.onText_2_changed(); });
     };
     GeographicEditorView.prototype.addControls = function () {
         this.text_1_input = this.j$("#text_1_Input");
@@ -32,7 +34,16 @@ var GeographicEditorView = (function (_super) {
     };
     GeographicEditorView.prototype.onCityChanged = function (data) {
         var city = data.city;
+        var country = data.country;
         this.text_1_input.val(city);
+        this.text_2_input.val(country);
+    };
+    GeographicEditorView.prototype.onText_1_changed = function () {
+        console.log("onText_1_changed");
+        EventBus.dispatchEvent(EditorEvent.TEXT_1_CHANGED, this.text_1_input.val());
+    };
+    GeographicEditorView.prototype.onText_2_changed = function () {
+        EventBus.dispatchEvent(EditorEvent.TEXT_2_CHANGED, this.text_2_input.val());
     };
     return GeographicEditorView;
 }(TemplateEditorView));

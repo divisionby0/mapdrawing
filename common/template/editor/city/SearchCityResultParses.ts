@@ -17,22 +17,13 @@ class SearchCityResultParses{
                 
                 for(i=0; i<features.length; i++){
                     var feature:any = features[i];
-
-                    //var name:string = feature.formatted_address;
-                    var name:string;
-
                     var name:string = "";
                     var country = "";
 
                     var components:any[] = feature.address_components;
-
-                    console.log("components: ",components);
                     
                     if(components && components.length>0){
                         name = components[0].long_name;
-
-                        console.log("length > 0");
-                        console.log("name=",name);
 
                         if(components.length > 1){
                             try{
@@ -44,7 +35,6 @@ class SearchCityResultParses{
                         }
                     }
                     else{
-                        console.log("no components or length =0");
                         name = feature.formatted_address;
                     }
 

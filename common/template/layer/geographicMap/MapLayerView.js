@@ -36,21 +36,6 @@ var MapLayerView = (function (_super) {
     MapLayerView.prototype.onResize = function () {
         _super.prototype.onResize.call(this);
         if (this.layerContainer) {
-            /*
-            var left=0;
-            var right=0;
-            var top=0;
-            var bottom=0;
-
-            this.layerContainer.css({"left":left});
-            this.layerContainer.css({"right":right});
-            this.layerContainer.css({"top":top});
-            this.layerContainer.css({"bottom":bottom});
-
-            this.layerContainer.height(200);
-            this.layerContainer.width(200);
-            this.map.resize();
-            */
             var left = this.layerContainer.width() / 100 * parseInt(this.layer.getLeft());
             var right = this.layerContainer.width() / 100 * parseInt(this.layer.getRight());
             // TODO какая-то путаница с border в расчетах - разобраться

@@ -73,7 +73,7 @@ class TextLayerView extends LayerView{
         }
     }
 
-    private onTextChanged(data:any):void {
+    public onTextChanged(data:any):void {
         var text:string = data.text;
         var elementId:string = data.elementId;
 

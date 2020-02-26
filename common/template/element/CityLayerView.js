@@ -6,18 +6,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="TextLayerView.ts"/>
 var CityLayerView = (function (_super) {
     __extends(CityLayerView, _super);
-    function CityLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
-        _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
+    function CityLayerView() {
+        _super.apply(this, arguments);
     }
     CityLayerView.prototype.onDestroy = function () {
-        var _this = this;
-        EventBus.removeEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
-        EventBus.removeEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, function (data) { return _this.onCityVisibilityChanged(data); });
     };
     CityLayerView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
+        EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (data) { return _this.onCityTextChanged(data); });
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, function (data) { return _this.onCityVisibilityChanged(data); });
+    };
+    CityLayerView.prototype.onCityTextChanged = function (text) {
+        this.layerContainer.text(text);
     };
     CityLayerView.prototype.onCityChanged = function (data) {
         var city = data.city;

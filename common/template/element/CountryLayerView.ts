@@ -1,12 +1,15 @@
-///<reference path="CityLayerView.ts"/>
-class CountryLayerView extends CityLayerView{
+///<reference path="TextLayerView.ts"/>
+class CountryLayerView extends TextLayerView{
 
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
-        super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
+    protected createListeners():void{
+        EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCountryChanged(data));
+        EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onCountryTextChanged(data));
+    }
+    private onCountryTextChanged(text:string):void{
+        this.layerContainer.text(text);
     }
 
-    protected onCityChanged(data:any):void {
-        console.log("onCityChanged data=",data);
+    protected onCountryChanged(data:any):void {
         var country:string = data.country;
         this.layerContainer.text(country);
     }

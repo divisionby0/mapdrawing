@@ -12,16 +12,11 @@ var SearchCityResultParses = (function () {
                 var j;
                 for (i = 0; i < features.length; i++) {
                     var feature = features[i];
-                    //var name:string = feature.formatted_address;
-                    var name;
                     var name = "";
                     var country = "";
                     var components = feature.address_components;
-                    console.log("components: ", components);
                     if (components && components.length > 0) {
                         name = components[0].long_name;
-                        console.log("length > 0");
-                        console.log("name=", name);
                         if (components.length > 1) {
                             try {
                                 country = components[components.length - 1].long_name;
@@ -32,7 +27,6 @@ var SearchCityResultParses = (function () {
                         }
                     }
                     else {
-                        console.log("no components or length =0");
                         name = feature.formatted_address;
                     }
                     var center = [feature.geometry.location.lng, feature.geometry.location.lat];

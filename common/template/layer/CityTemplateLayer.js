@@ -25,6 +25,7 @@ var CityTemplateLayer = (function (_super) {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, function (data) { return _this.onCityVisibilityChanged(data); });
+        EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (text) { return _this.onText_1_changed(text); });
     };
     CityTemplateLayer.prototype.onCityChanged = function (data) {
         var city = data.city;
@@ -32,6 +33,9 @@ var CityTemplateLayer = (function (_super) {
     };
     CityTemplateLayer.prototype.onCityVisibilityChanged = function (data) {
         this.visible = data.visible;
+    };
+    CityTemplateLayer.prototype.onText_1_changed = function (text) {
+        this.text = text;
     };
     return CityTemplateLayer;
 }(TextTemplateLayer));

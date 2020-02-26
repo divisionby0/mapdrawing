@@ -54,7 +54,6 @@ class GeographicMap{
 
     private createMap():void{
         try {
-            console.log("create map pos=",this.position);
             this.map = new mapboxgl.Map({
                 container: 'map',
                 center: this.position, // lng, lat
@@ -76,8 +75,8 @@ class GeographicMap{
     private onMapMoved():void {
         var center = this.map.getCenter().toArray();
 
-        var lat:string = parseFloat(center[1]).toFixed(13);
-        var lng:string = parseFloat(center[0]).toFixed(13);
+        var lat:string = parseFloat(center[1]).toFixed(7);
+        var lng:string = parseFloat(center[0]).toFixed(7);
         var coord:any[] = [lat,lng];
         
         EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, coord);
