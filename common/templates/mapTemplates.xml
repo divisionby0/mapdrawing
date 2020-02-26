@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <template name="monochrome" printSize="2481x3509" preview="common/templates/template1_preview.jpg" aspectRatio="1.414">
+        <layer id="div" type="div" left="0" top="0" right="0" bottom="0" backgroundColor="red"></layer>
+        <!--<layer id="backgroundBorder" type="div" left="0" top="0" right="0" bottom="0" border="#a1a0a0 1.2em solid"></layer>-->
+
+        <layer id="map" type="map" left="2.4%" top="2.1%" right="3.4%" bottom="3.1%" border="#000000 0.3em solid" zoom="11" lat="55.743650" lng="37.622611"  normalStyle="mapbox://styles/divby0/ck66s9jnz3sip1is40kna2d1t" noStreeLabelsStyle="mapbox://styles/divby0/ck728h6k6148a1inhmjq0j5yn" >Москва</layer>
+
+        <layer id="cityText" type="city" size="2em" color="#d8d8d8" left="0" right="0" top="78%" text-align="center">Москва</layer>
+        <layer id="countryText" type="country" size="2em" color="#d8d8d8" left="0" right="0" top="78%" text-align="center">Россия</layer>
+        <layer id="coordinatesText" type="coordinates" size="1em" color="#d8d8d8" left="0" right="0" top="92%" text-align="center"></layer>
+    </template>
+
+</templates>

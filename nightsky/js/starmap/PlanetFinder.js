@@ -12,8 +12,7 @@ var PlanetFinder = (function () {
                 d /= 1.0 - (e * Math.cos(ae));
                 ae -= d;
             }
-            return 2.0 *
-                Math.atan(Math.sqrt((1.0 + e) / (1.0 - e)) * Math.tan(ae / 2.0));
+            return 2.0 * Math.atan(Math.sqrt((1.0 + e) / (1.0 - e)) * Math.tan(ae / 2.0));
         }
         var t = (jd - Astro.JD_J2000) / 36525.0;
         var m = planet.L - planet.wb + planet.dL * t; /* mean anomaly */

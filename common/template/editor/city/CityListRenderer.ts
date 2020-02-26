@@ -21,6 +21,7 @@ class CityListRenderer{
     
     private onClick(event:any):void{
         var cityName:string = this.j$(event.target).text();
+        console.log("cityName=",cityName);
         EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, {coord:this.coord, city:cityName});
     }
 }

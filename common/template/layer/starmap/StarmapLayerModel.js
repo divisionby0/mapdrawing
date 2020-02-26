@@ -10,7 +10,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 var StarmapLayerModel = (function (_super) {
     __extends(StarmapLayerModel, _super);
     function StarmapLayerModel(id, aspectRatio, type, left, top, right, bottom, changeable, color, backgroundColor, constellationColor, borderColor, borderWeight) {
-        var _this = this;
         if (left === void 0) { left = null; }
         if (top === void 0) { top = null; }
         if (right === void 0) { right = null; }
@@ -19,7 +18,8 @@ var StarmapLayerModel = (function (_super) {
         if (color === void 0) { color = "0"; }
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.borderVisible = true;
-        this.hasMulticoloredStars = false;
+        this.hasColoredStars = false;
+        this.hasConstellations = true;
         this.starsColor = color;
         this.backgroundColor = backgroundColor;
         this.constellationColor = constellationColor;
@@ -27,12 +27,15 @@ var StarmapLayerModel = (function (_super) {
         this.borderWeight = borderWeight;
         this.cachedBorderColor = borderColor;
         this.cachedConstellationColor = constellationColor;
-        EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, function (date) { return _this.onDateTimeChanged(date); });
     }
     StarmapLayerModel.prototype.setView = function (view) {
         _super.prototype.setView.call(this, view);
         if (this.currentDate) {
             this.view.setDate(this.currentDate);
+            this.view.setHasConstellations(this.hasConstellations);
+            this.view.setHasColoredStars(this.hasColoredStars);
+            this.view.setHasCircleBorder(this.borderVisible);
+            this.view.setCoord(this.currentCoord);
         }
     };
     StarmapLayerModel.prototype.onDateTimeChanged = function (date) {
@@ -45,6 +48,16 @@ var StarmapLayerModel = (function (_super) {
         this.currentDate = userDate.toString();
         if (this.view) {
             this.view.setDate(this.currentDate);
+        }
+    };
+    StarmapLayerModel.prototype.onCityChanged = function (data) {
+        console.log("onCityChanged data=", data);
+        this.currentCity = data.city;
+        this.currentCoord = data.coord;
+        try {
+            this.view.setCoord(data.coord);
+        }
+        catch (error) {
         }
     };
     StarmapLayerModel.prototype.hasBackgroundColor = function () {
@@ -107,10 +120,34 @@ var StarmapLayerModel = (function (_super) {
         }
     };
     StarmapLayerModel.prototype.getHasMulticoloredStars = function () {
-        return this.hasMulticoloredStars;
+        return this.hasColoredStars;
     };
     StarmapLayerModel.prototype.setStarsMulticolored = function (isMulticolored) {
-        this.hasMulticoloredStars = isMulticolored;
+        this.hasColoredStars = isMulticolored;
+    };
+    StarmapLayerModel.prototype.setHasConstellations = function (value) {
+        this.hasConstellations = value;
+        try {
+            this.view.setHasConstellations(this.hasConstellations);
+        }
+        catch (error) {
+        }
+    };
+    StarmapLayerModel.prototype.setHasColoredStars = function (value) {
+        this.hasColoredStars = value;
+        try {
+            this.view.setHasColoredStars(this.hasColoredStars);
+        }
+        catch (error) {
+        }
+    };
+    StarmapLayerModel.prototype.hasCircleBorder = function (value) {
+        this.borderVisible = value;
+        try {
+            this.view.setHasCircleBorder(this.borderVisible);
+        }
+        catch (error) {
+        }
     };
     return StarmapLayerModel;
 }(TemplateLayer));

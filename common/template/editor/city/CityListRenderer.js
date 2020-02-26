@@ -15,6 +15,7 @@ var CityListRenderer = (function () {
     }
     CityListRenderer.prototype.onClick = function (event) {
         var cityName = this.j$(event.target).text();
+        console.log("cityName=", cityName);
         EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, { coord: this.coord, city: cityName });
     };
     return CityListRenderer;

@@ -9,6 +9,8 @@
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
 ///<reference path="layer/DateTimeTemplateLayer.ts"/>
 ///<reference path="layer/starmap/StarmapLayerController.ts"/>
+///<reference path="layer/geographicMap/MapLayerModel.ts"/>
+///<reference path="layer/geographicMap/MapLayerController.ts"/>
 var TemplatesParser = (function () {
     function TemplatesParser(j$) {
         this.j$ = j$;
@@ -44,6 +46,7 @@ var TemplatesParser = (function () {
                 var right = layerData.getAttribute("right");
                 var bottom = layerData.getAttribute("bottom");
                 var changeable = layerData.getAttribute("changeable");
+                var border = layerData.getAttribute("border");
                 if (changeable == null) {
                     changeable = false;
                 }
@@ -60,7 +63,7 @@ var TemplatesParser = (function () {
                     case LayerType.DIV_LAYER_TYPE:
                         var backgroundColor = layerData.getAttribute("backgroundColor");
                         var backgroundAlpha = layerData.getAttribute("backgroundAlpha");
-                        var border = layerData.getAttribute("border");
+                        //var border:string = layerData.getAttribute("border");
                         if (left == null && right == null && top == null && bottom == null) {
                             left = "0";
                             right = "0";
@@ -144,7 +147,25 @@ var TemplatesParser = (function () {
                         var borderColor = layerData.getAttribute("borderColor");
                         var borderWeight = parseFloat(layerData.getAttribute("borderWeight"));
                         templateLayer = new StarmapLayerModel(id, aspectRatio, type, left, top, right, bottom, changeable, starsColor, backgroundColor, constellationColor, borderColor, borderWeight);
-                        //var controller:StarmapLayerController = new StarmapLayerController(templateLayer as TemplateLayer);
+                        new StarmapLayerController(templateLayer);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.MAP_LAYER_TYPE:
+                        var normalStyle = layerData.getAttribute("normalStyle");
+                        var noStreetLabelsStyle = layerData.getAttribute("noStreeLabelsStyle");
+                        var zoom = layerData.getAttribute("zoom");
+                        var border = layerData.getAttribute("border");
+                        var lat = layerData.getAttribute("lat");
+                        var lng = layerData.getAttribute("lng");
+                        var position = [lng, lat];
+                        if (left == null && right == null && top == null && bottom == null) {
+                            left = "0";
+                            right = "0";
+                            top = "0";
+                            bottom = "0";
+                        }
+                        templateLayer = new MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, [noStreetLabelsStyle, noStreetLabelsStyle], position);
+                        new MapLayerController(templateLayer);
                         layers.add(templateLayer);
                         break;
                 }
@@ -153,6 +174,12 @@ var TemplatesParser = (function () {
             collection.add(template);
         }
         return collection;
+    };
+    TemplatesParser.prototype.parseStyles = function (stylesString) {
+        console.log("stylesString=", stylesString);
+        var stylesObj = JSON.parse(stylesString);
+        //return [stylesObj.normal, stylesObj.noStreetLabels];
+        return ["", ""];
     };
     return TemplatesParser;
 }());

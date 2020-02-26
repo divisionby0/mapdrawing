@@ -10,6 +10,8 @@
 ///<reference path="CityLayerView.ts"/>
 ///<reference path="CoordinatesLayerView.ts"/>
 ///<reference path="DateTimeLayerView.ts"/>
+///<reference path="../layer/geographicMap/MapLayerView.ts"/>
+///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
 var TemplateElementView = (function () {
     //private views:List<LayerView> = new List<LayerView>("views");
     function TemplateElementView(j$, parentContainerId, selfContainerId, coeff) {
@@ -43,40 +45,42 @@ var TemplateElementView = (function () {
             var layerType = layer.getType();
             switch (layerType) {
                 case LayerType.DIV_LAYER_TYPE:
-                    var layerView = new DivLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new DivLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.TEXT_LAYER_TYPE:
-                    var layerView = new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.CITY_LAYER_TYPE:
-                    var layerView = new CityLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new CityLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.COORDINATES_LAYER_TYPE:
-                    var layerView = new CoordinatesLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new CoordinatesLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.DATE_TIME_LAYER_TYPE:
-                    var layerView = new DateTimeLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new DateTimeLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.IMAGE_LAYER_TYPE:
-                    var layerView = new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.BORDER_CIRCLE_LAYER_TYPE:
-                    var layerView = new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
-                    //this.views.add(layerView);
+                    new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.STARMAP_LAYER_TYPE:
                     var layerView = new StarmapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     layer.setView(layerView);
-                    //this.views.add(layerView);
+                    break;
+                case LayerType.MAP_LAYER_TYPE:
+                    var zoom = layer.getZoom();
+                    var mapStyle = layer.getMapStyle();
+                    var position = layer.getPosition();
+                    var layerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff, zoom, mapStyle, position);
+                    layer.setView(layerView);
                     break;
             }
         }
+        this.resize();
+    };
+    TemplateElementView.prototype.resize = function () {
         this.j$("#" + this.parentContainerId).height(this.getTemplateHeight());
     };
     return TemplateElementView;

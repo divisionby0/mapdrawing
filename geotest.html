@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="common/lib/jquery.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function () {
+        if ("geolocation" in navigator) {
+            // check if geolocation is supported/enabled on current browser
+            navigator.geolocation.getCurrentPosition(
+                    function success(position) {
+                        // for when getting location is a success
+                        alert('latitude '+ position.coords.latitude+ ' longitude '+ position.coords.longitude);
+                    },
+                    function error(error_message) {
+                        // for when getting location results in an error
+                        alert('An error has occured while retrieving location'+ error_message.message);
+                    }
+            );
+        } else {
+            // geolocation is not supported
+            // get your location some other way
+            alert('geolocation is not enabled on this browser');
+        }
+    });
+
+</script>
+</body>
+</html>

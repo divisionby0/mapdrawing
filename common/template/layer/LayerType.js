@@ -9,6 +9,7 @@ var LayerType = (function () {
     LayerType.IMAGE_LAYER_TYPE = "image";
     LayerType.BORDER_CIRCLE_LAYER_TYPE = "borderCircle";
     LayerType.STARMAP_LAYER_TYPE = "starmap";
+    LayerType.MAP_LAYER_TYPE = "map";
     return LayerType;
 }());
 //# sourceMappingURL=LayerType.js.map

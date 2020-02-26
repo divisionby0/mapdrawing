@@ -14,7 +14,7 @@
     <link type="text/css" rel="stylesheet" href="nightsky/css/plani.css">
 </head>
 <body>
-<div style="display: none;"><img src="nightsky/css/star.png" id="starImage" ></div>
+<div style="display: none;"><img src="nightsky/css/moon.png" id="starImage" ></div>
 <div class="container">
     <div class="row">
         <div id="templateElement" class="col-md-6">
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <input id="user_date" size="36" onchange="get_user_obs()" value="" type="text" style="display: block;">
+                        <input id="user_date" size="36" onchange="get_user_obs()" value="" type="text" style="display: none;">
 
                         <input id="user_dec" value="&lt;" onclick="dec_button()" type="button" style="display: none;">
                         <input id="user_inc" value="&gt;" onclick="inc_button()" type="button" style="display: none;">
@@ -179,8 +179,6 @@
 <script type="text/javascript" src="common/template/element/TemplateElementModel.js"></script>
 <script type="text/javascript" src="common/template/element/TemplateElementController.js"></script>
 
-
-
 <script type="text/javascript" src="common/template/editor/EditorEvent.js"></script>
 <script type="text/javascript" src="common/template/editor/TemplateEditorView.js"></script>
 <script type="text/javascript" src="common/template/editor/TemplateEditorModel.js"></script>
@@ -209,8 +207,11 @@
     var currentTemplateIndex = 0;
     var currentTemplate;
 
+    var geocodingService;
     var currentCity;
-    var currentCoord;
+    var currencurrentCoordtCoord;
+
+    var templatesUrl = "common/templates/templates.xml";
 
     $(document).ready(function () {
         EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
@@ -224,14 +225,16 @@
 
             createTemplateElement(currentTemplate, "templateElement", "planicanvaZZ", 1);
 
+            geocodingService = new GeocodingService($);
+
             createSearchCity();
             createDatepicker();
+            getCurrentLocation();
         });
 
         EventBus.addEventListener(TemplateLoader.ON_DATA_LOAD_ERROR, function(error){
             console.error("ERROR: ",error);
         });
-
 
         EventBus.addEventListener(Template.ON_SELECT, function(index){
 
@@ -254,9 +257,29 @@
         createTemplatesList();
 
         var templateLoader = new TemplateLoader($);
-        templateLoader.load("common/templates/templates.xml");
+        templateLoader.load(templatesUrl);
     });
 
+
+    function getCurrentLocation(){
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                    function success(position) {
+                        currentCoord = [position.coords.latitude, position.coords.longitude];
+                        console.log('latitude '+ position.coords.latitude+ ' longitude '+ position.coords.longitude);
+
+                        EventBus.addEventListener(GeocodingService.ON_REVERSED_GEOCODING_RESULT, onCityByCoordinatesGeocodingResult);
+
+                        geocodingService.getCity(position.coords.latitude, position.coords.longitude);
+                    },
+                    function error(error_message) {
+                        console.error('An error has occured while retrieving location'+ error_message.message);
+                    }
+            );
+        } else {
+            console.error('geolocation is not enabled on this browser');
+        }
+    }
 
     function createTemplateEditor(){
         var view = new TemplateEditorView($);
@@ -282,7 +305,6 @@
     }
 
     function createSearchCity(){
-        var geocodingService = new GeocodingService($);
         var view = new SearchCityView($);
         var model = new SearchCityModel(view, geocodingService);
         new SearchCityController(model);
@@ -317,22 +339,6 @@
 
             EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, firstCity.coord);
         }
-
-        function getFirstCity(data){
-            var cities = data.collection;
-            var firstCityData = cities.get(0);
-
-            var coord = firstCityData.coord;
-            var cityName = firstCityData.name;
-
-            if(firstCityData){
-                return {coord:coord, city:cityName};
-            }
-            else{
-                console.error("Did'n find template default city");
-            }
-        }
-
         // find city by template's data
         EventBus.addEventListener(GeocodingService.ON_GEOCODING_RESULT, onDefaultCityGeocodingResult);
 
@@ -341,24 +347,28 @@
     }
 
     function createDatepicker(){
-        EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, function(newDate){
-            /*
-            var userDate = new Date();
-            userDate.setFullYear(newDate.year);
-            userDate.setMonth(newDate.month);
-            userDate.setDate(newDate.day);
-            userDate.setHours(newDate.hours);
-            userDate.setMinutes(newDate.minutes);
-
-            $("#user_date").val(userDate.toString());
-
-            EventBus.dispatchEvent("UPDATE_STARMAP", null);
-            */
-        });
-
         var dateSelectView = new DateSelectView($);
         var dateSelectModel = new DateSelectModel(dateSelectView);
         new DateSelectController(dateSelectModel);
+    }
+
+    function onCityByCoordinatesGeocodingResult(data){
+        console.log("onCityByCoordinatesGeocodingResult data=",data);
+
+        var resultParser = new SearchCityResultParses();
+        var resultData = resultParser.parse(data);
+
+        var firstCity = getFirstCity(resultData);
+
+        currentTemplate.setCity(firstCity.name);
+        currentTemplate.setLat(firstCity.coord[0]);
+        currentTemplate.setLng(firstCity.coord[1]);
+
+        currentCity = firstCity.name;
+
+        EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, firstCity);
+
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, firstCity.coord);
     }
 
     function exportImage(){
@@ -385,6 +395,21 @@
             tempContainer.remove();
             tempContainer = null;
         });
+    }
+
+    function getFirstCity(data){
+        var cities = data.collection;
+        var firstCityData = cities.get(0);
+
+        var coord = firstCityData.coord;
+        var cityName = firstCityData.name;
+
+        if(firstCityData){
+            return {coord:coord, city:cityName};
+        }
+        else{
+            console.error("Did'n find template default city");
+        }
     }
 </script>
 </body>

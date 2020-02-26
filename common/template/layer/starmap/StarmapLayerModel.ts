@@ -9,13 +9,13 @@ class StarmapLayerModel extends TemplateLayer{
     private borderColor:string;
     private borderWeight:number;
     private borderVisible:boolean = true;
-    private hasMulticoloredStars:boolean = false;
+    private hasColoredStars:boolean = false;
+    private hasConstellations:boolean = true;
 
     private cachedBorderColor:string;
     private cachedConstellationColor:string;
 
-    private currentLat:number;
-    private currentLng:number;
+    private currentCoord:any;
     private currentCity:string;
     private currentDate:string;
 
@@ -29,8 +29,6 @@ class StarmapLayerModel extends TemplateLayer{
         
         this.cachedBorderColor = borderColor;
         this.cachedConstellationColor = constellationColor;
-
-        EventBus.addEventListener(EditorEvent.DATE_TIME_CHANGED, (date)=>this.onDateTimeChanged(date));
     }
 
     public setView(view:LayerView):void{
@@ -38,6 +36,10 @@ class StarmapLayerModel extends TemplateLayer{
         
         if(this.currentDate){
             (this.view as StarmapLayerView).setDate(this.currentDate);
+            (this.view as StarmapLayerView).setHasConstellations(this.hasConstellations);
+            (this.view as StarmapLayerView).setHasColoredStars(this.hasColoredStars);
+            (this.view as StarmapLayerView).setHasCircleBorder(this.borderVisible);
+            (this.view as StarmapLayerView).setCoord(this.currentCoord);
         }
     }
     
@@ -52,6 +54,18 @@ class StarmapLayerModel extends TemplateLayer{
         this.currentDate = userDate.toString();
         if(this.view){
             (this.view as StarmapLayerView).setDate(this.currentDate);
+        }
+    }
+
+    public onCityChanged(data:any):void {
+        console.log("onCityChanged data=",data);
+        this.currentCity = data.city;
+        this.currentCoord = data.coord;
+
+        try{
+            (this.view as StarmapLayerView).setCoord(data.coord);
+        }
+        catch(error){
         }
     }
     
@@ -125,9 +139,36 @@ class StarmapLayerModel extends TemplateLayer{
     }
 
     public getHasMulticoloredStars():boolean{
-        return this.hasMulticoloredStars;
+        return this.hasColoredStars;
     }
     public setStarsMulticolored(isMulticolored:boolean):void{
-        this.hasMulticoloredStars = isMulticolored;
+        this.hasColoredStars = isMulticolored;
+    }
+    public setHasConstellations(value:boolean):void {
+        this.hasConstellations = value;
+        try{
+            (this.view as StarmapLayerView).setHasConstellations(this.hasConstellations);
+        }
+        catch(error){
+        }
+    }
+
+    public setHasColoredStars(value:boolean):void {
+        this.hasColoredStars = value;
+        
+        try{
+            (this.view as StarmapLayerView).setHasColoredStars(this.hasColoredStars);
+        }
+        catch(error){
+        }
+    }
+
+    public hasCircleBorder(value:boolean):void {
+        this.borderVisible = value;
+        try{
+            (this.view as StarmapLayerView).setHasCircleBorder(this.borderVisible);
+        }
+        catch(error){
+        }
     }
 }

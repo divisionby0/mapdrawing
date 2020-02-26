@@ -8,8 +8,6 @@ class SkyTransform{
         
         Astro.aa_hadec( now.latitude, coord, coord );
 
-        //console.log("invisiblePositionValue="+invisiblePositionValue+" coord[ 1 ]="+coord[ 1 ]);
-
         if ( coord[ 1 ] < 0 )
             pos.visible = false;
         else {

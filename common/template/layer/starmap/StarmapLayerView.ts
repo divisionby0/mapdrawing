@@ -12,15 +12,27 @@ class StarmapLayerView extends LayerView{
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
     }
 
+    public setHasConstellations(value:boolean):void{
+        this.starmap.setHasConstellations(value);
+    }
+    public setHasColoredStars(value:boolean):void{
+        this.starmap.setHasColoredStars(value);
+    }
+    public setHasCircleBorder(value:boolean):void{
+        this.starmap.setHasBorder(value);
+    }
+
     public setDate(date:string):void{
         this.j$("#user_date").val(date);
         this.starmap.setDate(date);
     }
     
+    public setCoord(data:any):void{
+        console.log("setCoorinates data=",data);
+        this.starmap.setCoord(data);
+    }
+    
     protected onDestroy() {
-        console.log("destroy()");
-        EventBus.removeEventListener("UPDATE_STARMAP", ()=>this.onUpdateStarmapRequest());
-        
         if(this.starmap){
             this.starmap.destroy();
             this.starmap = null;
@@ -52,17 +64,16 @@ class StarmapLayerView extends LayerView{
         this.canvas = this.j$("<canvas id='"+this.selfId+"' style='position:absolute; width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
         
-        this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
-        this.starmap.setBackgroundColor(backgroundColor);
-        this.starmap.setStarColor(starsColor);
-        this.starmap.setConstellationColor(constellationColor);
-        this.starmap.setHasColoredStars(hasMulticoloredStars);
-        this.starmap.setHasBorder(hasBorder);
-        
-        this.starmap.setBorderColor((this.layer as StarmapLayerModel).getBorderColor());
-        this.starmap.setBorderWeight((this.layer as StarmapLayerModel).getBorderWeight());
-        
-        this.starmap.create();
+        this.starmap = new Starmap(this.j$, this.selfId, this.coeff, {
+            backgroundColor:backgroundColor,
+            starColor:starsColor,
+            constellationColor:constellationColor,
+            hasConstellations:true,
+            hasColoredStars:false,
+            hasBorder:hasBorder,
+            borderColor:(this.layer as StarmapLayerModel).getBorderColor(),
+            borderWeight:(this.layer as StarmapLayerModel).getBorderWeight()
+        });
 
         this.onResize();
 

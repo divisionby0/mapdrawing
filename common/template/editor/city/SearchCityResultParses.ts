@@ -16,7 +16,6 @@ class SearchCityResultParses{
 
                 for(i=0; i<features.length; i++){
                     var feature:any = features[i];
-
                     var name:string = feature.formatted_address;
                     var center:any = [feature.geometry.location.lng, feature.geometry.location.lat];
                     collection.add({name:name, coord:center});

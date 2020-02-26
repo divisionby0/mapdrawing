@@ -7,4 +7,5 @@ class LayerType{
     public static IMAGE_LAYER_TYPE:string = "image";
     public static BORDER_CIRCLE_LAYER_TYPE:string = "borderCircle";
     public static STARMAP_LAYER_TYPE:string = "starmap";
+    public static MAP_LAYER_TYPE:string = "map";
 }

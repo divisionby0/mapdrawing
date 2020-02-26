@@ -29,6 +29,7 @@ var SearchCityView = (function () {
     };
     SearchCityView.prototype.setCity = function (cityName) {
         this.input.val(cityName);
+        this.j$("#places").empty();
     };
     SearchCityView.prototype.clear = function () {
         this.j$("#places").empty();

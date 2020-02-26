@@ -38,6 +38,7 @@ class SearchCityView{
 
     public setCity(cityName:string):void {
         this.input.val(cityName);
+        this.j$("#places").empty();
     }
     
     public clear():void{

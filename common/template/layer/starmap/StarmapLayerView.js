@@ -14,14 +14,24 @@ var StarmapLayerView = (function (_super) {
     function StarmapLayerView(j$, layer, parentId, selfId, templateSizeProvider, coeff) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
+    StarmapLayerView.prototype.setHasConstellations = function (value) {
+        this.starmap.setHasConstellations(value);
+    };
+    StarmapLayerView.prototype.setHasColoredStars = function (value) {
+        this.starmap.setHasColoredStars(value);
+    };
+    StarmapLayerView.prototype.setHasCircleBorder = function (value) {
+        this.starmap.setHasBorder(value);
+    };
     StarmapLayerView.prototype.setDate = function (date) {
         this.j$("#user_date").val(date);
         this.starmap.setDate(date);
     };
+    StarmapLayerView.prototype.setCoord = function (data) {
+        console.log("setCoorinates data=", data);
+        this.starmap.setCoord(data);
+    };
     StarmapLayerView.prototype.onDestroy = function () {
-        var _this = this;
-        console.log("destroy()");
-        EventBus.removeEventListener("UPDATE_STARMAP", function () { return _this.onUpdateStarmapRequest(); });
         if (this.starmap) {
             this.starmap.destroy();
             this.starmap = null;
@@ -47,15 +57,16 @@ var StarmapLayerView = (function (_super) {
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.canvas = this.j$("<canvas id='" + this.selfId + "' style='position:absolute; width: 100%; height: 100%;'></canvas>");
         this.canvas.appendTo(this.layerContainer);
-        this.starmap = new Starmap(this.j$, this.selfId, this.coeff);
-        this.starmap.setBackgroundColor(backgroundColor);
-        this.starmap.setStarColor(starsColor);
-        this.starmap.setConstellationColor(constellationColor);
-        this.starmap.setHasColoredStars(hasMulticoloredStars);
-        this.starmap.setHasBorder(hasBorder);
-        this.starmap.setBorderColor(this.layer.getBorderColor());
-        this.starmap.setBorderWeight(this.layer.getBorderWeight());
-        this.starmap.create();
+        this.starmap = new Starmap(this.j$, this.selfId, this.coeff, {
+            backgroundColor: backgroundColor,
+            starColor: starsColor,
+            constellationColor: constellationColor,
+            hasConstellations: true,
+            hasColoredStars: false,
+            hasBorder: hasBorder,
+            borderColor: this.layer.getBorderColor(),
+            borderWeight: this.layer.getBorderWeight()
+        });
         this.onResize();
         _super.prototype.create.call(this);
     };

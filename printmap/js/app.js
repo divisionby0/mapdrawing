@@ -12,18 +12,44 @@ var printHeight = 3509;
 var sourceMapZoomWidthOffset = printWidth - mapContainerZoomCoeff * printWidth;
 var sourceMapZoomHeightOffset = printHeight - mapContainerZoomCoeff * printHeight;
 
-mapboxgl.accessToken = '';
-
-var mapTilerAccessToken = '';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGl2YnkwIiwiYSI6ImNrNjZuNjU3eDFpNzAzbXF3cm91dmJ6bjQifQ.v2YMxI4B1W4iMrevGH95Uw';
+var mapTilerAccessToken = 'pk.eyJ1IjoiZGl2YnkwIiwiYSI6ImNrNjZuNjU3eDFpNzAzbXF3cm91dmJ6bjQifQ.v2YMxI4B1W4iMrevGH95Uw';
 
 var form = document.getElementById('config');
 
-$(document).ready(function () {
-    try {
-        var style = form.styleSelect.value;
-        if (style.indexOf('tilehosting') >= 0)
-            style += '?key=' + mapTilerAccessToken;
+var templateLoader;
+var parser;
+var templates;
+var templateBuilder;
+var currentTemplate;
+var currentTemplateIndex = 0;
+var templatesUrl = "../common/templates/mapTemplates.xml";
 
+$(document).ready(function () {
+
+    EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
+        templates = parser.parse(data);
+        console.log("templates = ",templates);
+        
+        currentTemplate = templates.get(currentTemplateIndex);
+
+        createSearchCity();
+        createTemplateElement(currentTemplate, "templateElement", "map", 1);
+    });
+
+    parser = new TemplatesParser($);
+    
+    templateLoader = new TemplateLoader($);
+    templateLoader.load(templatesUrl);
+    
+    
+    /*
+    var style = form.styleSelect.value;
+    if (style.indexOf('tilehosting') >= 0){
+        style += '?key=' + mapTilerAccessToken;
+    }
+    
+    try {
         map = new mapboxgl.Map({
             container: 'map',
             center: [lng, lat],
@@ -31,33 +57,42 @@ $(document).ready(function () {
             fadeDuration: 0,
             style: style
         });
-        
-        map.on('moveend', updateLocationInputs).on('zoomend', updateLocationInputs);
-        updateLocationInputs();
     } catch (e) {
         var mapContainer = document.getElementById('map');
         mapContainer.parentNode.removeChild(mapContainer);
         document.getElementById('config-fields').setAttribute('disabled', 'yes');
-        openErrorModal('This site requires WebGL, but your browser doesn\'t seem' +
-            ' to support it: ' + e.message);
+        openErrorModal('This site requires WebGL, but your browser doesn\'t seem' + ' to support it: ' + e.message);
     }
     
     if(map!=null && map!=undefined){
+        map.on('moveend', updateLocationInputs);
+        map.on('zoomend', updateLocationInputs);
+        
+        updateLocationInputs();
         createSearchCity();
     }
+
+    $("#styleSelect").change(function(){
+        console.log("changed");
+        map.setStyle($("#styleSelect").val());
+    });
+    */
 });
-  
+
+function createTemplateElement(template, parentContainerId, selfContainerId, coeff){
+    if(templateBuilder){
+        templateBuilder.destroy();
+        templateBuilder = null;
+    }
+
+    templateBuilder = new TemplateBuilder($, template, parentContainerId, selfContainerId, coeff);
+}
+
 function createSearchCity(){
     var geocodingService = new GeocodingService($);
     var view = new SearchCityView($);
     var model = new SearchCityModel(view, geocodingService);
     new SearchCityController(model);
-
-    EventBus.addEventListener("LOCATION_SELECTED", function(coord){
-        console.log("LOCATION_SELECTED coord=",coord);
-        console.log("map=",map);
-        map.flyTo({center:coord});
-    });
 }
 
 //
@@ -221,8 +256,7 @@ function generateMap() {
     var bearing = map.getBearing();
     var pitch = map.getPitch();
 
-    createPrintMap(width, height, dpi, format, unit, zoom, center,
-        bearing, style, pitch);
+    createPrintMap(width, height, dpi, format, unit, zoom, center, bearing, style, pitch);
 }
 
 function createPrintMap(width, height, dpi, format, unit, zoom, center,
