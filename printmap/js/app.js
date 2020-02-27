@@ -14,27 +14,69 @@ var templateBuilder;
 var currentTemplate;
 var currentTemplateIndex = 0;
 var templatesUrl = "../common/templates/mapTemplates.xml";
+var currentMap;
+var currentStyle;
+
+var printWidth;
+var printHeight;
+
 
 $(document).ready(function () {
-
     EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
         templates = parser.parse(data);
         console.log("templates = ",templates);
         
         currentTemplate = templates.get(currentTemplateIndex);
+        printWidth = currentTemplate.getPrintWidth();
+        printHeight = currentTemplate.getPrintHeight();
+        
 
         createSearchCity();
-        createTemplateElement(currentTemplate, "templateElement", "map", 1);
+        createTemplateElement(currentTemplate, "templateElement", "map12", 1);
     });
 
+    EventBus.addEventListener(GeographicMap.ON_MAP_LOADED, (data)=>onMapLoaded(data));
+    
     createTemplateEditor();
     
     parser = new TemplatesParser($);
     
     templateLoader = new TemplateLoader($);
     templateLoader.load(templatesUrl);
-    
 });
+
+function onMapLoaded(data){
+    currentMap = data.map;
+    currentStyle = data.style;
+}
+
+function exportImage(){
+    var currentStyle = "mapbox://styles/divby0/ck73atvo0240k1iqwcaeu4pog";
+    generateMap($, printWidth, printHeight, currentStyle, currentMap);
+}
+
+function getPrintImage(){
+
+    /*
+    var srcCanvas = document.getElementsByClassName("mapboxgl-canvas")[0];
+    console.log("srcCAnvas = ",srcCanvas);
+    resample_single(srcCanvas, 2431,3508, true);
+    console.log("resized");
+    */
+
+    /*
+    html2canvas(document.querySelector("#printImageContainer")).then(function(canvas){
+        canvas.toBlob(function(blob) {
+            console.log("to save");
+            saveAs(blob, 'map.png');
+        });
+
+        //tempContainer.empty();
+        //tempContainer.remove();
+        //tempContainer = null;
+    })
+    */
+}
 
 function createTemplateEditor(){
     var view = new GeographicEditorView($);
@@ -55,10 +97,4 @@ function createSearchCity(){
     var view = new SearchCityView($);
     var model = new SearchCityModel(view, geocodingService);
     new SearchCityController(model);
-}
-
-if (map) {
-    var canvas = map.getCanvas();
-    var gl = canvas.getContext('experimental-webgl');
-    maxSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE);
 }

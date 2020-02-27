@@ -59,9 +59,8 @@ class MapLayerView extends LayerView{
             this.layerContainer.css({"top":top});
             this.layerContainer.css({"bottom":bottom});
 
-            this.layerContainer.height(this.currentHeight - top - bottom);
             this.layerContainer.width(this.currentWidth - left - right);
-
+            this.layerContainer.height(this.currentHeight - top - bottom);
 
             this.map.resize(this.layerContainer.width(), this.layerContainer.height());
         }
@@ -73,7 +72,8 @@ class MapLayerView extends LayerView{
     }
 
     private createMap() {
-        var parameters:any = {zoom:this.zoom, position:this.position, style:this.mapStyle};
+        console.log("create map");
+        var parameters:any = {zoom:this.zoom, position:this.position, style:this.mapStyle, coeff:this.coeff};
 
         var border:string = (this.layer as MapLayerModel).getBorder();
         if(border){
@@ -83,10 +83,10 @@ class MapLayerView extends LayerView{
         
         console.log("createMap style="+this.style);
 
-        this.layerContainer = this.j$("<div id='map' style='"+this.style+"'></div>");
+        this.layerContainer = this.j$("<div id='"+this.selfId+"' style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
         
-        this.map = new GeographicMap(this.j$, parameters);
+        this.map = new GeographicMap(this.j$, this.selfId, parameters);
         this.onResize();
     }
 }

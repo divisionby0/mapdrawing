@@ -3,25 +3,37 @@
 declare var mapboxgl:any;
 class GeographicMap{
     private j$:any;
-    
+    private selfId:string;
     private map:any;
     private zoom:number;
     private position:string[];
-    private lng:string;
     private currentStyle:string;
-    private placementHorizontal:boolean = false;
+    private coeff:number;
     
-    constructor(j$:any, parameters:any){
+    public static ON_MAP_LOADED:string = "ON_MAP_LOADED";
+    
+    constructor(j$:any, selfId:string, parameters:any){
         this.j$ = j$;
+        this.selfId = selfId;
         this.zoom = parameters.zoom;
         this.position = parameters.position;
         this.currentStyle = parameters.currentStyle;
+
+        if(parameters.coeff){
+            this.coeff = parameters.coeff;
+        }
+        else{
+            this.coeff = 1;
+        }
+        
+        this.zoom = this.zoom;
         this.createMap();
     }
     
     public setZoom(zoom:string):void{
+        this.zoom = parseInt(zoom);
         if(this.map){
-            this.map.setZoom(zoom);
+            this.map.setZoom(this.zoom);
         }
     }
     
@@ -44,7 +56,7 @@ class GeographicMap{
 
     public resize(w:number, h:number):void{
         var mapCanvas:any = document.getElementsByClassName('mapboxgl-canvas')[0];
-        var mapDiv:any = document.getElementById('map');
+        var mapDiv:any = document.getElementById(this.selfId);
 
         mapDiv.style.width = w;
         mapCanvas.style.width = h;
@@ -55,17 +67,21 @@ class GeographicMap{
     private createMap():void{
         try {
             this.map = new mapboxgl.Map({
-                container: 'map',
+                container: this.selfId,
                 center: this.position, // lng, lat
                 zoom: this.zoom,
                 fadeDuration: 0,
                 style: this.currentStyle,
-                attributionControl: false
+                attributionControl: false,
+                preserveDrawingBuffer: true
             });
+
+            this.map.on('load', ()=>this.onMapLoaded());
 
             this.j$(".mapboxgl-control-container").hide();
 
             this.map.on('moveend', ()=>this.onMapMoved());
+            
             this.onMapMoved();
         } catch (e) {
             alert(e.message);
@@ -80,5 +96,13 @@ class GeographicMap{
         var coord:any[] = [lat,lng];
         
         EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, coord);
+    }
+
+    private onMapLoaded():void {
+        console.log("MAP loaded zoom=",this.map.getZoom());
+        EventBus.dispatchEvent(GeographicMap.ON_MAP_LOADED, {map:this.map, style:this.currentStyle});
+    }
+    private onZoomEnded():void {
+        console.log("MAP onZoomEnded zoom=",this.map.getZoom());
     }
 }

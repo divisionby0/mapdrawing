@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>map resize testing</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"/>
+    <link rel="stylesheet" href="../common/lib/bootstrap.min.css"/>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">
+    <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+            type="text/css"
+    />
+</head>
+<body>
+    <button id="normalSizeButton" style="position: absolute; left:10px;">Normal</button>
+    <button id="bigSizeButton" style="position: absolute; left:80px;">Big</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div id="mapContainer" style="width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../common/lib/jquery.js"></script>
+    <script type="text/javascript" src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+    <script type="application/javascript" src="js/mapResizeTesting.js"></script>
+</body>
+</html>

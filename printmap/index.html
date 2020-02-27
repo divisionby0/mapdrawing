@@ -45,7 +45,7 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary btn-lg" id="generate-btn">Создать картинку</button>
+                        <button type="submit" class="btn btn-primary btn-lg" id="generate-btn" onclick="exportImage()">Создать картинку</button>
                         <div id="spinner"></div>
                     </div>
                 </div>
@@ -54,6 +54,9 @@
         <div class="col-md-3">
             <div class="row" id="templatesListContainer" style="overflow-x: hidden; overflow-y: scroll;"></div>
         </div>
+    </div>
+    <div id="printMapContainer">
+        <div id="map"></div>
     </div>
 </div>
 
@@ -125,6 +128,8 @@
 
 <script type="text/javascript" src="js/geographicMap/GeographicMap.js"></script>
 
+<script type="text/javascript" src="js/ResizeCanvas.js"></script>
+<script type="text/javascript" src="js/renderPrintImage.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 
 </body>
