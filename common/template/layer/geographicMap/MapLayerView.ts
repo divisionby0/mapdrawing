@@ -9,6 +9,7 @@ class MapLayerView extends LayerView{
     private zoom:string;
     private position:string[];
     private mapStyle:string;
+    private mapParameters:any;
     
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number, zoom:string, mapStyle:string, position:string[]){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
@@ -18,7 +19,7 @@ class MapLayerView extends LayerView{
         
         this.createMap();
     }
-
+    
     public setZoom(zoom:string):void{
         if(this.map){
             this.map.setZoom(zoom);
@@ -72,16 +73,31 @@ class MapLayerView extends LayerView{
     }
 
     private createMap() {
-        console.log("create map");
+        
         var parameters:any = {zoom:this.zoom, position:this.position, style:this.mapStyle, coeff:this.coeff};
+        
+        if(this.mapParameters){
+            if(this.mapParameters.bounds){
+                parameters.bounds = this.mapParameters.bounds;
+            }
+            if(this.mapParameters.pitch){
+                parameters.pitch = this.mapParameters.pitch;
+            }
+            if(this.mapParameters.bearing){
+                parameters.bearing = this.mapParameters.bearing;
+            }
+        }
+        else{
+            console.log("no map parameters provided");
+        }
 
+        console.log("create map parameters=",parameters);
+        
         var border:string = (this.layer as MapLayerModel).getBorder();
         if(border){
             border = Utils.updateBorderString(border, this.coeff);
             this.style+="border:"+border+";";
         }
-        
-        console.log("createMap style="+this.style);
 
         this.layerContainer = this.j$("<div id='"+this.selfId+"' style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));

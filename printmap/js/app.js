@@ -20,11 +20,11 @@ var currentStyle;
 var printWidth;
 var printHeight;
 
+var mapCurrentParameters;
 
 $(document).ready(function () {
     EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
         templates = parser.parse(data);
-        console.log("templates = ",templates);
         
         currentTemplate = templates.get(currentTemplateIndex);
         printWidth = currentTemplate.getPrintWidth();
@@ -36,6 +36,7 @@ $(document).ready(function () {
     });
 
     EventBus.addEventListener(GeographicMap.ON_MAP_LOADED, (data)=>onMapLoaded(data));
+    EventBus.addEventListener(GeographicMap.ON_MAP_CHANGED, (data)=>onMapChanged(data));
     
     createTemplateEditor();
     
@@ -50,32 +51,13 @@ function onMapLoaded(data){
     currentStyle = data.style;
 }
 
-function exportImage(){
-    var currentStyle = "mapbox://styles/divby0/ck73atvo0240k1iqwcaeu4pog";
-    generateMap($, printWidth, printHeight, currentStyle, currentMap);
+function onMapChanged(data){
+    mapCurrentParameters = data;
+    currentTemplate.setMapParameters(mapCurrentParameters);
 }
 
-function getPrintImage(){
-
-    /*
-    var srcCanvas = document.getElementsByClassName("mapboxgl-canvas")[0];
-    console.log("srcCAnvas = ",srcCanvas);
-    resample_single(srcCanvas, 2431,3508, true);
-    console.log("resized");
-    */
-
-    /*
-    html2canvas(document.querySelector("#printImageContainer")).then(function(canvas){
-        canvas.toBlob(function(blob) {
-            console.log("to save");
-            saveAs(blob, 'map.png');
-        });
-
-        //tempContainer.empty();
-        //tempContainer.remove();
-        //tempContainer = null;
-    })
-    */
+function exportImage(){
+    createTemplateElement(currentTemplate, "printMapContainer", "printMap", coeff);
 }
 
 function createTemplateEditor(){

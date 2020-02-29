@@ -88,7 +88,12 @@ class TemplateElementModel{
 
             if(isStarmapLayer){
                 var layerId:string = layer.getId();
+                /*
                 if(layerId == TemplateLayer.STARMAP){
+                    (layer as StarmapLayerModel).setConstellationVisible(visible);
+                }
+                */
+                if(layerId == LayerId.STARMAP){
                     (layer as StarmapLayerModel).setConstellationVisible(visible);
                 }
             }
@@ -104,7 +109,7 @@ class TemplateElementModel{
 
             if(isStarmapLayer){
                 var layerId:string = layer.getId();
-                if(layerId == TemplateLayer.STARMAP){
+                if(layerId == LayerId.STARMAP){
                     (layer as StarmapLayerModel).setStarsMulticolored(isMulticolored);
                 }
             }

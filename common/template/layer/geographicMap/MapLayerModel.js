@@ -19,9 +19,12 @@ var MapLayerModel = (function (_super) {
     }
     MapLayerModel.prototype.setView = function (view) {
         _super.prototype.setView.call(this, view);
-        this.view.setZoom(this.zoom);
-        this.view.setPosition(this.position);
-        this.view.setMapStyle(this.mapStyle);
+        /*
+        (this.view as MapLayerView).setZoom(this.zoom);
+        (this.view as MapLayerView).setPosition(this.position);
+        (this.view as MapLayerView).setMapStyle(this.mapStyle);
+        (this.view as MapLayerView).setMapParameters(this.currentMapParameters);
+        */
     };
     MapLayerModel.prototype.locationChanged = function (coord) {
         this.position = coord;

@@ -91,6 +91,12 @@ function onBigSizeButtonClicked(){
     window.setTimeout(()=>resize(), 500);
 }
 
+function resize(){
+    renderMap.resize();
+    boundsload();
+    zoomingComplete();
+}
+
 function removeMap(){
     $("#mapContainer").empty();
     if(renderMap){
@@ -110,10 +116,4 @@ function zoomingComplete(){
 function boundsload(){
     mapcenter = renderMap.getCenter();
     mapbounds = renderMap.getBounds();
-}
-
-function resize(){
-    renderMap.resize();
-    boundsload();
-    zoomingComplete();
 }

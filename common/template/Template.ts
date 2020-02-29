@@ -1,4 +1,6 @@
 ///<reference path="layer/TemplateLayer.ts"/>
+///<reference path="layer/LayerType.ts"/>
+///<reference path="layer/geographicMap/MapLayerModel.ts"/>
 class Template{
     private width:number;
     private height:number;
@@ -11,6 +13,8 @@ class Template{
     private lat:string;
     private lng:string;
     
+    private mapParameters:any;
+    
     public static ON_SELECT:string = "ON_SELECT";
 
     constructor(name:string, preview:string, width:number, height:number, layers:List<TemplateLayer>, aspectRatio:any){
@@ -21,7 +25,18 @@ class Template{
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
-
+    
+    public setMapParameters(parameters:any):void{
+        this.mapParameters = parameters;
+        var layersIterator:ListIterator = this.getLayersIterator();
+        while(layersIterator.hasNext()){
+            var layer:TemplateLayer = layersIterator.next();
+            if(layer.getType() == LayerType.MAP_LAYER_TYPE){
+                (layer as MapLayerModel).setCurrentMapParameters(parameters);
+            }
+        }
+    }
+    
     public setCity(city:string):void{
         this.city = city;
     }

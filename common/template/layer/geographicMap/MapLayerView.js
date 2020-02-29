@@ -60,14 +60,27 @@ var MapLayerView = (function (_super) {
         // do nothing
     };
     MapLayerView.prototype.createMap = function () {
-        console.log("create map");
         var parameters = { zoom: this.zoom, position: this.position, style: this.mapStyle, coeff: this.coeff };
+        if (this.mapParameters) {
+            if (this.mapParameters.bounds) {
+                parameters.bounds = this.mapParameters.bounds;
+            }
+            if (this.mapParameters.pitch) {
+                parameters.pitch = this.mapParameters.pitch;
+            }
+            if (this.mapParameters.bearing) {
+                parameters.bearing = this.mapParameters.bearing;
+            }
+        }
+        else {
+            console.log("no map parameters provided");
+        }
+        console.log("create map parameters=", parameters);
         var border = this.layer.getBorder();
         if (border) {
             border = Utils.updateBorderString(border, this.coeff);
             this.style += "border:" + border + ";";
         }
-        console.log("createMap style=" + this.style);
         this.layerContainer = this.j$("<div id='" + this.selfId + "' style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
         this.map = new GeographicMap(this.j$, this.selfId, parameters);

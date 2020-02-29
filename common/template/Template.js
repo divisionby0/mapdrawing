@@ -1,4 +1,6 @@
 ///<reference path="layer/TemplateLayer.ts"/>
+///<reference path="layer/LayerType.ts"/>
+///<reference path="layer/geographicMap/MapLayerModel.ts"/>
 var Template = (function () {
     function Template(name, preview, width, height, layers, aspectRatio) {
         this.name = name;
@@ -8,6 +10,16 @@ var Template = (function () {
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
+    Template.prototype.setMapParameters = function (parameters) {
+        this.mapParameters = parameters;
+        var layersIterator = this.getLayersIterator();
+        while (layersIterator.hasNext()) {
+            var layer = layersIterator.next();
+            if (layer.getType() == LayerType.MAP_LAYER_TYPE) {
+                layer.setCurrentMapParameters(parameters);
+            }
+        }
+    };
     Template.prototype.setCity = function (city) {
         this.city = city;
     };

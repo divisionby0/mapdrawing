@@ -8,6 +8,8 @@ class MapLayerModel extends TemplateLayer{
     private styles:string[] = new Array();
     private border:string;
     private placeLabelsVisible:boolean = false;
+    
+    private currentMapParameters:any;
 
     constructor(id:string, aspectRatio:number, type:string, left:any, top:any, right:any, bottom:any, border:string, changeable:boolean, zoom:string, styles:string[], position:any[]){
         super(id, aspectRatio, type, left, top, right, bottom, changeable);
@@ -22,9 +24,12 @@ class MapLayerModel extends TemplateLayer{
     public setView(view:LayerView):void{
         super.setView(view);
         
+        /*
         (this.view as MapLayerView).setZoom(this.zoom);
         (this.view as MapLayerView).setPosition(this.position);
         (this.view as MapLayerView).setMapStyle(this.mapStyle);
+        (this.view as MapLayerView).setMapParameters(this.currentMapParameters);
+        */
     }
     
     public locationChanged(coord:any[]):void{
