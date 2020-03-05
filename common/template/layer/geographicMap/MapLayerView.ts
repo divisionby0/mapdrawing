@@ -6,32 +6,38 @@
 class MapLayerView extends LayerView{
 
     private map:GeographicMap;
-    private zoom:string;
-    private position:string[];
-    private mapStyle:string;
-    private mapParameters:any;
     
-    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number, zoom:string, mapStyle:string, position:string[]){
+    constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
-        this.zoom = zoom;
-        this.position = position;
-        this.mapStyle = mapStyle;
         
-        this.createMap();
-    }
-    
-    public setZoom(zoom:string):void{
-        if(this.map){
-            this.map.setZoom(zoom);
+        
+        console.log("new MapLayerView coeff=",this.coeff);
+        
+        var params:MapParameters = (layer as MapLayerModel).getMapParameters();
+        params.setContainer(this.selfId);
+
+        var border:string = (this.layer as MapLayerModel).getBorder();
+        if(border){
+            border = Utils.updateBorderString(border, this.coeff);
+            this.style+="border:"+border+";";
         }
+
+        this.layerContainer = this.j$("<div id='"+this.selfId+"' style='"+this.style+"'></div>");
+        this.layerContainer.appendTo(this.j$("#"+this.parentId));
+        
+        this.map = new GeographicMap(this.j$, params);
+        this.onResize();
     }
+
+    
     public setMapStyle(style:string):void{
+        /*
         if(this.map){
             this.map.setStyle(style);
         }
+        */
     }
     public setPosition(position:any):void{
-        this.position = position;
         if(this.map){
             this.map.setPosition(position);
         }
@@ -60,49 +66,27 @@ class MapLayerView extends LayerView{
             this.layerContainer.css({"top":top});
             this.layerContainer.css({"bottom":bottom});
 
-            this.layerContainer.width(this.currentWidth - left - right);
-            this.layerContainer.height(this.currentHeight - top - bottom);
-
-            this.map.resize(this.layerContainer.width(), this.layerContainer.height());
-        }
-    }
-    
-    
-    protected create():void{
-        // do nothing
-    }
-
-    private createMap() {
-        
-        var parameters:any = {zoom:this.zoom, position:this.position, style:this.mapStyle, coeff:this.coeff};
-        
-        if(this.mapParameters){
-            if(this.mapParameters.bounds){
-                parameters.bounds = this.mapParameters.bounds;
+            var layerWidth:number;
+            var layerHeight:number;
+            
+            if(this.coeff==1){
+                layerWidth = (this.currentWidth - left - right)*this.coeff;
+                layerHeight = (this.currentHeight - top - bottom)*this.coeff;
             }
-            if(this.mapParameters.pitch){
-                parameters.pitch = this.mapParameters.pitch;
+            else{
+                layerWidth = 2481;
+                layerHeight = 3509;
             }
-            if(this.mapParameters.bearing){
-                parameters.bearing = this.mapParameters.bearing;
+            
+            //var layerWidth:number = (this.currentWidth - left - right)*this.coeff;
+            //var layerHeight:number = (this.currentHeight - top - bottom)*this.coeff;
+            
+            this.layerContainer.width(layerWidth);
+            this.layerContainer.height(layerHeight);
+            
+            if(this.map){
+                this.map.resize(layerWidth, layerHeight);
             }
         }
-        else{
-            console.log("no map parameters provided");
-        }
-
-        console.log("create map parameters=",parameters);
-        
-        var border:string = (this.layer as MapLayerModel).getBorder();
-        if(border){
-            border = Utils.updateBorderString(border, this.coeff);
-            this.style+="border:"+border+";";
-        }
-
-        this.layerContainer = this.j$("<div id='"+this.selfId+"' style='"+this.style+"'></div>");
-        this.layerContainer.appendTo(this.j$("#"+this.parentId));
-        
-        this.map = new GeographicMap(this.j$, this.selfId, parameters);
-        this.onResize();
     }
 }

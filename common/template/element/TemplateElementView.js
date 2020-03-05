@@ -13,6 +13,7 @@
 ///<reference path="../layer/geographicMap/MapLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="CountryLayerView.ts"/>
+///<reference path="BlobImageLayerView.ts"/>
 var TemplateElementView = (function () {
     function TemplateElementView(j$, parentContainerId, selfContainerId, coeff) {
         this.j$ = j$;
@@ -57,6 +58,9 @@ var TemplateElementView = (function () {
                 case LayerType.IMAGE_LAYER_TYPE:
                     new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
+                case LayerType.BLOB_IMAGE_LAYER_TYPE:
+                    new BlobImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
                 case LayerType.BORDER_CIRCLE_LAYER_TYPE:
                     new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
@@ -65,10 +69,7 @@ var TemplateElementView = (function () {
                     layer.setView(layerView);
                     break;
                 case LayerType.MAP_LAYER_TYPE:
-                    var zoom = layer.getZoom();
-                    var mapStyle = layer.getMapStyle();
-                    var position = layer.getPosition();
-                    var layerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff, zoom, mapStyle, position);
+                    var layerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     layer.setView(layerView);
                     break;
             }

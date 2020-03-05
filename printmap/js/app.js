@@ -29,14 +29,12 @@ $(document).ready(function () {
         currentTemplate = templates.get(currentTemplateIndex);
         printWidth = currentTemplate.getPrintWidth();
         printHeight = currentTemplate.getPrintHeight();
-        
 
         createSearchCity();
         createTemplateElement(currentTemplate, "templateElement", "map12", 1);
     });
-
+    
     EventBus.addEventListener(GeographicMap.ON_MAP_LOADED, (data)=>onMapLoaded(data));
-    EventBus.addEventListener(GeographicMap.ON_MAP_CHANGED, (data)=>onMapChanged(data));
     
     createTemplateEditor();
     
@@ -51,13 +49,9 @@ function onMapLoaded(data){
     currentStyle = data.style;
 }
 
-function onMapChanged(data){
-    mapCurrentParameters = data;
-    currentTemplate.setMapParameters(mapCurrentParameters);
-}
-
 function exportImage(){
-    createTemplateElement(currentTemplate, "printMapContainer", "printMap", coeff);
+    EventBus.addEventListener("RENDER_PRINT_SIZE_RESULT", (data)=>onPrintSizeImageReady(data));
+    EventBus.dispatchEvent("RENDER_PRINT_SIZE",null);
 }
 
 function createTemplateEditor(){
@@ -79,4 +73,49 @@ function createSearchCity(){
     var view = new SearchCityView($);
     var model = new SearchCityModel(view, geocodingService);
     new SearchCityController(model);
+}
+
+function onPrintSizeImageReady(data){
+    console.log("onPrintSizeImageReady data=",data);
+
+    var imgObject = $(data);
+    
+    var src = imgObject.attr("src");
+
+    console.log("src=",src);
+    
+    var changedTemplateLayers = new List("layers");
+    
+    var changedTemplate = new Template("","", 2481, 3509, changedTemplateLayers, 1.414);
+    
+    var layersIterator = currentTemplate.getLayersIterator();
+    while(layersIterator.hasNext()){
+        var layer = layersIterator.next();
+        
+        if(layer.getType()!=LayerType.MAP_LAYER_TYPE){
+            changedTemplateLayers.add(layer); 
+        }
+        else{
+            var left = layer.getLeft();
+            var right = layer.getRight();
+            var top = layer.getTop();
+            var bottom = layer.getBottom();
+            var border = layer.getBorder();
+            
+            var blobImageLayer = new BlobImageTemplateLayer("backgroundImage", 1.414, LayerType.BLOB_IMAGE_LAYER_TYPE, src, left, top, right, bottom, false, border);
+            changedTemplateLayers.add(blobImageLayer);
+        }
+    }
+
+    var printWidth = currentTemplate.getPrintWidth();
+    var printHeight = currentTemplate.getPrintHeight();
+
+    var templateWidth = $("#templateElement").outerWidth();
+
+    var coeff = printWidth/templateWidth;
+    
+    console.log("createTemplateElement");
+    createTemplateElement(changedTemplate, "printMapContainer", "printMap", coeff);
+    // <layer id="backgroundImage" type="image" left="6%" top="4%" right="7%" bottom="34%" url="common/templates/space1.png"></layer>
+    // rebuild template with image instead of map
 }

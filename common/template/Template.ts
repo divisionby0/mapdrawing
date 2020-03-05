@@ -26,16 +26,23 @@ class Template{
         this.aspectRatio = aspectRatio;
     }
     
+    public getName():string{
+        return this.name;
+    }
+    public setName(name:string):void{
+        this.name = name;
+    }
+    
+    public addLayer(layer:TemplateLayer):void{
+        this.layers.add(layer);
+    }
+    
+    
+    /*
     public setMapParameters(parameters:any):void{
         this.mapParameters = parameters;
-        var layersIterator:ListIterator = this.getLayersIterator();
-        while(layersIterator.hasNext()){
-            var layer:TemplateLayer = layersIterator.next();
-            if(layer.getType() == LayerType.MAP_LAYER_TYPE){
-                (layer as MapLayerModel).setCurrentMapParameters(parameters);
-            }
-        }
     }
+    */
     
     public setCity(city:string):void{
         this.city = city;
@@ -64,15 +71,25 @@ class Template{
     public getLayersIterator():ListIterator{
         return this.layers.getIterator();
     }
-    
+
     public getPrintWidth():number{
         return this.width;
     }
+    public setPrintWidth(width:number):void{
+        this.width = width;
+    }
+    
     public getPrintHeight():number{
         return this.height;
     }
-    
+    public setPrintHeight(height:number):void{
+        this.height = height;
+    }
+
     public getAspectRatio():string{
         return this.aspectRatio;
+    }
+    public setAspectRatio(ar:any):void{
+        this.aspectRatio = ar;
     }
 }

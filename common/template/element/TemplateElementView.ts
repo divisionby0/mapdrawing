@@ -13,6 +13,7 @@
 ///<reference path="../layer/geographicMap/MapLayerView.ts"/>
 ///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="CountryLayerView.ts"/>
+///<reference path="BlobImageLayerView.ts"/>
 class TemplateElementView implements ITemplateSizeProvider{
     private j$:any;
     private parentContainerId:string;
@@ -70,6 +71,9 @@ class TemplateElementView implements ITemplateSizeProvider{
                 case LayerType.IMAGE_LAYER_TYPE:
                     new ImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
+                case LayerType.BLOB_IMAGE_LAYER_TYPE:
+                    new BlobImageLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
                 case LayerType.BORDER_CIRCLE_LAYER_TYPE:
                     new BorderCircleLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
@@ -78,11 +82,7 @@ class TemplateElementView implements ITemplateSizeProvider{
                     layer.setView(layerView);
                     break;
                 case LayerType.MAP_LAYER_TYPE:
-                    var zoom:string = (layer as MapLayerModel).getZoom();
-                    var mapStyle:string = (layer as MapLayerModel).getMapStyle();
-                    var position:string[] = (layer as MapLayerModel).getPosition();
-                    
-                    var layerView:LayerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff, zoom, mapStyle, position);
+                    var layerView:LayerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     layer.setView(layerView);
                     break;
             }

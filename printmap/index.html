@@ -55,8 +55,8 @@
             <div class="row" id="templatesListContainer" style="overflow-x: hidden; overflow-y: scroll;"></div>
         </div>
     </div>
-    <div id="printMapContainer" style="position: relative;">
-    </div>
+    <div id="printMapContainer" style="position: relative;"></div>
+    <div id="mapImageContainer" style="position: relative;"></div>
 </div>
 
 <script src="../common/lib/jquery.js"></script>
@@ -88,6 +88,7 @@
 <script type="text/javascript" src="../common/template/layer/CoordinatesTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/DateTimeTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/ImageTemplateLayer.js"></script>
+<script type="text/javascript" src="../common/template/layer/BlobImageTemplateLayer.js"></script>
 <script type="text/javascript" src="../common/template/layer/BorderCircleTemplateLayer.js"></script>
 
 <script type="text/javascript" src="../common/template/element/LayerView.js"></script>
@@ -99,10 +100,12 @@
 <script type="text/javascript" src="../common/template/element/DivLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/BorderCircleLayerView.js"></script>
 <script type="text/javascript" src="../common/template/element/ImageLayerView.js"></script>
+<script type="text/javascript" src="../common/template/element/BlobImageLayerView.js"></script>
 
 <script type="text/javascript" src="../common/template/layer/geographicMap/MapLayerController.js"></script>
 <script type="text/javascript" src="../common/template/layer/geographicMap/MapLayerModel.js"></script>
 <script type="text/javascript" src="../common/template/layer/geographicMap/MapLayerView.js"></script>
+<script type="text/javascript" src="../common/template/layer/geographicMap/MapParameters.js"></script>
 
 <script type="text/javascript" src="../common/template/editor/EditorEvent.js"></script>
 
@@ -126,6 +129,7 @@
 <script type="text/javascript" src="../common/template/TemplateBuilder.js"></script>
 
 <script type="text/javascript" src="js/geographicMap/GeographicMap.js"></script>
+<script type="text/javascript" src="js/geographicMap/MapRenderer.js"></script>
 
 <script type="text/javascript" src="js/ResizeCanvas.js"></script>
 <script type="text/javascript" src="js/renderPrintImage.js"></script>

@@ -14,6 +14,7 @@ var ImageTemplateLayer = (function (_super) {
         if (changeable === void 0) { changeable = false; }
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.url = url;
+        console.log("ImageTemplateLayer this.url=" + this.url);
     }
     ImageTemplateLayer.prototype.getUrl = function () {
         return this.url;

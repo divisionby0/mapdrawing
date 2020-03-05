@@ -23,8 +23,6 @@ class TemplateLayer{
         this.changeable = changeable;
     }
     
-    
-    
     public setView(view:LayerView):void{
         if(this.view){
             this.view.destroy();

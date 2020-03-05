@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="6ee562ea-f2d4-475f-9699-f3806958ff19" name="mapbox" url="http://45.12.212.164">
-        <fileTransfer host="45.12.212.164" port="22" rootFolder="/var/www/html/divby0.ru/mapbox" accessType="SFTP" password="dfebdfdfdfe4dfdadfd9dffedfeadfd9dfe9df98df9c" username="root">
+      <webServer id="7020b6e6-0965-4b40-9c70-4a49f813d4e2" name="mapbox" url="http://45.12.212.164">
+        <fileTransfer host="45.12.212.164" port="22" rootFolder="/var/www/html/divby0.ru/mapbox" accessType="SFTP" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

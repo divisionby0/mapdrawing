@@ -13,6 +13,11 @@ body {
     -ms-transform: scale(0.7);
 }
 
+.printsizeImage{
+    width: 2481px!important;
+    height: 3509px!important;
+}
+
 #map {
     width: 210mm;
     height: 297mm;

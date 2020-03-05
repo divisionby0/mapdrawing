@@ -10,16 +10,20 @@ var Template = (function () {
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
-    Template.prototype.setMapParameters = function (parameters) {
-        this.mapParameters = parameters;
-        var layersIterator = this.getLayersIterator();
-        while (layersIterator.hasNext()) {
-            var layer = layersIterator.next();
-            if (layer.getType() == LayerType.MAP_LAYER_TYPE) {
-                layer.setCurrentMapParameters(parameters);
-            }
-        }
+    Template.prototype.getName = function () {
+        return this.name;
     };
+    Template.prototype.setName = function (name) {
+        this.name = name;
+    };
+    Template.prototype.addLayer = function (layer) {
+        this.layers.add(layer);
+    };
+    /*
+    public setMapParameters(parameters:any):void{
+        this.mapParameters = parameters;
+    }
+    */
     Template.prototype.setCity = function (city) {
         this.city = city;
     };
@@ -47,11 +51,20 @@ var Template = (function () {
     Template.prototype.getPrintWidth = function () {
         return this.width;
     };
+    Template.prototype.setPrintWidth = function (width) {
+        this.width = width;
+    };
     Template.prototype.getPrintHeight = function () {
         return this.height;
     };
+    Template.prototype.setPrintHeight = function (height) {
+        this.height = height;
+    };
     Template.prototype.getAspectRatio = function () {
         return this.aspectRatio;
+    };
+    Template.prototype.setAspectRatio = function (ar) {
+        this.aspectRatio = ar;
     };
     Template.ON_SELECT = "ON_SELECT";
     return Template;

@@ -7,29 +7,36 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../TemplateLayer.ts"/>
 var MapLayerModel = (function (_super) {
     __extends(MapLayerModel, _super);
-    function MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, styles, position) {
+    function MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, styles, position, bounds) {
         _super.call(this, id, aspectRatio, type, left, top, right, bottom, changeable);
         this.styles = new Array();
         this.placeLabelsVisible = false;
-        this.border = border;
-        this.zoom = zoom;
         this.styles = styles;
-        this.position = position;
-        this.mapStyle = this.styles[0];
+        this.border = border;
+        console.log("Model create parameters zoom=" + zoom);
+        this.currentMapParameters = new MapParameters(this.styles[0], parseFloat(zoom), position, bounds, 0, 0);
     }
-    MapLayerModel.prototype.setView = function (view) {
-        _super.prototype.setView.call(this, view);
-        /*
-        (this.view as MapLayerView).setZoom(this.zoom);
-        (this.view as MapLayerView).setPosition(this.position);
-        (this.view as MapLayerView).setMapStyle(this.mapStyle);
-        (this.view as MapLayerView).setMapParameters(this.currentMapParameters);
-        */
+    MapLayerModel.prototype.getZoom = function () {
+        return this.currentMapParameters.getZoom();
+    };
+    MapLayerModel.prototype.getCenter = function () {
+        return this.currentMapParameters.getCenter();
+    };
+    MapLayerModel.prototype.getMapParameters = function () {
+        return this.currentMapParameters;
+    };
+    MapLayerModel.prototype.coordinatesChanged = function (data) {
+        var center = data.center;
+        var zoom = data.zoom;
+        var bounds = data.bounds;
+        this.currentMapParameters.setCenter(center);
+        this.currentMapParameters.setZoom(zoom);
+        this.currentMapParameters.setBounds(bounds);
     };
     MapLayerModel.prototype.locationChanged = function (coord) {
-        this.position = coord;
+        this.currentMapParameters.setCenter(coord);
         if (this.view) {
-            this.view.setPosition(this.position);
+            this.view.setPosition(this.currentMapParameters.getCenter());
         }
         else {
             console.error("View not set yet. Cannot apply new position.");
@@ -49,12 +56,6 @@ var MapLayerModel = (function (_super) {
     };
     MapLayerModel.prototype.getBorder = function () {
         return this.border;
-    };
-    MapLayerModel.prototype.getZoom = function () {
-        return this.zoom;
-    };
-    MapLayerModel.prototype.getPosition = function () {
-        return this.position;
     };
     MapLayerModel.prototype.getMapStyle = function () {
         return this.mapStyle;
