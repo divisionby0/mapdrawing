@@ -7,6 +7,7 @@ class CoordinatesLayerView extends CityLayerView{
     }
     
     protected createListeners():void{
+        EventBus.addEventListener(EditorEvent.TEXT_3_CHANGED, (text)=>this.onText3Changed(text));
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, (coord)=>this.onCoordinatesChanged(coord));
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, (data)=>this.onCoordinatesVisibilityChanged(data));
     }
@@ -25,5 +26,9 @@ class CoordinatesLayerView extends CityLayerView{
         else{
             this.layerContainer.hide();
         }
+    }
+
+    private onText3Changed(text:string):void {
+        this.layerContainer.text(text.toUpperCase());
     }
 }

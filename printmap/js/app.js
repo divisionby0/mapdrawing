@@ -20,8 +20,6 @@ var currentStyle;
 var printWidth;
 var printHeight;
 
-var mapCurrentParameters;
-
 $(document).ready(function () {
     EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
         templates = parser.parse(data);
@@ -29,6 +27,13 @@ $(document).ready(function () {
         currentTemplate = templates.get(currentTemplateIndex);
         printWidth = currentTemplate.getPrintWidth();
         printHeight = currentTemplate.getPrintHeight();
+
+        var defaultCityData = currentTemplate.getDefaultCity();
+        
+       
+        console.log("defaultCityData=",defaultCityData);
+        
+        EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, defaultCityData);
 
         createSearchCity();
         createTemplateElement(currentTemplate, "templateElement", "map12", 1);
@@ -76,13 +81,9 @@ function createSearchCity(){
 }
 
 function onPrintSizeImageReady(data){
-    console.log("onPrintSizeImageReady data=",data);
-
     var imgObject = $(data);
     
     var src = imgObject.attr("src");
-
-    console.log("src=",src);
     
     var changedTemplateLayers = new List("layers");
     
@@ -113,9 +114,6 @@ function onPrintSizeImageReady(data){
     var templateWidth = $("#templateElement").outerWidth();
 
     var coeff = printWidth/templateWidth;
-    
-    console.log("createTemplateElement");
+
     createTemplateElement(changedTemplate, "printMapContainer", "printMap", coeff);
-    // <layer id="backgroundImage" type="image" left="6%" top="4%" right="7%" bottom="34%" url="common/templates/space1.png"></layer>
-    // rebuild template with image instead of map
 }

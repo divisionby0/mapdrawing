@@ -10,7 +10,6 @@ class MapLayerView extends LayerView{
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
         
-        
         console.log("new MapLayerView coeff=",this.coeff);
         
         var params:MapParameters = (layer as MapLayerModel).getMapParameters();
@@ -31,11 +30,9 @@ class MapLayerView extends LayerView{
 
     
     public setMapStyle(style:string):void{
-        /*
         if(this.map){
             this.map.setStyle(style);
         }
-        */
     }
     public setPosition(position:any):void{
         if(this.map){

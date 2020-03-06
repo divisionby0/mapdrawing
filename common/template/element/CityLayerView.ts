@@ -11,12 +11,12 @@ class CityLayerView extends TextLayerView{
     }
 
     private onCityTextChanged(text:string):void{
-        this.layerContainer.text(text);
+        this.layerContainer.text(text.toUpperCase());
     }
     
     protected onCityChanged(data:any):void {
         var city:string = data.city;
-        this.layerContainer.text(city);
+        this.layerContainer.text(city.toUpperCase());
     }
 
     private onCityVisibilityChanged(data:any):void {

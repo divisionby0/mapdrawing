@@ -18,11 +18,11 @@ var CityLayerView = (function (_super) {
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, function (data) { return _this.onCityVisibilityChanged(data); });
     };
     CityLayerView.prototype.onCityTextChanged = function (text) {
-        this.layerContainer.text(text);
+        this.layerContainer.text(text.toUpperCase());
     };
     CityLayerView.prototype.onCityChanged = function (data) {
         var city = data.city;
-        this.layerContainer.text(city);
+        this.layerContainer.text(city.toUpperCase());
     };
     CityLayerView.prototype.onCityVisibilityChanged = function (data) {
         var visible = data.visible;

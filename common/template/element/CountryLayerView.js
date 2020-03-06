@@ -15,11 +15,11 @@ var CountryLayerView = (function (_super) {
         EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, function (data) { return _this.onCountryTextChanged(data); });
     };
     CountryLayerView.prototype.onCountryTextChanged = function (text) {
-        this.layerContainer.text(text);
+        this.layerContainer.text(text.toUpperCase());
     };
     CountryLayerView.prototype.onCountryChanged = function (data) {
         var country = data.country;
-        this.layerContainer.text(country);
+        this.layerContainer.text(country.toUpperCase());
     };
     return CountryLayerView;
 }(TextLayerView));

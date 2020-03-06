@@ -26,11 +26,9 @@ var MapLayerView = (function (_super) {
         this.onResize();
     }
     MapLayerView.prototype.setMapStyle = function (style) {
-        /*
-        if(this.map){
+        if (this.map) {
             this.map.setStyle(style);
         }
-        */
     };
     MapLayerView.prototype.setPosition = function (position) {
         if (this.map) {

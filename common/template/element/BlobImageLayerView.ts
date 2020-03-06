@@ -4,11 +4,8 @@
 class BlobImageLayerView extends ImageLayerView{
     protected create():void{
         super.create();
-
-        console.log("BlobImageLayerView create()");
+        
         var url:string = (this.layer as BlobImageTemplateLayer).getUrl();
-
-        console.log("url=",url);
 
         this.style+='background-image:url("'+url+'"); background-size:cover;';
 

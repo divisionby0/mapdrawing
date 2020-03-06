@@ -35,7 +35,7 @@ var CityTemplateLayer = (function (_super) {
         this.visible = data.visible;
     };
     CityTemplateLayer.prototype.onText_1_changed = function (text) {
-        this.text = text;
+        this.text = text.toUpperCase();
     };
     return CityTemplateLayer;
 }(TextTemplateLayer));

@@ -13,7 +13,6 @@ var MapLayerModel = (function (_super) {
         this.placeLabelsVisible = false;
         this.styles = styles;
         this.border = border;
-        console.log("Model create parameters zoom=" + zoom);
         this.currentMapParameters = new MapParameters(this.styles[0], parseFloat(zoom), position, bounds, 0, 0);
     }
     MapLayerModel.prototype.getZoom = function () {
@@ -26,9 +25,9 @@ var MapLayerModel = (function (_super) {
         return this.currentMapParameters;
     };
     MapLayerModel.prototype.coordinatesChanged = function (data) {
-        var center = data.center;
-        var zoom = data.zoom;
-        var bounds = data.bounds;
+        var center = data[2];
+        var zoom = data[3];
+        var bounds = data[4];
         this.currentMapParameters.setCenter(center);
         this.currentMapParameters.setZoom(zoom);
         this.currentMapParameters.setBounds(bounds);
@@ -50,6 +49,7 @@ var MapLayerModel = (function (_super) {
         else {
             this.mapStyle = this.styles[0];
         }
+        this.currentMapParameters.setStyle(this.mapStyle);
         if (this.view) {
             this.view.setMapStyle(this.mapStyle);
         }

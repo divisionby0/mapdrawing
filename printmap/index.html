@@ -7,6 +7,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"/>
     <link rel="stylesheet" href="../common/lib/bootstrap.min.css"/>
+
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap2-toggle.min.css" rel="stylesheet">
     <link
             rel="stylesheet"
@@ -36,14 +37,17 @@
                         <input id="placeLabelsButton" type="checkbox">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="padding-top: 5px;">
                     <input type="text" id="text_1_Input" class="form-control">
                 </div>
-                <div class="row">
+                <div class="row" style="padding-top: 5px;">
                     <input type="text" id="text_2_Input" class="form-control">
                 </div>
+                <div class="row" style="padding-top: 5px;">
+                    <input type="text" id="text_3_Input" class="form-control">
+                </div>
 
-                <div class="row">
+                <div class="row" style="padding-top: 5px;">
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary btn-lg" id="generate-btn" onclick="exportImage()">Создать картинку</button>
                         <div id="spinner"></div>
@@ -69,6 +73,7 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/jspdf@1.4.1/dist/jspdf.min.js"></script>
 
 <script type="text/javascript" src="../common/lib/html2canvas.js"></script>
+
 
 <script type="text/javascript" src="../common/lib/Utils.js"></script>
 <script type="text/javascript" src="../common/lib/collections.min.js"></script>

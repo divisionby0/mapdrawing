@@ -13,9 +13,7 @@ var BlobImageLayerView = (function (_super) {
     }
     BlobImageLayerView.prototype.create = function () {
         _super.prototype.create.call(this);
-        console.log("BlobImageLayerView create()");
         var url = this.layer.getUrl();
-        console.log("url=", url);
         this.style += 'background-image:url("' + url + '"); background-size:cover;';
         var border = this.layer.getBorder();
         border = Utils.updateBorderString(border, this.coeff);

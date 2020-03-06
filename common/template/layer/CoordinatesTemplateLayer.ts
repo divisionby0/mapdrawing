@@ -7,6 +7,7 @@ class CoordinatesTemplateLayer extends CityTemplateLayer{
     }
     
     protected createListener() {
+        EventBus.addEventListener(EditorEvent.TEXT_3_CHANGED, (text)=>this.onText3Changed(text));
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, (coord)=>this.onCoordinatesChanged(coord));
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, (data)=>this.onCoordinatesVisibilityChanged(data));
     }
@@ -18,5 +19,9 @@ class CoordinatesTemplateLayer extends CityTemplateLayer{
 
     private onCoordinatesVisibilityChanged(data:any):void {
         this.visible = data.visible;
+    }
+
+    private onText3Changed(text:string):void {
+        this.text = text.toUpperCase();
     }
 }

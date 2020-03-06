@@ -29,6 +29,6 @@ class CityTemplateLayer extends TextTemplateLayer{
     }
 
     private onText_1_changed(text:string):void {
-        this.text = text;
+        this.text = text.toUpperCase();
     }
 }

@@ -1,6 +1,9 @@
 ///<reference path="layer/TemplateLayer.ts"/>
 ///<reference path="layer/LayerType.ts"/>
 ///<reference path="layer/geographicMap/MapLayerModel.ts"/>
+///<reference path="layer/CityTemplateLayer.ts"/>
+///<reference path="layer/CountryTemplateLayer.ts"/>
+///<reference path="layer/CoordinatesTemplateLayer.ts"/>
 var Template = (function () {
     function Template(name, preview, width, height, layers, aspectRatio) {
         this.name = name;
@@ -10,6 +13,25 @@ var Template = (function () {
         this.layers = layers;
         this.aspectRatio = aspectRatio;
     }
+    Template.prototype.getDefaultCity = function () {
+        var city = "";
+        var country = "";
+        var coord = "";
+        var iterator = this.getLayersIterator();
+        while (iterator.hasNext()) {
+            var layer = iterator.next();
+            if (layer.getType() == LayerType.CITY_LAYER_TYPE) {
+                city = layer.getText();
+            }
+            if (layer.getType() == LayerType.COUNTRY_LAYER_TYPE) {
+                country = layer.getText();
+            }
+            if (layer.getType() == LayerType.MAP_LAYER_TYPE) {
+                coord = layer.getCenter();
+            }
+        }
+        return { coord: coord, country: country, city: city };
+    };
     Template.prototype.getName = function () {
         return this.name;
     };
@@ -19,11 +41,6 @@ var Template = (function () {
     Template.prototype.addLayer = function (layer) {
         this.layers.add(layer);
     };
-    /*
-    public setMapParameters(parameters:any):void{
-        this.mapParameters = parameters;
-    }
-    */
     Template.prototype.setCity = function (city) {
         this.city = city;
     };

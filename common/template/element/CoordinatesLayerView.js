@@ -16,6 +16,7 @@ var CoordinatesLayerView = (function (_super) {
     };
     CoordinatesLayerView.prototype.createListeners = function () {
         var _this = this;
+        EventBus.addEventListener(EditorEvent.TEXT_3_CHANGED, function (text) { return _this.onText3Changed(text); });
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, function (coord) { return _this.onCoordinatesChanged(coord); });
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, function (data) { return _this.onCoordinatesVisibilityChanged(data); });
     };
@@ -31,6 +32,9 @@ var CoordinatesLayerView = (function (_super) {
         else {
             this.layerContainer.hide();
         }
+    };
+    CoordinatesLayerView.prototype.onText3Changed = function (text) {
+        this.layerContainer.text(text.toUpperCase());
     };
     return CoordinatesLayerView;
 }(CityLayerView));

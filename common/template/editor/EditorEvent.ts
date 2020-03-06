@@ -7,6 +7,7 @@ class EditorEvent{
     public static PLACEMENT_CHANGED:string = "PLACEMENT_CHANGED";
     public static TEXT_1_CHANGED:string = "TEXT_1_CHANGED";
     public static TEXT_2_CHANGED:string = "TEXT_2_CHANGED";
+    public static TEXT_3_CHANGED:string = "TEXT_3_CHANGED";
     public static CITY_CHANGED:string = "CITY_CHANGED";
     public static CITY_VISIBILITY_CHANGED:string = "CITY_VISIBILITY_CHANGED";
 

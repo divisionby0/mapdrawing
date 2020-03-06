@@ -13,7 +13,6 @@ var MapLayerController = (function () {
         EventBus.addEventListener(EditorEvent.PLACE_LABELS_CHANGED, function (visible) { return _this.onPlaceLabelsChanged(visible); });
     };
     MapLayerController.prototype.onLocationChanged = function (data) {
-        console.log("onLocationChanged data=", data);
         this.model.locationChanged(data.coord);
     };
     MapLayerController.prototype.onPlaceLabelsChanged = function (visible) {

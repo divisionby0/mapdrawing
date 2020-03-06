@@ -6,11 +6,11 @@ class CountryLayerView extends TextLayerView{
         EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, (data)=>this.onCountryTextChanged(data));
     }
     private onCountryTextChanged(text:string):void{
-        this.layerContainer.text(text);
+        this.layerContainer.text(text.toUpperCase());
     }
 
     protected onCountryChanged(data:any):void {
         var country:string = data.country;
-        this.layerContainer.text(country);
+        this.layerContainer.text(country.toUpperCase());
     }
 }

@@ -4,7 +4,6 @@
 var GeographicMap = (function () {
     function GeographicMap(j$, parameters) {
         var _this = this;
-        console.log("Map constructor parameters=", parameters);
         this.j$ = j$;
         this.parameters = parameters;
         this.createMap();
@@ -40,8 +39,6 @@ var GeographicMap = (function () {
     };
     GeographicMap.prototype.createMap = function () {
         var _this = this;
-        console.log("createMap() this.currentStyle=", this.currentStyle);
-        console.log("map parameters: ", this.parameters.toObject());
         try {
             this.map = new mapboxgl.Map(this.parameters.toObject());
             this.map.on('load', function () { return _this.onMapLoaded(); });
@@ -68,10 +65,9 @@ var GeographicMap = (function () {
         this.parameters.setZoom(this.map.getZoom());
         this.parameters.setCenter(this.map.getCenter());
         this.parameters.setBounds(this.map.getBounds());
-        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, { zoom: this.map.getZoom(), center: this.map.getCenter(), bounds: this.map.getBounds() });
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, [this.map.getCenter().lng, this.map.getCenter().lat, this.map.getCenter(), this.map.getZoom(), this.map.getBounds()]);
     };
     GeographicMap.prototype.onMapLoaded = function () {
-        console.log("MAP loaded zoom=", this.map.getZoom());
         EventBus.dispatchEvent(GeographicMap.ON_MAP_LOADED, { map: this.map, style: this.currentStyle });
     };
     GeographicMap.prototype.onRenderPrintSizeRequest = function () {

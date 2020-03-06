@@ -13,7 +13,6 @@ class MapLayerModel extends TemplateLayer{
         
         this.styles = styles;
         this.border = border;
-        console.log("Model create parameters zoom="+zoom);
         this.currentMapParameters = new MapParameters(this.styles[0], parseFloat(zoom), position, bounds, 0, 0);
     }
     
@@ -29,10 +28,10 @@ class MapLayerModel extends TemplateLayer{
         return this.currentMapParameters;
     }
     
-    public coordinatesChanged(data:any):void{
-        var center:any = data.center;
-        var zoom:any = data.zoom;
-        var bounds:any = data.bounds;
+    public coordinatesChanged(data:any[]):void{
+        var center:any = data[2];
+        var zoom:any = data[3];
+        var bounds:any = data[4];
 
         this.currentMapParameters.setCenter(center);
         this.currentMapParameters.setZoom(zoom);
@@ -58,6 +57,9 @@ class MapLayerModel extends TemplateLayer{
         else{
             this.mapStyle = this.styles[0];
         }
+
+        this.currentMapParameters.setStyle(this.mapStyle);
+        
         if(this.view){
             (this.view as MapLayerView).setMapStyle(this.mapStyle);
         }

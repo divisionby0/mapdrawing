@@ -110,6 +110,7 @@ var TemplatesParser = (function () {
                         var fontSize = layerData.getAttribute("size");
                         var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
+                        console.log("create country template layer");
                         templateLayer = new CountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;

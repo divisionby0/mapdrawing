@@ -16,7 +16,6 @@ class MapLayerController{
     }
 
     private onLocationChanged(data:any):void{
-        console.log("onLocationChanged data=",data);
         this.model.locationChanged(data.coord);
     }
 

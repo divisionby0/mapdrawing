@@ -8,15 +8,28 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path="../../lib/events/EventBus.ts"/>
 var CountryTemplateLayer = (function (_super) {
     __extends(CountryTemplateLayer, _super);
-    function CountryTemplateLayer() {
-        _super.apply(this, arguments);
+    function CountryTemplateLayer(id, aspectRatio, type, text, color, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight) {
+        if (left === void 0) { left = null; }
+        if (top === void 0) { top = null; }
+        if (right === void 0) { right = null; }
+        if (bottom === void 0) { bottom = null; }
+        _super.call(this, id, aspectRatio, type, text, color, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+        this.createListener();
     }
     CountryTemplateLayer.prototype.createListener = function () {
         var _this = this;
+        EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
         EventBus.addEventListener(EditorEvent.TEXT_2_CHANGED, function (text) { return _this.onText_2_changed(text); });
     };
     CountryTemplateLayer.prototype.onText_2_changed = function (text) {
-        this.text = text;
+        this.text = text.toUpperCase();
+    };
+    CountryTemplateLayer.prototype.onCityChanged = function (data) {
+        console.log("Country template layer onCityChanged");
+        var country = data.country;
+        if (country && country != "") {
+            this.text = country.toUpperCase();
+        }
     };
     return CountryTemplateLayer;
 }(TextTemplateLayer));

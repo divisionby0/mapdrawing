@@ -14,12 +14,9 @@ class GeographicMap{
     public static ON_MAP_CHANGED:string = "ON_MAP_CHANGED";
     
     private parameters:MapParameters;
-    
-    private initWidth:number;
-    private initHeight:number;
+
 
     constructor(j$:any, parameters:MapParameters){
-        console.log("Map constructor parameters=",parameters);
         this.j$ = j$;
         this.parameters = parameters;
         this.createMap();
@@ -63,9 +60,6 @@ class GeographicMap{
     }
 
     private createMap():void{
-        console.log("createMap() this.currentStyle=",this.currentStyle);
-
-        console.log("map parameters: ",this.parameters.toObject());
 
         try {
             this.map = new mapboxgl.Map(this.parameters.toObject());
@@ -102,11 +96,10 @@ class GeographicMap{
         this.parameters.setCenter(this.map.getCenter());
         this.parameters.setBounds(this.map.getBounds());
         
-        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, {zoom:this.map.getZoom(), center:this.map.getCenter(), bounds:this.map.getBounds()});
+        EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, [this.map.getCenter().lng, this.map.getCenter().lat, this.map.getCenter(), this.map.getZoom(), this.map.getBounds()]);
     }
 
     private onMapLoaded():void {
-        console.log("MAP loaded zoom=",this.map.getZoom());
         EventBus.dispatchEvent(GeographicMap.ON_MAP_LOADED, {map:this.map, style:this.currentStyle});
     }
 

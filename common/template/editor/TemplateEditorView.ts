@@ -18,7 +18,7 @@ class TemplateEditorView{
     
     protected text_1_input:any;
     protected text_2_input:any;
-    private text_3_input:any;
+    protected text_3_input:any;
 
     constructor(j$:any){
         this.j$ = j$;
