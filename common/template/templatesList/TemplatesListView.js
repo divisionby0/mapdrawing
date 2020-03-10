@@ -1,10 +1,8 @@
 ///<reference path="../Template.ts"/>
 ///<reference path="TemplateListRenderer.ts"/>
 var TemplatesListView = (function () {
-    //private container:any;
     function TemplatesListView(j$) {
         this.j$ = j$;
-        //this.container = this.j$("#templatesListContainer");
     }
     TemplatesListView.prototype.setData = function (collection) {
         this.data = collection;

@@ -10,7 +10,7 @@ var MapCoordinatesTemplateLayer = (function (_super) {
         _super.apply(this, arguments);
     }
     MapCoordinatesTemplateLayer.prototype.onCoordinatesChanged = function (data) {
-        var coordinates = data[0] + " " + data[1];
+        var coordinates = parseFloat(data[0]).toFixed(5) + " " + parseFloat(data[1]).toFixed(5);
         this.text = coordinates;
     };
     return MapCoordinatesTemplateLayer;

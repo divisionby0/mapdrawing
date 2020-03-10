@@ -4,6 +4,7 @@
 ///<reference path="layer/CityTemplateLayer.ts"/>
 ///<reference path="layer/CountryTemplateLayer.ts"/>
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
+///<reference path="layer/MapCoordinatesTemplateLayer.ts"/>
 var Template = (function () {
     function Template(name, preview, width, height, layers, aspectRatio) {
         this.name = name;
@@ -20,10 +21,10 @@ var Template = (function () {
         var iterator = this.getLayersIterator();
         while (iterator.hasNext()) {
             var layer = iterator.next();
-            if (layer.getType() == LayerType.CITY_LAYER_TYPE) {
+            if (layer.getType() == LayerType.CITY_LAYER_TYPE || layer.getType() == LayerType.MAP_CITY_LAYER_TYPE) {
                 city = layer.getText();
             }
-            if (layer.getType() == LayerType.COUNTRY_LAYER_TYPE) {
+            if (layer.getType() == LayerType.COUNTRY_LAYER_TYPE || layer.getType() == LayerType.MAP_COUNTRY_LAYER_TYPE) {
                 country = layer.getText();
             }
             if (layer.getType() == LayerType.MAP_LAYER_TYPE) {

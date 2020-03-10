@@ -2,6 +2,7 @@
 ///<reference path="../../lib/events/EventBus.ts"/>
 ///<reference path="../Template.ts"/>
 class TemplatesListController{
+    
     private model:TemplatesListModel;
     constructor(model:TemplatesListModel){
         this.model = model;

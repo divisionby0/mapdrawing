@@ -1,4 +1,5 @@
 ///<reference path="CoordinatesLayerView.ts"/>
+///<reference path="../layer/MapCityTemplateLayer.ts"/>
 class MapCoordinatesLayerView extends CoordinatesLayerView{
     protected create():void{
         this.style="";
@@ -23,9 +24,6 @@ class MapCoordinatesLayerView extends CoordinatesLayerView{
         this.style+="color:"+color+"; font-size:"+fontSize+"; text-align:"+textAlign+"; font-weight:"+fontWeight+";";
         this.layerContainer = this.j$("<div id='"+this.id+"' style='"+this.style+"' class='mapLabel'>"+text+"</div>");
 
-        //var labelsContainer:any = this.j$(".labelsContainer");
-
-
         var labelsContainer:any;
 
         if(this.coeff==1){
@@ -37,5 +35,10 @@ class MapCoordinatesLayerView extends CoordinatesLayerView{
         
         
         this.layerContainer.appendTo(labelsContainer);
+    }
+
+    protected onCoordinatesChanged(data:any):void {
+        var coordinates:string = parseFloat(data[0]).toFixed(5)+" "+parseFloat(data[1]).toFixed(5);
+        this.layerContainer.text(coordinates);
     }
 }

@@ -11,6 +11,11 @@ var GeographicEditorView = (function (_super) {
     function GeographicEditorView() {
         _super.apply(this, arguments);
     }
+    GeographicEditorView.prototype.reset = function () {
+        if (this.placeLabelsButton) {
+            this.placeLabelsButton.bootstrapToggle('off');
+        }
+    };
     GeographicEditorView.prototype.createListeners = function () {
         var _this = this;
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, function (data) { return _this.onCityChanged(data); });
@@ -36,16 +41,16 @@ var GeographicEditorView = (function (_super) {
         EventBus.dispatchEvent(EditorEvent.PLACE_LABELS_CHANGED, this.placeLabelsButton.is(':checked'));
     };
     GeographicEditorView.prototype.onCityChanged = function (data) {
-        console.log("onCityChanged data=", data);
         var city = data.city;
         var country = data.country;
+        console.log("GeographicEditorView onCityChanged data=", data);
         var coord = data.coord;
         this.text_1_input.val(city);
         this.text_2_input.val(country);
-        this.text_3_input.val(coord[0] + " " + coord[1]);
+        this.text_3_input.val(parseFloat(coord[0]).toFixed(5) + " " + parseFloat(coord[1]).toFixed(5));
     };
     GeographicEditorView.prototype.onCoordinatesChanged = function (data) {
-        this.text_3_input.val(data[0] + " " + data[1]);
+        this.text_3_input.val(parseFloat(data[0]).toFixed(5) + " " + parseFloat(data[1]).toFixed(5));
     };
     GeographicEditorView.prototype.onText_1_changed = function () {
         EventBus.dispatchEvent(EditorEvent.TEXT_1_CHANGED, this.text_1_input.val());

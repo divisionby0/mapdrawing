@@ -108,7 +108,6 @@ var TemplatesParser = (function () {
                         catch (error) {
                             text = "";
                         }
-                        console.log("text=", text);
                         var textColor = layerData.getAttribute("color");
                         var fontSize = layerData.getAttribute("size");
                         var fontWeight = layerData.getAttribute("fontWeight");
@@ -173,6 +172,7 @@ var TemplatesParser = (function () {
                         var fontSize = layerData.getAttribute("size");
                         var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
+                        console.log("parsing map coord = ", text);
                         templateLayer = new MapCoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;

@@ -4,7 +4,7 @@
 class SearchCityModel{
     private view:SearchCityView;
     private geocodingService:GeocodingService;
-    private resultParser:SearchCityResultParses = new SearchCityResultParses();
+    //private resultParser:SearchCityResultParses = new SearchCityResultParses();
     
     constructor(view:SearchCityView, geocodingService:GeocodingService){
         this.view = view;
@@ -23,7 +23,10 @@ class SearchCityModel{
     
     public onGeocodingResult(data:any):void{
         this.view.enable();
-        var resultData:any = this.resultParser.parse(data);
+
+        var resultParser:SearchCityResultParses = new SearchCityResultParses();
+        
+        var resultData:any = resultParser.parse(data);
         
         var status:string = resultData.status;
         

@@ -16,13 +16,18 @@ var currentTemplateIndex = 0;
 var templatesUrl = "../common/templates/mapTemplates.xml";
 var currentMap;
 var currentStyle;
+var currentCity;
 
 var printWidth;
 var printHeight;
 
+var geocodingService;
+
 $(document).ready(function () {
     EventBus.addEventListener(TemplateLoader.ON_DATA_LOADED, function(data){
         templates = parser.parse(data);
+
+        EventBus.dispatchEvent("ON_TEMPLATES_LOADED", templates);
         
         currentTemplate = templates.get(currentTemplateIndex);
         printWidth = currentTemplate.getPrintWidth();
@@ -30,20 +35,89 @@ $(document).ready(function () {
 
         var defaultCityData = currentTemplate.getDefaultCity();
         EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, defaultCityData);
-
-        createSearchCity();
+        
         createTemplateElement(currentTemplate, "templateElement", "map12", 1);
+        
+        createSearchCity();
+        getCurrentLocation();
     });
     
     EventBus.addEventListener(GeographicMap.ON_MAP_LOADED, (data)=>onMapLoaded(data));
     
     createTemplateEditor();
+    createTemplatesList();
+    
+    EventBus.addEventListener(Template.ON_SELECT, function(index){
+
+        if(index==currentTemplateIndex){
+            return;
+        }
+
+        $("#templateElement").empty();
+
+        currentTemplateIndex = index;
+
+        currentTemplate = templates.get(currentTemplateIndex);
+        currentTemplate.setCity(currentCity);
+        EventBus.dispatchEvent("TEMPLATE_CHANGED", currentTemplate);
+
+        createTemplateElement(currentTemplate, "templateElement", "map12", 1);
+    });
     
     parser = new TemplatesParser($);
     
     templateLoader = new TemplateLoader($);
     templateLoader.load(templatesUrl);
 });
+
+function getCurrentLocation(){
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            function success(position) {
+                currentCoord = [position.coords.latitude, position.coords.longitude];
+                console.log('latitude '+ position.coords.latitude+ ' longitude '+ position.coords.longitude);
+
+                EventBus.addEventListener(GeocodingService.ON_REVERSED_GEOCODING_RESULT, onCityByCoordinatesGeocodingResult);
+
+                geocodingService.getCity(position.coords.latitude, position.coords.longitude);
+            },
+            function error(error_message) {
+                console.error('An error has occured while retrieving location'+ error_message.message);
+            }
+        );
+    } else {
+        console.error('geolocation is not enabled on this browser');
+    }
+}
+
+function onCityByCoordinatesGeocodingResult(data){
+    console.log("onCityByCoordinatesGeocodingResult data=",data);
+
+    var resultParser = new SearchCityResultParses();
+    var resultData = resultParser.parse(data);
+
+    console.log("resultData:",resultData);
+
+    var firstCity = getFirstCity(resultData);
+
+    console.log("first city:",firstCity);
+
+    currentTemplate.setCity(firstCity.name);
+    currentTemplate.setLat(firstCity.coord[0]);
+    currentTemplate.setLng(firstCity.coord[1]);
+
+    currentCity = firstCity.name;
+
+    EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, firstCity);
+
+    EventBus.dispatchEvent(EditorEvent.COORDINATES_CHANGED, firstCity.coord);
+}
+
+function createTemplatesList(){
+    var templatesListView = new TemplatesListView($);
+    var templatesListModel = new TemplatesListModel(templatesListView);
+    new TemplatesListController(templatesListModel);
+}
 
 function onMapLoaded(data){
     currentMap = data.map;
@@ -70,7 +144,7 @@ function createTemplateElement(template, parentContainerId, selfContainerId, coe
 }
 
 function createSearchCity(){
-    var geocodingService = new GeocodingService($);
+    geocodingService = new GeocodingService($);
     var view = new SearchCityView($);
     var model = new SearchCityModel(view, geocodingService);
     new SearchCityController(model);
@@ -116,7 +190,7 @@ function onPrintSizeImageReady(data){
 
     createTemplateElement(changedTemplate, "printMapContainer", "printMap", coeff);
     
-    setTimeout(createPrintImage(), 1000);
+    setTimeout(createPrintImage(), 300);
 }
 
 function hideMapContainer(){
@@ -129,16 +203,32 @@ function hideMapContainer(){
 function createPrintImage(){
     $("#templateElement").hide();
     $("#printMapContainer").show();
-    $("#printMapContainer").width(2481);
-    $("#printMapContainer").height(3509);
+    $("#printMapContainer").width(printWidth);
+    $("#printMapContainer").height(printHeight);
     
     html2canvas(document.querySelector("#printMapContainer"),{letterRendering: 1, allowTaint : true}).then(function(canvas){
         canvas.toBlob(function(blob) {
             $("#templateElement").show();
-            setTimeout(hideMapContainer, 2000);
+            setTimeout(hideMapContainer, 300);
             saveAs(blob, 'map.png');
         });
 
         $("#templateElement").show();
     });
+}
+
+function getFirstCity(data){
+    var cities = data.collection;
+    var firstCityData = cities.get(0);
+
+    var coord = firstCityData.coord;
+    var cityName = firstCityData.name;
+    var country = firstCityData.country;
+
+    if(firstCityData){
+        return {coord:coord, country:country, city:cityName};
+    }
+    else{
+        console.error("Did'n find template default city");
+    }
 }

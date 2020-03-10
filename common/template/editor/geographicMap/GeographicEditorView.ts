@@ -5,6 +5,12 @@ class GeographicEditorView extends TemplateEditorView{
     
     private placeLabelsButton:any;
 
+    public reset():void{
+        if(this.placeLabelsButton){
+            this.placeLabelsButton.bootstrapToggle('off');
+        }
+    }
+    
     protected createListeners():void {
         EventBus.addEventListener(EditorEvent.CITY_CHANGED, (data)=>this.onCityChanged(data));
         EventBus.addEventListener(EditorEvent.COORDINATES_CHANGED, (data)=>this.onCoordinatesChanged(data));
@@ -34,19 +40,20 @@ class GeographicEditorView extends TemplateEditorView{
     }
 
     private onCityChanged(data:any):void {
-        console.log("onCityChanged data=",data);
         var city:string = data.city;
         var country:string = data.country;
+
+        console.log("GeographicEditorView onCityChanged data=",data);
 
         var coord:any[] = data.coord;
 
         this.text_1_input.val(city);
         this.text_2_input.val(country);
-        this.text_3_input.val(coord[0]+" "+coord[1]);
+        this.text_3_input.val(parseFloat(coord[0]).toFixed(5)+" "+parseFloat(coord[1]).toFixed(5));
     }
 
     private onCoordinatesChanged(data:any[]):void {
-        this.text_3_input.val(data[0]+" "+data[1]);
+        this.text_3_input.val(parseFloat(data[0]).toFixed(5)+" "+parseFloat(data[1]).toFixed(5));
     }
 
     private onText_1_changed():void {

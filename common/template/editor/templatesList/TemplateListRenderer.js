@@ -1,5 +1,5 @@
-///<reference path="../Template.ts"/>
-///<reference path="../../lib/events/EventBus.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../../Template.ts"/>
 var TemplateListRenderer = (function () {
     function TemplateListRenderer(j$, parent, data, index) {
         this.j$ = j$;

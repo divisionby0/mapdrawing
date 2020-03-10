@@ -14,11 +14,10 @@ var BlobImageLayerView = (function (_super) {
         this.printHeight = 3509;
     }
     BlobImageLayerView.prototype.create = function () {
-        console.log("BLOB border:", this.layer.getBorder());
         var url = this.layer.getUrl();
         this.style += 'left:' + this.layer.getLeft() + '; right:' + this.layer.getRight() + '; top:' + this.layer.getTop() + '; bottom:' + this.layer.getBottom() + ';';
-        var imageWidth = this.printWidth - this.printWidth / 100 * parseFloat(this.layer.getLeft()) - this.printWidth / 100 * parseFloat(this.layer.getRight());
-        var imageHeight = this.printHeight - this.printHeight / 100 * parseFloat(this.layer.getTop()) - this.printHeight / 100 * parseFloat(this.layer.getBottom());
+        //var imageWidth:number = this.printWidth - this.printWidth/100*parseFloat(this.layer.getLeft()) - this.printWidth/100*parseFloat(this.layer.getRight());
+        //var imageHeight:number = this.printHeight - this.printHeight/100*parseFloat(this.layer.getTop()) - this.printHeight/100*parseFloat(this.layer.getBottom());
         var border = this.layer.getBorder();
         border = Utils.updateBorderString(border, this.coeff);
         this.style += "; border:" + border + ";";

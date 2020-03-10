@@ -4,10 +4,8 @@ class TemplatesListView{
     
     private j$:any;
     private data:List<Template>;
-    //private container:any;
     constructor(j$:any){
         this.j$ = j$;
-        //this.container = this.j$("#templatesListContainer");
     }
 
     public setData(collection:List<Template>):void {

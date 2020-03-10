@@ -1,5 +1,5 @@
-///<reference path="../Template.ts"/>
 ///<reference path="TemplateListRenderer.ts"/>
+///<reference path="../../Template.ts"/>
 class TemplatesListView{
     
     private j$:any;

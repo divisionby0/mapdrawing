@@ -1,5 +1,5 @@
-///<reference path="../Template.ts"/>
 ///<reference path="TemplateListRenderer.ts"/>
+///<reference path="../../Template.ts"/>
 var TemplatesListView = (function () {
     //private container:any;
     function TemplatesListView(j$) {

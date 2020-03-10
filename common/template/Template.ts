@@ -4,6 +4,7 @@
 ///<reference path="layer/CityTemplateLayer.ts"/>
 ///<reference path="layer/CountryTemplateLayer.ts"/>
 ///<reference path="layer/CoordinatesTemplateLayer.ts"/>
+///<reference path="layer/MapCoordinatesTemplateLayer.ts"/>
 class Template{
     private width:number;
     private height:number;
@@ -38,17 +39,16 @@ class Template{
         while(iterator.hasNext()){
             var layer:TemplateLayer = iterator.next();
             
-            if(layer.getType() == LayerType.CITY_LAYER_TYPE){
+            if(layer.getType() == LayerType.CITY_LAYER_TYPE || layer.getType() == LayerType.MAP_CITY_LAYER_TYPE){
                 city = (layer as CityTemplateLayer).getText();
             }
-            if(layer.getType() == LayerType.COUNTRY_LAYER_TYPE){
+            if(layer.getType() == LayerType.COUNTRY_LAYER_TYPE || layer.getType() == LayerType.MAP_COUNTRY_LAYER_TYPE){
                 country = (layer as CountryTemplateLayer).getText();
             }
             if(layer.getType() == LayerType.MAP_LAYER_TYPE){
                 coord = (layer as MapLayerModel).getCenter();
             }
         }
-        
         return {coord:coord, country:country, city:city};
     }
     

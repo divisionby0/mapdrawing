@@ -58,10 +58,30 @@ class GeographicMap{
         this.mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];
         var mapDiv:any = document.getElementById(this.parameters.getContainer());
         
-        mapDiv.style.width = w;
-        mapDiv.style.height = h;
-        this.mapCanvas.style.width = w;
-        this.mapCanvas.style.height = h;
+        try{
+            mapDiv.style.width = w;
+        }
+        catch(error){
+            
+        }
+        try{
+            mapDiv.style.height = h;
+        }
+        catch(error){
+            
+        }
+        try{
+            this.mapCanvas.style.width = w;
+        }
+        catch(error){
+            
+        }
+        try{
+            this.mapCanvas.style.height = h;
+        }
+        catch(error){
+            
+        }
 
         if(this.map){
             this.map.resize();

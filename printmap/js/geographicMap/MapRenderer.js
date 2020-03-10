@@ -16,9 +16,6 @@ function render($, _parameters, left, right, top, bottom){
     var containerWidth = printWidth - printWidth/100*parseFloat(left) - printWidth/100*parseFloat(right);
     var containerHeight = printHeight - printHeight/100*parseFloat(top) - printHeight/100*parseFloat(bottom);
     
-    console.log("containerWidth=",containerWidth);
-    console.log("containerHeight=",containerHeight);
-    
     $("#"+parameters.container).width(containerWidth);
     $("#"+parameters.container).height(containerHeight);
     

@@ -2,8 +2,8 @@
 ///<reference path="SearchCityResultParses.ts"/>
 ///<reference path="../../../GeocodingService.ts"/>
 var SearchCityModel = (function () {
+    //private resultParser:SearchCityResultParses = new SearchCityResultParses();
     function SearchCityModel(view, geocodingService) {
-        this.resultParser = new SearchCityResultParses();
         this.view = view;
         this.geocodingService = geocodingService;
     }
@@ -17,7 +17,8 @@ var SearchCityModel = (function () {
     };
     SearchCityModel.prototype.onGeocodingResult = function (data) {
         this.view.enable();
-        var resultData = this.resultParser.parse(data);
+        var resultParser = new SearchCityResultParses();
+        var resultData = resultParser.parse(data);
         var status = resultData.status;
         if (status != "error") {
             this.view.setCities(resultData.collection);

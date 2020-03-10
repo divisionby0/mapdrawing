@@ -28,14 +28,30 @@ var TemplateEditorView = (function () {
         }
     };
     TemplateEditorView.prototype.reset = function (settings) {
-        settings.constellations ? this.constellationLinesButton.bootstrapToggle('on') : this.constellationLinesButton.bootstrapToggle('off');
-        this.starsMultiColorsButton.bootstrapToggle('off');
-        settings.date ? this.dateButton.bootstrapToggle('on') : this.dateButton.bootstrapToggle('off');
-        settings.time ? this.timeButton.bootstrapToggle('on') : this.timeButton.bootstrapToggle('off');
-        settings.place ? this.cityButton.bootstrapToggle('on') : this.cityButton.bootstrapToggle('off');
-        settings.border ? this.borderButton.bootstrapToggle('on') : this.borderButton.bootstrapToggle('off');
-        settings.circle ? this.circleBorderButton.bootstrapToggle('on') : this.circleBorderButton.bootstrapToggle('off');
-        settings.coordinates ? this.coordinatesButton.bootstrapToggle('on') : this.coordinatesButton.bootstrapToggle('off');
+        if (this.constellationLinesButton) {
+            settings.constellations ? this.constellationLinesButton.bootstrapToggle('on') : this.constellationLinesButton.bootstrapToggle('off');
+        }
+        if (this.starsMultiColorsButton) {
+            this.starsMultiColorsButton.bootstrapToggle('off');
+        }
+        if (this.dateButton) {
+            settings.date ? this.dateButton.bootstrapToggle('on') : this.dateButton.bootstrapToggle('off');
+        }
+        if (this.timeButton) {
+            settings.time ? this.timeButton.bootstrapToggle('on') : this.timeButton.bootstrapToggle('off');
+        }
+        if (this.cityButton) {
+            settings.place ? this.cityButton.bootstrapToggle('on') : this.cityButton.bootstrapToggle('off');
+        }
+        if (this.borderButton) {
+            settings.border ? this.borderButton.bootstrapToggle('on') : this.borderButton.bootstrapToggle('off');
+        }
+        if (this.circleBorderButton) {
+            settings.circle ? this.circleBorderButton.bootstrapToggle('on') : this.circleBorderButton.bootstrapToggle('off');
+        }
+        if (this.coordinatesButton) {
+            settings.coordinates ? this.coordinatesButton.bootstrapToggle('on') : this.coordinatesButton.bootstrapToggle('off');
+        }
     };
     TemplateEditorView.prototype.createListeners = function () {
         var _this = this;

@@ -1,5 +1,5 @@
-///<reference path="../Template.ts"/>
-///<reference path="../../lib/events/EventBus.ts"/>
+///<reference path="../../../lib/events/EventBus.ts"/>
+///<reference path="../../Template.ts"/>
 class TemplateListRenderer{
     private j$:any;
     private parent:string;

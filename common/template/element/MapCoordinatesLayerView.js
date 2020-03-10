@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 ///<reference path="CoordinatesLayerView.ts"/>
+///<reference path="../layer/MapCityTemplateLayer.ts"/>
 var MapCoordinatesLayerView = (function (_super) {
     __extends(MapCoordinatesLayerView, _super);
     function MapCoordinatesLayerView() {
@@ -26,7 +27,6 @@ var MapCoordinatesLayerView = (function (_super) {
         fontSize = Utils.updateFontSizeString(fontSize, this.coeff);
         this.style += "color:" + color + "; font-size:" + fontSize + "; text-align:" + textAlign + "; font-weight:" + fontWeight + ";";
         this.layerContainer = this.j$("<div id='" + this.id + "' style='" + this.style + "' class='mapLabel'>" + text + "</div>");
-        //var labelsContainer:any = this.j$(".labelsContainer");
         var labelsContainer;
         if (this.coeff == 1) {
             labelsContainer = this.j$(".labelsContainer");
@@ -35,6 +35,10 @@ var MapCoordinatesLayerView = (function (_super) {
             labelsContainer = this.j$(".labelsContainer")[1];
         }
         this.layerContainer.appendTo(labelsContainer);
+    };
+    MapCoordinatesLayerView.prototype.onCoordinatesChanged = function (data) {
+        var coordinates = parseFloat(data[0]).toFixed(5) + " " + parseFloat(data[1]).toFixed(5);
+        this.layerContainer.text(coordinates);
     };
     return MapCoordinatesLayerView;
 }(CoordinatesLayerView));

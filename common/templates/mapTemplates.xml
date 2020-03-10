@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <template name="monochrome" printSize="2481x3509" preview="common/templates/map_template1_preview.jpg" aspectRatio="1.414">
+    <template name="monochrome" printSize="2481x3509" preview="../common/templates/map_template1_preview.jpg" aspectRatio="1.414">
         <layer id="div" type="div" left="0" top="0" right="0" bottom="0" backgroundColor="yellow"></layer>
         <layer id="map" type="map" left="2.4%" top="2.1%" right="3.4%" bottom="3.1%" border="#000000 0.3em solid" zoom="11" lat="55.7554396083260" lng="37.6190165137685"  normalStyle="mapbox://styles/divby0/ck73atvo0240k1iqwcaeu4pog" noStreeLabelsStyle="mapbox://styles/divby0/ck73ahdpe0n0c1io0eielif1t" >Москва</layer>
+        <layer id="labelsContainer" type="labelsContainer" backgroundColor="white" top="80%"></layer>
+        <layer id="mapCity" type="mapCity" size="2em" color="black" left="0" right="0" top="8%" text-align="center">Москва</layer>
+        <layer id="mapCountry" type="mapCountry" size="1.2em" color="black" top="10%" text-align="center">Россия</layer>
+        <layer id="mapCoordinates" type="mapCoordinates" size="1em" color="black" left="0" right="0" top="12%" text-align="center"></layer>
+    </template>
+
+    <template name="monochrome2" printSize="2481x3509" preview="../common/templates/map_template2_preview.jpg" aspectRatio="1.414">
+        <layer id="div" type="div" left="0" top="0" right="0" bottom="0" backgroundColor="green"></layer>
+        <layer id="map" type="map" left="2.4%" top="2.1%" right="3.4%" bottom="3.1%" border="#000000 0.3em solid" zoom="11" lat="55.7554396083260" lng="37.6190165137685"  normalStyle="mapbox://styles/divby0/ck72z1wek1b451it8t864s6yf" noStreeLabelsStyle="mapbox://styles/divby0/ck72z2mr91sto1iop6pusf46d" >Москва</layer>
         <layer id="labelsContainer" type="labelsContainer" backgroundColor="white" top="80%"></layer>
         <layer id="mapCity" type="mapCity" size="2em" color="black" left="0" right="0" top="8%" text-align="center">Москва</layer>
         <layer id="mapCountry" type="mapCountry" size="1.2em" color="black" top="10%" text-align="center">Россия</layer>

@@ -6,14 +6,13 @@ class BlobImageLayerView extends ImageLayerView{
     private printHeight:number = 3509;
 
     protected create():void{
-
-        console.log("BLOB border:",(this.layer as BlobImageTemplateLayer).getBorder());
+        
         var url:string = (this.layer as BlobImageTemplateLayer).getUrl();
 
         this.style+='left:'+this.layer.getLeft()+'; right:'+this.layer.getRight()+'; top:'+this.layer.getTop()+'; bottom:'+this.layer.getBottom()+';';
 
-        var imageWidth:number = this.printWidth - this.printWidth/100*parseFloat(this.layer.getLeft()) - this.printWidth/100*parseFloat(this.layer.getRight());
-        var imageHeight:number = this.printHeight - this.printHeight/100*parseFloat(this.layer.getTop()) - this.printHeight/100*parseFloat(this.layer.getBottom());
+        //var imageWidth:number = this.printWidth - this.printWidth/100*parseFloat(this.layer.getLeft()) - this.printWidth/100*parseFloat(this.layer.getRight());
+        //var imageHeight:number = this.printHeight - this.printHeight/100*parseFloat(this.layer.getTop()) - this.printHeight/100*parseFloat(this.layer.getBottom());
 
         var border:string = (this.layer as BlobImageTemplateLayer).getBorder();
         border = Utils.updateBorderString(border, this.coeff);
