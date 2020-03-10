@@ -10,15 +10,21 @@ var BlobImageLayerView = (function (_super) {
     __extends(BlobImageLayerView, _super);
     function BlobImageLayerView() {
         _super.apply(this, arguments);
+        this.printWidth = 2481;
+        this.printHeight = 3509;
     }
     BlobImageLayerView.prototype.create = function () {
-        _super.prototype.create.call(this);
+        console.log("BLOB border:", this.layer.getBorder());
         var url = this.layer.getUrl();
-        this.style += 'background-image:url("' + url + '"); background-size:cover;';
+        this.style += 'left:' + this.layer.getLeft() + '; right:' + this.layer.getRight() + '; top:' + this.layer.getTop() + '; bottom:' + this.layer.getBottom() + ';';
+        var imageWidth = this.printWidth - this.printWidth / 100 * parseFloat(this.layer.getLeft()) - this.printWidth / 100 * parseFloat(this.layer.getRight());
+        var imageHeight = this.printHeight - this.printHeight / 100 * parseFloat(this.layer.getTop()) - this.printHeight / 100 * parseFloat(this.layer.getBottom());
         var border = this.layer.getBorder();
         border = Utils.updateBorderString(border, this.coeff);
         this.style += "; border:" + border + ";";
+        var img = this.j$("<img src='" + url + "' style='width:100%; height:100%'>");
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");
+        this.layerContainer.append(img);
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
     };
     return BlobImageLayerView;

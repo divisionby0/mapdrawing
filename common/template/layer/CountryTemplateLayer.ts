@@ -18,8 +18,7 @@ class CountryTemplateLayer extends TextTemplateLayer{
         this.text = text.toUpperCase();
     }
 
-    private onCityChanged(data:any):void {
-        console.log("Country template layer onCityChanged");
+    protected onCityChanged(data:any):void {
         var country:string = data.country;
         if(country && country!=""){
             this.text = country.toUpperCase();

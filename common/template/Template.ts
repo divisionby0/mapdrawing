@@ -91,6 +91,9 @@ class Template{
     public getLayersIterator():ListIterator{
         return this.layers.getIterator();
     }
+    public totalLayers():number{
+        return this.layers.size();
+    }
 
     public getPrintWidth():number{
         return this.width;

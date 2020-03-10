@@ -12,6 +12,10 @@
 ///<reference path="layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="layer/geographicMap/MapLayerController.ts"/>
 ///<reference path="layer/CountryTemplateLayer.ts"/>
+///<reference path="layer/LabelsContainerTemplateLayer.ts"/>
+///<reference path="layer/MapCityTemplateLayer.ts"/>
+///<reference path="layer/MapCountryTemplateLayer.ts"/>
+///<reference path="layer/MapCoordinatesTemplateLayer.ts"/>
 var TemplatesParser = (function () {
     function TemplatesParser(j$) {
         this.j$ = j$;
@@ -27,7 +31,6 @@ var TemplatesParser = (function () {
         var j;
         for (i = 0; i < total; i++) {
             var templateData = templates[i];
-            //console.log("templateData:", templateData);
             var name = templateData.getAttribute("name");
             var size = templateData.getAttribute("printSize");
             var preview = templateData.getAttribute("preview");
@@ -64,7 +67,6 @@ var TemplatesParser = (function () {
                     case LayerType.DIV_LAYER_TYPE:
                         var backgroundColor = layerData.getAttribute("backgroundColor");
                         var backgroundAlpha = layerData.getAttribute("backgroundAlpha");
-                        //var border:string = layerData.getAttribute("border");
                         if (left == null && right == null && top == null && bottom == null) {
                             left = "0";
                             right = "0";
@@ -98,6 +100,22 @@ var TemplatesParser = (function () {
                         templateLayer = new CityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
+                    case LayerType.MAP_CITY_LAYER_TYPE:
+                        var text;
+                        try {
+                            text = layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch (error) {
+                            text = "";
+                        }
+                        console.log("text=", text);
+                        var textColor = layerData.getAttribute("color");
+                        var fontSize = layerData.getAttribute("size");
+                        var fontWeight = layerData.getAttribute("fontWeight");
+                        var textAlign = layerData.getAttribute("text-align");
+                        templateLayer = new MapCityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
                     case LayerType.COUNTRY_LAYER_TYPE:
                         var text;
                         try {
@@ -110,8 +128,22 @@ var TemplatesParser = (function () {
                         var fontSize = layerData.getAttribute("size");
                         var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
-                        console.log("create country template layer");
                         templateLayer = new CountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.MAP_COUNTRY_LAYER_TYPE:
+                        var text;
+                        try {
+                            text = layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch (error) {
+                            text = "";
+                        }
+                        var textColor = layerData.getAttribute("color");
+                        var fontSize = layerData.getAttribute("size");
+                        var fontWeight = layerData.getAttribute("fontWeight");
+                        var textAlign = layerData.getAttribute("text-align");
+                        templateLayer = new MapCountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.COORDINATES_LAYER_TYPE:
@@ -127,6 +159,21 @@ var TemplatesParser = (function () {
                         var fontWeight = layerData.getAttribute("fontWeight");
                         var textAlign = layerData.getAttribute("text-align");
                         templateLayer = new CoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.MAP_COORDINATES_LAYER_TYPE:
+                        var text;
+                        try {
+                            text = layerData.childNodes[0].nodeValue;
+                        }
+                        catch (error) {
+                            text = "";
+                        }
+                        var textColor = layerData.getAttribute("color");
+                        var fontSize = layerData.getAttribute("size");
+                        var fontWeight = layerData.getAttribute("fontWeight");
+                        var textAlign = layerData.getAttribute("text-align");
+                        templateLayer = new MapCoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.DATE_TIME_LAYER_TYPE:
@@ -183,6 +230,18 @@ var TemplatesParser = (function () {
                         }
                         templateLayer = new MapLayerModel(id, aspectRatio, type, left, top, right, bottom, border, changeable, zoom, [noStreetLabelsStyle, normalStyle], position);
                         new MapLayerController(templateLayer);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.LABELS_CONTAINER:
+                        var backgroundColor = layerData.getAttribute("backgroundColor");
+                        var backgroundAlpha = layerData.getAttribute("backgroundAlpha");
+                        if (left == null && right == null && top == null && bottom == null) {
+                            left = "0";
+                            right = "0";
+                            top = "0";
+                            bottom = "0";
+                        }
+                        templateLayer = new LabelsContainerTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border);
                         layers.add(templateLayer);
                         break;
                 }

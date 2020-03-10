@@ -12,7 +12,7 @@ class CoordinatesTemplateLayer extends CityTemplateLayer{
         EventBus.addEventListener(EditorEvent.COORDINATES_VISIBILITY_CHANGED, (data)=>this.onCoordinatesVisibilityChanged(data));
     }
 
-    private onCoordinatesChanged(data:any):void {
+    protected onCoordinatesChanged(data:any):void {
         var coordinates:string = data[0]+" "+data[1];
         this.text = coordinates;
     }

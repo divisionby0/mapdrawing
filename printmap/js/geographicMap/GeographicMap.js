@@ -2,11 +2,19 @@
 ///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 ///<reference path="../../../common/template/layer/geographicMap/MapParameters.ts"/>
 var GeographicMap = (function () {
-    function GeographicMap(j$, parameters) {
+    function GeographicMap(j$, parameters, left, right, top, bottom) {
         var _this = this;
+        this.left = 0;
+        this.right = 0;
+        this.top = 0;
+        this.bottom = 0;
         this.j$ = j$;
         this.parameters = parameters;
         this.createMap();
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
         EventBus.addEventListener("RENDER_PRINT_SIZE", function () { return _this.onRenderPrintSizeRequest(); });
     }
     GeographicMap.prototype.setPosition = function (position) {
@@ -26,12 +34,12 @@ var GeographicMap = (function () {
         }
     };
     GeographicMap.prototype.resize = function (w, h) {
-        var mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];
+        this.mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];
         var mapDiv = document.getElementById(this.parameters.getContainer());
         mapDiv.style.width = w;
         mapDiv.style.height = h;
-        mapCanvas.style.width = w;
-        mapCanvas.style.height = h;
+        this.mapCanvas.style.width = w;
+        this.mapCanvas.style.height = h;
         if (this.map) {
             this.map.resize();
             this.updateMap();
@@ -71,7 +79,7 @@ var GeographicMap = (function () {
         EventBus.dispatchEvent(GeographicMap.ON_MAP_LOADED, { map: this.map, style: this.currentStyle });
     };
     GeographicMap.prototype.onRenderPrintSizeRequest = function () {
-        render(this.j$, this.parameters.toObject());
+        render(this.j$, this.parameters.toObject(), this.left, this.right, this.top, this.bottom);
     };
     GeographicMap.ON_MAP_LOADED = "ON_MAP_LOADED";
     GeographicMap.ON_MAP_CHANGED = "ON_MAP_CHANGED";

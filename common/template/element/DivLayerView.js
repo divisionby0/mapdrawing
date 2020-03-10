@@ -31,6 +31,13 @@ var DivLayerView = (function (_super) {
             border = Utils.updateBorderString(border, this.coeff);
             this.style += "border:" + border + ";";
         }
+        this.createContainer();
+        /*
+        this.layerContainer = this.j$("<div id='"+this.layer.getId()+"' style='"+this.style+"'></div>");
+        this.layerContainer.appendTo(this.j$("#"+this.parentId));
+        */
+    };
+    DivLayerView.prototype.createContainer = function () {
         this.layerContainer = this.j$("<div id='" + this.layer.getId() + "' style='" + this.style + "'></div>");
         this.layerContainer.appendTo(this.j$("#" + this.parentId));
     };

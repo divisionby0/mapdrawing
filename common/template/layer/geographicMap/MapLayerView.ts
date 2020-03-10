@@ -6,11 +6,13 @@
 class MapLayerView extends LayerView{
 
     private map:GeographicMap;
+    private left:any = 0;
+    private right:any = 0;
+    private top:any = 0;
+    private bottom:any = 0;
     
     constructor(j$:any, layer:TemplateLayer, parentId:string, selfId:string, templateSizeProvider:ITemplateSizeProvider, coeff:number){
         super(j$, layer, parentId, selfId,  templateSizeProvider, coeff);
-        
-        console.log("new MapLayerView coeff=",this.coeff);
         
         var params:MapParameters = (layer as MapLayerModel).getMapParameters();
         params.setContainer(this.selfId);
@@ -24,7 +26,7 @@ class MapLayerView extends LayerView{
         this.layerContainer = this.j$("<div id='"+this.selfId+"' style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
         
-        this.map = new GeographicMap(this.j$, params);
+        this.map = new GeographicMap(this.j$, params, this.layer.getLeft(), this.layer.getRight(), this.layer.getTop(), this.layer.getBottom());
         this.onResize();
     }
 
@@ -44,31 +46,31 @@ class MapLayerView extends LayerView{
         super.onResize();
         
         if(this.layerContainer){
-            var left:any = this.layerContainer.width()/100 * parseInt(this.layer.getLeft());
-            var right:any = this.layerContainer.width()/100 * parseInt(this.layer.getRight());
+            this.left = this.layerContainer.width()/100 * parseInt(this.layer.getLeft());
+            this.right = this.layerContainer.width()/100 * parseInt(this.layer.getRight());
             
             // TODO какая-то путаница с border в расчетах - разобраться
-            var top:any = 0;
-            var bottom:any = 0;
+            this.top = 0;
+            this.bottom = 0;
 
             if(this.layer.hasTop()){
-                top = this.currentHeight / 100 * parseInt(this.layer.getTop());
+                this.top = this.currentHeight / 100 * parseInt(this.layer.getTop());
             }
             if(this.layer.hasBottom()){
-                bottom = this.currentHeight / 100 * parseInt(this.layer.getBottom());
+                this.bottom = this.currentHeight / 100 * parseInt(this.layer.getBottom());
             }
             
-            this.layerContainer.css({"left":left});
-            this.layerContainer.css({"right":right});
-            this.layerContainer.css({"top":top});
-            this.layerContainer.css({"bottom":bottom});
+            this.layerContainer.css({"left":this.left});
+            this.layerContainer.css({"right":this.right});
+            this.layerContainer.css({"top":this.top});
+            this.layerContainer.css({"bottom":this.bottom});
 
             var layerWidth:number;
             var layerHeight:number;
             
             if(this.coeff==1){
-                layerWidth = (this.currentWidth - left - right)*this.coeff;
-                layerHeight = (this.currentHeight - top - bottom)*this.coeff;
+                layerWidth = (this.currentWidth - this.left - this.right)*this.coeff;
+                layerHeight = (this.currentHeight - this.top - this.bottom)*this.coeff;
             }
             else{
                 layerWidth = 2481;

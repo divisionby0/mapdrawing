@@ -28,6 +28,7 @@ var CityTemplateLayer = (function (_super) {
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, function (text) { return _this.onText_1_changed(text); });
     };
     CityTemplateLayer.prototype.onCityChanged = function (data) {
+        console.log("onCityChanged data=", data);
         var city = data.city;
         this.text = city;
     };

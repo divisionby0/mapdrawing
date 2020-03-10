@@ -11,7 +11,7 @@ var ImageLayerView = (function (_super) {
         _super.call(this, j$, layer, parentId, selfId, templateSizeProvider, coeff);
     }
     ImageLayerView.prototype.create = function () {
-        _super.prototype.create.call(this);
+        //super.create();
         var url = this.layer.getUrl();
         this.style += 'background-image:url("' + url + '"); background-size:cover;';
         this.layerContainer = this.j$("<div style='" + this.style + "'></div>");

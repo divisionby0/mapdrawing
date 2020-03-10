@@ -29,10 +29,6 @@ $(document).ready(function () {
         printHeight = currentTemplate.getPrintHeight();
 
         var defaultCityData = currentTemplate.getDefaultCity();
-        
-       
-        console.log("defaultCityData=",defaultCityData);
-        
         EventBus.dispatchEvent(EditorEvent.CITY_CHANGED, defaultCityData);
 
         createSearchCity();
@@ -81,6 +77,8 @@ function createSearchCity(){
 }
 
 function onPrintSizeImageReady(data){
+    console.log("onPrintSizeImageReady");
+    EventBus.removeEventListener("RENDER_PRINT_SIZE_RESULT", (data)=>onPrintSizeImageReady(data));
     var imgObject = $(data);
     
     var src = imgObject.attr("src");
@@ -90,6 +88,7 @@ function onPrintSizeImageReady(data){
     var changedTemplate = new Template("","", 2481, 3509, changedTemplateLayers, 1.414);
     
     var layersIterator = currentTemplate.getLayersIterator();
+    
     while(layersIterator.hasNext()){
         var layer = layersIterator.next();
         
@@ -116,4 +115,30 @@ function onPrintSizeImageReady(data){
     var coeff = printWidth/templateWidth;
 
     createTemplateElement(changedTemplate, "printMapContainer", "printMap", coeff);
+    
+    setTimeout(createPrintImage(), 1000);
+}
+
+function hideMapContainer(){
+    $("#printMapContainer").empty();
+    $("#printMapContainer").hide();
+    $("#mapImageContainer").empty();
+    $("#mapImageContainer").hide();
+}
+
+function createPrintImage(){
+    $("#templateElement").hide();
+    $("#printMapContainer").show();
+    $("#printMapContainer").width(2481);
+    $("#printMapContainer").height(3509);
+    
+    html2canvas(document.querySelector("#printMapContainer"),{letterRendering: 1, allowTaint : true}).then(function(canvas){
+        canvas.toBlob(function(blob) {
+            $("#templateElement").show();
+            setTimeout(hideMapContainer, 2000);
+            saveAs(blob, 'map.png');
+        });
+
+        $("#templateElement").show();
+    });
 }

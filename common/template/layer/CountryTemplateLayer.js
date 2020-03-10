@@ -25,7 +25,6 @@ var CountryTemplateLayer = (function (_super) {
         this.text = text.toUpperCase();
     };
     CountryTemplateLayer.prototype.onCityChanged = function (data) {
-        console.log("Country template layer onCityChanged");
         var country = data.country;
         if (country && country != "") {
             this.text = country.toUpperCase();

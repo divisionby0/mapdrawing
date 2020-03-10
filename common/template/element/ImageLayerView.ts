@@ -6,7 +6,7 @@ class ImageLayerView extends LayerView{
     }
 
     protected create():void{
-        super.create();
+        //super.create();
         var url:string = (this.layer as ImageTemplateLayer).getUrl();
 
         this.style+='background-image:url("'+url+'"); background-size:cover;';

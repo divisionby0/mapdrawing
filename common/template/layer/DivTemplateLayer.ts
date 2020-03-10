@@ -1,9 +1,9 @@
 ///<reference path="TemplateLayer.ts"/>
 class DivTemplateLayer extends TemplateLayer{
 
-    private border:string;
-    private backgroundColor:string;
-    private backgroundAlpha:string;
+    protected border:string;
+    protected backgroundColor:string;
+    protected backgroundAlpha:string;
     
     constructor(id:string, aspectRatio:number, type:string, left:any, top:any, right:any = null, bottom:any = null, changeable:boolean = true,  backgroundColor:string = "", backgroundAlpha:string = "", border:string = ""){
         super(id, aspectRatio, type, left, top, right, bottom, changeable);

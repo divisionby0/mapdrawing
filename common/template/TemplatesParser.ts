@@ -12,6 +12,10 @@
 ///<reference path="layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="layer/geographicMap/MapLayerController.ts"/>
 ///<reference path="layer/CountryTemplateLayer.ts"/>
+///<reference path="layer/LabelsContainerTemplateLayer.ts"/>
+///<reference path="layer/MapCityTemplateLayer.ts"/>
+///<reference path="layer/MapCountryTemplateLayer.ts"/>
+///<reference path="layer/MapCoordinatesTemplateLayer.ts"/>
 class TemplatesParser{
     private j$:any;
 
@@ -36,7 +40,6 @@ class TemplatesParser{
 
         for(i=0; i<total; i++){
             var templateData:any = templates[i];
-            //console.log("templateData:", templateData);
 
             var name:string = templateData.getAttribute("name");
             var size:string = templateData.getAttribute("printSize");
@@ -82,7 +85,6 @@ class TemplatesParser{
                     case LayerType.DIV_LAYER_TYPE:
                         var backgroundColor:string = layerData.getAttribute("backgroundColor");
                         var backgroundAlpha:string = layerData.getAttribute("backgroundAlpha");
-                        //var border:string = layerData.getAttribute("border");
                         
                         if(left == null && right == null && top == null && bottom == null){
                             left = "0";
@@ -107,11 +109,12 @@ class TemplatesParser{
                     case LayerType.CITY_LAYER_TYPE:
                         var text:string;
                         try{
-                            text= layerData.childNodes[0].nodeValue.toUpperCase();
+                            text = layerData.childNodes[0].nodeValue.toUpperCase();
                         }
                         catch(error){
                             text = "";
                         }
+
                         var textColor:string = layerData.getAttribute("color");
                         var fontSize:string = layerData.getAttribute("size");
                         var fontWeight:string = layerData.getAttribute("fontWeight");
@@ -120,6 +123,27 @@ class TemplatesParser{
                         templateLayer = new CityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
+
+                    case LayerType.MAP_CITY_LAYER_TYPE:
+
+                        var text:string;
+                        try{
+                            text = layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        console.log("text=",text);
+
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new MapCityTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+
                     case LayerType.COUNTRY_LAYER_TYPE:
                         var text:string;
                         try{
@@ -133,8 +157,23 @@ class TemplatesParser{
                         var fontWeight:string = layerData.getAttribute("fontWeight");
                         var textAlign:string = layerData.getAttribute("text-align");
 
-                        console.log("create country template layer");
                         templateLayer = new CountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.MAP_COUNTRY_LAYER_TYPE:
+                        var text:string;
+                        try{
+                            text= layerData.childNodes[0].nodeValue.toUpperCase();
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new MapCountryTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
 
@@ -152,6 +191,22 @@ class TemplatesParser{
                         var textAlign:string = layerData.getAttribute("text-align");
 
                         templateLayer = new CoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
+                        layers.add(templateLayer);
+                        break;
+                    case LayerType.MAP_COORDINATES_LAYER_TYPE:
+                        var text:string;
+                        try{
+                            text= layerData.childNodes[0].nodeValue;
+                        }
+                        catch(error){
+                            text = "";
+                        }
+                        var textColor:string = layerData.getAttribute("color");
+                        var fontSize:string = layerData.getAttribute("size");
+                        var fontWeight:string = layerData.getAttribute("fontWeight");
+                        var textAlign:string = layerData.getAttribute("text-align");
+
+                        templateLayer = new MapCoordinatesTemplateLayer(id, aspectRatio, type, text, textColor, fontSize, left, top, right, bottom, changeable, textAlign, fontWeight);
                         layers.add(templateLayer);
                         break;
                     case LayerType.DATE_TIME_LAYER_TYPE:
@@ -218,6 +273,20 @@ class TemplatesParser{
                         new MapLayerController((templateLayer as MapLayerModel));
                         layers.add(templateLayer);
 
+                        break;
+                    case LayerType.LABELS_CONTAINER:
+                        var backgroundColor:string = layerData.getAttribute("backgroundColor");
+                        var backgroundAlpha:string = layerData.getAttribute("backgroundAlpha");
+
+                        if(left == null && right == null && top == null && bottom == null){
+                            left = "0";
+                            right = "0";
+                            top = "0";
+                            bottom = "0";
+                        }
+                        
+                        templateLayer = new LabelsContainerTemplateLayer(id, aspectRatio, type, left, top, right, bottom, changeable, backgroundColor, backgroundAlpha, border);
+                        layers.add(templateLayer);
                         break;
                 }
             }

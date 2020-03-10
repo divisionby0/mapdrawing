@@ -2,7 +2,7 @@
 ///<reference path="../../../common/template/editor/EditorEvent.ts"/>
 ///<reference path="../../../common/template/layer/geographicMap/MapParameters.ts"/>
 declare var mapboxgl:any;
-declare function render(jQ, data):Function;
+declare function render(jQ, data, left, right, top, bottom):Function;
 class GeographicMap{
     private j$:any;
     private map:any;
@@ -15,12 +15,22 @@ class GeographicMap{
     
     private parameters:MapParameters;
 
+    private mapCanvas:any;
+    private left:any = 0;
+    private right:any = 0;
+    private top:any = 0;
+    private bottom:any = 0;
 
-    constructor(j$:any, parameters:MapParameters){
+    constructor(j$:any, parameters:MapParameters, left:any, right:any, top:any, bottom:any){
         this.j$ = j$;
         this.parameters = parameters;
         this.createMap();
-        
+
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
+
         EventBus.addEventListener("RENDER_PRINT_SIZE", ()=>this.onRenderPrintSizeRequest());
     }
     
@@ -45,13 +55,13 @@ class GeographicMap{
     }
 
     public resize(w:number, h:number):void{
-        var mapCanvas:any = document.getElementsByClassName('mapboxgl-canvas')[0];
+        this.mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];
         var mapDiv:any = document.getElementById(this.parameters.getContainer());
         
         mapDiv.style.width = w;
         mapDiv.style.height = h;
-        mapCanvas.style.width = w;
-        mapCanvas.style.height = h;
+        this.mapCanvas.style.width = w;
+        this.mapCanvas.style.height = h;
 
         if(this.map){
             this.map.resize();
@@ -60,7 +70,6 @@ class GeographicMap{
     }
 
     private createMap():void{
-
         try {
             this.map = new mapboxgl.Map(this.parameters.toObject());
 
@@ -104,6 +113,6 @@ class GeographicMap{
     }
 
     private onRenderPrintSizeRequest():void {
-        render(this.j$, this.parameters.toObject());
+        render(this.j$, this.parameters.toObject(), this.left, this.right, this.top, this.bottom);
     }
 }

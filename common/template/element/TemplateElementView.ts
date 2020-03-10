@@ -14,6 +14,10 @@
 ///<reference path="../layer/geographicMap/MapLayerModel.ts"/>
 ///<reference path="CountryLayerView.ts"/>
 ///<reference path="BlobImageLayerView.ts"/>
+///<reference path="LabelsContainerLayerView.ts"/>
+///<reference path="MapCityLayerView.ts"/>
+///<reference path="MapCountryLayerView.ts"/>
+///<reference path="MapCoordinatesLayerView.ts"/>
 class TemplateElementView implements ITemplateSizeProvider{
     private j$:any;
     private parentContainerId:string;
@@ -43,15 +47,23 @@ class TemplateElementView implements ITemplateSizeProvider{
     public setData(data:Template):void{
         this.data = data;
         var layersIterator:ListIterator = data.getLayersIterator();
-        
+
+        console.log("total layers: "+data.totalLayers());
+
         while(layersIterator.hasNext()){
             var layer:TemplateLayer = layersIterator.next();
             
             var layerType:string = layer.getType();
-            
+
+            //console.log("layerType=",layerType);
+
+            // TODO в шаблоне сделать слой-контейнер для текстов, добавить его, во вьюхах добавлять их в этот контейнер
             switch(layerType){
                 case LayerType.DIV_LAYER_TYPE:
                     new DivLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
+                    break;
+                case LayerType.LABELS_CONTAINER:
+                    new LabelsContainerLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     break;
                 case LayerType.TEXT_LAYER_TYPE:
                     new TextLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
@@ -85,9 +97,20 @@ class TemplateElementView implements ITemplateSizeProvider{
                     var layerView:LayerView = new MapLayerView(this.j$, layer, this.parentContainerId, this.selfContainerId, this, this.coeff);
                     layer.setView(layerView);
                     break;
+                case LayerType.MAP_CITY_LAYER_TYPE:
+                    var layerView:LayerView = new MapCityLayerView(this.j$, layer, "labelsContainer", this.selfContainerId, this, this.coeff);
+                    layer.setView(layerView);
+                    break;
+                case LayerType.MAP_COUNTRY_LAYER_TYPE:
+                    var layerView:LayerView = new MapCountryLayerView(this.j$, layer, "labelsContainer", this.selfContainerId, this, this.coeff);
+                    layer.setView(layerView);
+                    break;
+                case LayerType.MAP_COORDINATES_LAYER_TYPE:
+                    var layerView:LayerView = new MapCoordinatesLayerView(this.j$, layer, "labelsContainer", this.selfContainerId, this, this.coeff);
+                    layer.setView(layerView);
+                    break;
             }
         }
-        
         this.resize();
     }
     

@@ -51,7 +51,7 @@ class TextLayerView extends LayerView{
             this.layerContainer.hide();
         }
     }
-
+    
     protected onResize():void{
         super.onResize();
         var topIsProcents:boolean = this.hasProcents(this.layer.getTop());

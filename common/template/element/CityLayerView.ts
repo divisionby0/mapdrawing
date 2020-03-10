@@ -10,7 +10,7 @@ class CityLayerView extends TextLayerView{
         EventBus.addEventListener(EditorEvent.CITY_VISIBILITY_CHANGED, (data)=>this.onCityVisibilityChanged(data));
     }
 
-    private onCityTextChanged(text:string):void{
+    protected onCityTextChanged(text:string):void{
         this.layerContainer.text(text.toUpperCase());
     }
     

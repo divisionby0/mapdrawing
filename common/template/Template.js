@@ -65,6 +65,9 @@ var Template = (function () {
     Template.prototype.getLayersIterator = function () {
         return this.layers.getIterator();
     };
+    Template.prototype.totalLayers = function () {
+        return this.layers.size();
+    };
     Template.prototype.getPrintWidth = function () {
         return this.width;
     };

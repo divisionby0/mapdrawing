@@ -17,6 +17,24 @@ body {
     width: 2481px!important;
     height: 3509px!important;
 }
+.mapLabel{
+    display: block!important;
+    padding-left: 2em;
+    padding-right: 2em;
+
+}
+.labelsContainer{
+    position: absolute;
+    text-align: center;
+    min-width: 60%;
+    min-height: 10%;
+    max-width: 100%;
+    overflow: hidden;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
 
 #map {
     width: 210mm;

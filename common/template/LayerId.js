@@ -8,6 +8,7 @@ var LayerId = (function () {
     LayerId.CITY_TEXT_LAYER_ID = "cityText";
     LayerId.COORDINATES_TEXT_LAYER_ID = "coordinatesText";
     LayerId.DATE_TIME_TEXT_LAYER_ID = "dateTimeTextText";
+    LayerId.LABELS_CONTAINER = "labelsContainer";
     return LayerId;
 }());
 //# sourceMappingURL=LayerId.js.map

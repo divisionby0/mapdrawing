@@ -10,6 +10,8 @@ class LayerId{
     
     public static DATE_TIME_TEXT_LAYER_ID:string = "dateTimeTextText";
     
+    public static LABELS_CONTAINER:string = "labelsContainer";
+    
     /*
     public static TEXT_LAYER_3_ID:string = "text_3";
     public static TEXT_LAYER_4_ID:string = "text_4";

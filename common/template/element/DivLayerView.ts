@@ -27,7 +27,14 @@ class DivLayerView extends LayerView{
             border = Utils.updateBorderString(border, this.coeff);
             this.style+="border:"+border+";";
         }
-
+        this.createContainer();
+        /*
+        this.layerContainer = this.j$("<div id='"+this.layer.getId()+"' style='"+this.style+"'></div>");
+        this.layerContainer.appendTo(this.j$("#"+this.parentId));
+        */
+    }
+    
+    protected createContainer():void{
         this.layerContainer = this.j$("<div id='"+this.layer.getId()+"' style='"+this.style+"'></div>");
         this.layerContainer.appendTo(this.j$("#"+this.parentId));
     }

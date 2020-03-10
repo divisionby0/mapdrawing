@@ -19,7 +19,8 @@ class CityTemplateLayer extends TextTemplateLayer{
         EventBus.addEventListener(EditorEvent.TEXT_1_CHANGED, (text)=>this.onText_1_changed(text));
     }
     
-    private onCityChanged(data:any):void {
+    protected onCityChanged(data:any):void {
+        console.log("onCityChanged data=",data);
         var city:string = data.city;
         this.text = city;
     }

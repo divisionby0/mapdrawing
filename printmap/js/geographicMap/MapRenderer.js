@@ -1,14 +1,26 @@
 var renderMap;
 var parameters;
 var image;
-function render($, _parameters){
+var printWidth = 2481;
+var printHeight = 3509;
+
+function render($, _parameters, left, right, top, bottom){
+    console.log("render left=",left, "right=", right, "top=", top, "bottom=",bottom);
     parameters = _parameters;
-    parameters.container = "printMapContainer";
+    parameters.container = "mapImageContainer";
     
     destroyPrintMap();
+
+    $("#"+parameters.container).show();
     
-    $("#"+parameters.container).width(2481);
-    $("#"+parameters.container).height(3508);
+    var containerWidth = printWidth - printWidth/100*parseFloat(left) - printWidth/100*parseFloat(right);
+    var containerHeight = printHeight - printHeight/100*parseFloat(top) - printHeight/100*parseFloat(bottom);
+    
+    console.log("containerWidth=",containerWidth);
+    console.log("containerHeight=",containerHeight);
+    
+    $("#"+parameters.container).width(containerWidth);
+    $("#"+parameters.container).height(containerHeight);
     
     renderMap = new mapboxgl.Map(parameters);
 
@@ -22,6 +34,19 @@ function updateMap(){
 
 function generatePrintSize(){
     renderMap.once('idle', function() {
+
+        var b64Text = renderMap.getCanvas().toDataURL();
+        b64Text = b64Text.replace('data&colon;image/png;base64,','');
+        var base64Data = b64Text;
+
+        var newImg = document.createElement('img');
+        //newImg.className = "printsizeImage";
+        newImg.src = base64Data;
+
+        destroyPrintMap();
+        EventBus.dispatchEvent("RENDER_PRINT_SIZE_RESULT", newImg);
+        
+        /*
         renderMap.getCanvas().toBlob(function(blob) {
             
             var img = buildImage(blob);
@@ -30,6 +55,7 @@ function generatePrintSize(){
             
             EventBus.dispatchEvent("RENDER_PRINT_SIZE_RESULT", img);
         });
+        */
     });
 }
 
@@ -54,6 +80,7 @@ function buildImage(blob){
 
     newImg.className = "printsizeImage";
     newImg.src = url;
+    
     return newImg;
 }
 
